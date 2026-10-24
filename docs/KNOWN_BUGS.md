@@ -75,3 +75,10 @@ Existing P0 photo clean-origin import/restore and broad injected-HTML/direct-sto
 
 ## 2026-10-24 Beta7
 LUM-BUG-030 Body/Protocols/Settings density improved as user-approved design candidate. 80/80 isolated fake-storage checks PASS, Safari NOT VERIFIED. Pre-existing weekly reorder referenced an undeclared inventory variable; candidate defines it locally, but real touch/keyboard persistence remains NOT TESTED. Critical photo-backed cross-origin restore, injection/security and demo isolation issues remain open until true device testing. No bugs silently closed.
+
+
+## 2026-10-24 — Every-page scorecard code-inspection findings
+**LUM-BUG-032 | P0 | CODE-CONFIRMED risk, untested exploit in actual browser:** Doctor Summary result/confirmation templates interpolate stored item.name and metadata into innerHTML without luminaText escaping. Other doctor output was selectively hardened in prior betas; this result renderer remains. Fix display-only escaping and malicious string regression (no modification to stored values).
+**LUM-BUG-033 | P1 | CODE-CONFIRMED logic defect:** applyFilterSheet reads fs-form but stores it into _vaultFilterCat (shared with fs-cat); applyVaultFilters compares that value with item.cat. Form filter cannot reliably select by item.form. Separate independent filters and test combined/reset selections.
+**LUM-BUG-034 | P1 | UX SAFETY REVIEW (not functionally reproduced):** Data Cleanup auto-assign/bulk-finish actions lack preview/undo, dangerous when many records. Create explicit confirmation and rollback acceptance tests.
+Original unverified photo portability, quota, iPhone Safari, weekly reorder remain OPEN. No fixes performed in audit branch.

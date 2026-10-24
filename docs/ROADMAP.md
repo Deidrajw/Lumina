@@ -38,3 +38,7 @@ Beta.4 targets the Vault JSON import bypass, unsafe product/detail/search/CSV te
 
 ## 2026-10-24 UX design implementation progress
 Beta6 candidate implemented Today/Vault/Insights; Beta7 candidate now implemented approved Body/Protocols/Settings. Both stacked in feature branches and not deployed to production main. Next verify physical iPhone Safari, photo-complete clean-origin IndexedDB restore, all functional CRUD, screen-reader/security/error tests, then separate production merge approval. No new feature category before stability.
+
+
+## 2026-10-24 — scorecard-directed sequence
+57 graded Beta7 pages/subflows (see AUDIT_PAGE_GRADES_2026-10-24.md). P0 first: clean origin IDB photos+JSON restore validation, sanitize Doctor Summary confirmation/result. P1: Vault independent form/category filters, weekly reorder persistence in Safari, Data Cleanup bulk-change preview, full modal/focus/VoiceOver regression and transparent Insights evidence. Next: user-measured task completion on iPhone and compare scores after verified change. Main remains v0.9.4; audit not a production release.

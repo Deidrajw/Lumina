@@ -1,3 +1,10 @@
+# LATEST STATE — Every-page design + delivery grading (2026-10-24)
+**Baseline:** production main 2e02f304 v0.9.4; reviewed Beta7 feature HEAD b48dca80645540ab45d483e5283af947b44aaa6d. Audit-only branch audit/every-page-uiux-pm-scorecard-2026-10-24; no app source, storage or production changed.
+**Report:** docs/AUDIT_PAGE_GRADES_2026-10-24.md. 57 surfaces (navigation, forms, action sheets), average heuristic UX 73/100 (C); separate project-management maturity 61.4/100 (D). All scores are judgments, not measured task-success results or release proof.
+**Evidence:** current automated Chromium mocked-storage 37/37 render/open smoke, zero page errors; prior documented Beta7 80/80 isolated checks. Actual iPhone Safari, cross-origin indexedDB photo restoration, extensive security/VoiceOver still NOT TESTED. **P0 flags:** Doctor Summary HTML escaping, real photo restore/import safety. **P1:** Vault form/category filter state collision, weekly reorder and bulk cleanup confirmation.
+**Next:** prioritize security+clean-origin photo proof, test actual Safari, then page-level acceptance tests and update scores with measured evidence. No main merge or deploy without separate approval.
+
+---
 # LATEST STATE — 2026-10-24 Beta 7
 Production main 2e02f304 (v0.9.4) unchanged. Candidate feature/approved-uiux-body-protocols-settings-beta7 based on Beta6 32e66d5. User approved six-screen design direction, not production merge. Implemented Body quick logs/collapsed history filters, Protocols visible progress/show-all/reorder and weekly inventory fix, Settings prominent doctor reports/separate backup/reset. No schema, storage, IDB photo migrations. QA 80/80 PASS automated isolated Chromium with fictional mock storage and Node syntax PASS. Physical Safari/real cross-origin IndexedDB backup, VoiceOver, complete security and functional regression NOT TESTED. Next: Cloudflare branch preview SHA, iPhone test, clean-origin photo restore, separate main approval. See docs/APPROVED_UIUX_PHASE2_2026-10-24.md.
 
