@@ -861,6 +861,36 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 .lum-ins-evidence>.sec-title,.lum-ins-more>.sec-title{margin-top:10px}
 .lum-ins-evidence>.card,.lum-ins-more>.card,.lum-ins-more>.ins-card{margin-left:10px;margin-right:10px}
 @media(max-width:350px){.lum-vault-intro{flex-wrap:wrap}.lum-quick-actions{grid-template-columns:1fr 1fr}}
+
+/* v0.9.5-beta.7 approved Body / Protocols / Settings hierarchy */
+.lum-action-kicker,.lum-section-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.25px;color:var(--tx3)}
+.lum-section-eyebrow{margin:16px 18px 8px}
+.lum-body-action,.lum-proto-focus{margin:12px 16px 12px;padding:14px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--rad)}
+.lum-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}
+.lum-quick-btn{border:1px solid var(--b2);border-radius:11px;min-height:46px;background:var(--s2);color:var(--tx);font-family:var(--font-body);font-size:12px;font-weight:700;cursor:pointer;padding:8px 4px;white-space:nowrap}
+.lum-quick-btn span{color:var(--p);font-size:16px;font-weight:500}
+.lum-proto-focus-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.lum-proto-focus-title{font-family:var(--font-display);font-size:23px;line-height:1.25;margin:3px 0 4px;color:var(--tx)}
+.lum-proto-focus-meta{font-size:12px;line-height:1.5;color:var(--tx2)}
+.lum-proto-actions{display:flex;gap:8px;margin-top:12px}
+.lum-proto-actions button{background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--tx);font-family:var(--font-body);font-weight:700;font-size:12px;flex:1;min-height:44px;cursor:pointer;padding:8px}
+.lum-proto-actions button[aria-pressed="true"]{border-color:var(--p);background:var(--s3);color:var(--p)}
+.lum-body-filters{margin:0 16px 12px;background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:10px 10px 4px}
+.lum-body-filters summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:34px;cursor:pointer;font-weight:700;font-size:12px;color:var(--tx2)}
+.lum-body-filters summary::-webkit-details-marker{display:none}
+.lum-body-filters summary:after{content:'⌄';font-size:16px;color:var(--tx3)}
+.lum-body-filters[open] summary:after{transform:rotate(180deg)}
+.lum-body-filters .body-toolbar{padding-left:0;padding-right:0}
+.lum-settings-intro{font-size:12px;line-height:1.65;color:var(--tx2);padding:2px 18px 13px}
+.lum-settings-featured{border-color:var(--b2)}
+.lum-settings-featured .card-title{margin:6px 0;font-family:var(--font-display);font-size:23px;font-weight:400;letter-spacing:0;text-transform:none}
+.lum-settings-disclosure{padding-top:12px;padding-bottom:12px}
+.lum-settings-summary{display:flex;align-items:center;justify-content:space-between;min-height:32px;list-style:none;color:var(--tx);font-weight:700;font-size:14px;cursor:pointer}
+.lum-settings-summary::-webkit-details-marker{display:none}
+.lum-settings-summary span:last-child{font-size:17px;color:var(--tx3)}
+.lum-settings-disclosure[open] .lum-settings-summary span:last-child{transform:rotate(180deg)}
+.lum-settings-disclosure-note{font-size:12px;line-height:1.5;color:var(--tx2);margin:10px 0}
+@media(max-width:350px){.lum-body-action,.lum-proto-focus{margin-left:12px;margin-right:12px;padding:12px}.lum-action-grid{gap:5px}.lum-quick-btn{font-size:11px}}
 </style>
 </head>
 <body>
@@ -905,6 +935,15 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 <!-- BODY tab: Symptoms · Concerns · Skin · Progress Photos -->
 <div class="panel" id="tab-body">
   <div class="hdr"><div class="hdr-row"><div><div class="hdr-title">Body</div></div><div class="hdr-actions"><button class="hdr-add" id="body-add-btn" onclick="bodyAddTap()">+ Add</button></div></div></div>
+  <section class="lum-body-action" aria-label="Quick wellness log">
+    <div class="lum-action-kicker">QUICK LOG</div>
+    <div class="lum-action-grid">
+      <button type="button" class="lum-quick-btn" onclick="openModal('symp')"><span aria-hidden="true">＋</span> Symptom</button>
+      <button type="button" class="lum-quick-btn" onclick="openModal('conc')"><span aria-hidden="true">＋</span> Concern</button>
+      <button type="button" class="lum-quick-btn" onclick="openModal('skin')"><span aria-hidden="true">＋</span> Skin log</button>
+    </div>
+  </section>
+  <div class="lum-section-eyebrow" id="body-view-label">HISTORY &amp; OBSERVATIONS</div>
   <div class="compact-tabs" id="body-tabs" style="grid-template-columns:repeat(3,minmax(0,1fr))">
     <button class="compact-tab on" data-bt="symptoms">Symptoms</button>
     <button class="compact-tab" data-bt="concerns">Concerns</button>
@@ -933,6 +972,13 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
     <button class="sheet-row" style="padding:10px 14px;font-size:13px" onclick="selectProtoTabOverflow('rx','Rx')" data-pt="rx">Rx</button>
     <button class="sheet-row" style="padding:10px 14px;font-size:13px;border-bottom:none" onclick="selectProtoTabOverflow('weekly','Week')" data-pt="weekly">Week</button>
   </div>
+  <section class="lum-proto-focus" aria-label="Routine progress and actions">
+    <div class="lum-proto-focus-top"><div><div class="lum-action-kicker">YOUR ROUTINE</div><div id="proto-focus-title" class="lum-proto-focus-title">Morning steps</div><div id="proto-focus-progress" class="lum-proto-focus-meta" aria-live="polite">View today's plan</div></div></div>
+    <div class="lum-proto-actions">
+      <button id="proto-visible-btn" type="button" onclick="toggleShowAllSteps()">Show all steps</button>
+      <button id="proto-reorder-quick" type="button" onclick="toggleReorderMode()">Reorder steps</button>
+    </div>
+  </section>
   <div class="card card-sm flex jb ac mb8" style="margin-bottom:10px">
     <span class="card-title" style="margin:0">Streak</span>
     <div class="flex ac gap6"><div class="streak-row" id="streak-dots"></div><span id="streak-ct" class="pill pp">0d</span></div>
@@ -1036,24 +1082,36 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
     </div>
   </div>
 
-  <!-- Data -->
-  <div class="card">
-    <div class="card-title">Data</div>
-    <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Includes photos; export stops if an image cannot be backed up</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
-    <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Review before replacing data on this device</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
-    <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
+  <!-- Appointment and professional summaries: prominent without changing handlers -->
+  <div class="lum-settings-intro">Your records stay in this browser on this web address. Keep a verified backup before moving devices or websites.</div>
+  <div class="card lum-settings-featured">
+    <div class="lum-action-kicker">FOR AN APPOINTMENT</div>
+    <div class="card-title">Professional summaries</div>
+    <p class="f12 tx2" style="margin:0 0 6px">Review what you've logged before sharing it with a professional.</p>
     <div class="tog-row"><div class="tog-info"><h4>Doctor Summary</h4><p>What you're currently taking — organized for an appointment</p></div><button class="btn btn-g btn-sm" onclick="openDoctorSummary()">Open</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Doctor Export</h4><p>Generate a report for your doctor</p></div><button class="btn btn-g btn-sm" onclick="openModal('export-doc')">Export</button></div>
   </div>
-
-  <!-- Setup & Onboarding -->
+  <!-- Backup and restore -->
   <div class="card">
-    <div class="card-title">Setup</div>
+    <div class="card-title">Backup &amp; restore</div>
+    <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Includes photos; export stops if an image cannot be backed up</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
+    <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Review before replacing data on this device</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
+    <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
+    <p class="f11 tx3" style="margin-top:12px;line-height:1.6">Backups include photos when available. A restore replaces records after your confirmation; it does not merge them.</p>
+  </div>
+
+  <!-- Setup & Onboarding: advanced tools stay available on demand -->
+  <details class="card lum-settings-disclosure" id="lum-settings-setup"><summary class="lum-settings-summary"><span>Setup &amp; testing</span><span aria-hidden="true">⌄</span></summary>
+    <div class="lum-settings-disclosure-note">Onboarding and fictional sample preview controls</div>
     <div class="tog-row"><div class="tog-info"><h4>Open setup screen</h4><p>Return to the welcome / setup options</p></div><button class="btn btn-g btn-sm" onclick="showOnboarding()">Open</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Preview sample app</h4><p>Add sample entries to explore the app</p></div><button class="btn btn-g btn-sm" onclick="loadDemoData()">Load</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Remove demo data</h4><p>Delete only entries tagged as demo</p></div><button class="btn btn-g btn-sm" onclick="exitDemoPreview()">Remove</button></div>
-    <div class="tog-row" style="border-top:1px solid var(--r);margin-top:8px;padding-top:16px"><div class="tog-info"><h4 style="color:var(--r)">Clear all data</h4><p>Delete browser records and saved photos on this address</p></div><button class="btn btn-d btn-sm" onclick="clearAllData()">Clear</button></div>
-  </div>
+  </details>
+
+  <details class="card lum-settings-disclosure" id="lum-settings-danger"><summary class="lum-settings-summary"><span>Reset this browser's data</span><span aria-hidden="true">⌄</span></summary>
+    <div class="lum-settings-disclosure-note">This deletes Lumina records and saved photos on this web address. Export a backup first.</div>
+    <div class="tog-row"><div class="tog-info"><h4 style="color:var(--r)">Clear all data</h4><p>Delete browser records and saved photos on this address</p></div><button class="btn btn-d btn-sm" onclick="clearAllData()">Clear</button></div>
+  </details>
 
   <!-- Help -->
   <div class="card" id="help-section">
@@ -1107,7 +1165,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.6</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.7</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -3150,8 +3208,15 @@ function editRxCheckin(productId,checkinId){
   openModal('rx-checkin');
 }
 
+let _lumBodyFiltersExpanded=false;
+function lumBodyFilterGroup(content){
+  return '<details class="lum-body-filters" '+(_lumBodyFiltersExpanded?'open ':'')+'ontoggle="_lumBodyFiltersExpanded=this.open"><summary>Filters &amp; sorting</summary>'+content+'</details>';
+}
 function renderBody(){try{
   const bt=activeBT;
+  const viewName={symptoms:'SYMPTOM HISTORY',concerns:'CONCERN HISTORY',skin:'SKIN LOG',rx:'PRESCRIPTION CHECK-INS',photos:'PROGRESS PHOTOS'}[bt]||'OBSERVATIONS';
+  const viewLabel=byId('body-view-label');if(viewLabel)viewLabel.textContent=viewName;
+  byId('body-add-btn').style.display=['symptoms','concerns','skin'].includes(bt)?'none':'';
   byId('body-add-btn').textContent={symptoms:'+ Symptom',concerns:'+ Concern',skin:'Log Skin',photos:'+ Photo'}[bt]||'+ Add';
   byId('body-add-btn').onclick=()=>({symptoms:()=>openModal('symp'),concerns:()=>openModal('conc'),skin:()=>openModal('skin'),photos:()=>openModal('photo')}[bt]||openModal('symp'))();
   if(bt==='symptoms')renderSymptoms();
@@ -3232,7 +3297,7 @@ function renderSympToolbar(allSymps){
 function renderSymptoms(){
   const allSymps=readStore(KEYS.symp)||[];
   const concs=readStore(KEYS.conc)||[];
-  const toolbar=renderSympToolbar(allSymps);
+  const toolbar=lumBodyFilterGroup(renderSympToolbar(allSymps));
   const filtered=getFilteredSymptoms();
   const sorted=sortSymptoms(filtered);
 
@@ -3338,7 +3403,7 @@ function renderConcerns(){
   const arch=all.filter(c=>c.archived);
   const filtered=getFilteredConcerns();
   const sorted=sortConcerns(filtered);
-  const toolbar=renderConcernToolbar();
+  const toolbar=lumBodyFilterGroup(renderConcernToolbar());
 
   let h=toolbar;
   if(sorted.length){
@@ -3889,6 +3954,19 @@ function renderProtocols(){try{
   }
   byId('streak-dots').innerHTML=dh;
 
+  // Primary routine summary uses existing scheduled data without changing storage.
+  const focusLabels={am:'Morning steps',pm:'Evening steps',supps:'Supplements',hair:'Hair routine',rx:'Prescription steps',weekly:'Weekly schedule'};
+  const focusTitle=byId('proto-focus-title');if(focusTitle)focusTitle.textContent=focusLabels[activePT]||'Your routine';
+  const activeItems=activePT==='supps'?supps.filter(s=>suppToday(s)):
+    activePT==='weekly'?steps.filter(s=>s.timing?.includes('weekly')):
+    steps.filter(s=>s.timing?.includes(activePT)&&stepToday(s));
+  const doneItems=activeItems.filter(s=>activePT==='supps'?Boolean(tc.supps?.[s.id]):(tc.steps?.[s.id]==='done'||tc.steps?.[s.id]===true));
+  const prog=byId('proto-focus-progress');if(prog)prog.textContent=activePT==='weekly'?
+    `${activeItems.length} weekly step${activeItems.length===1?'':'s'} scheduled`:
+    `${doneItems.length} of ${activeItems.length} scheduled step${activeItems.length===1?'':'s'} completed today`;
+  const vis=byId('proto-visible-btn');if(vis){vis.textContent=_showAllSteps?'Today only':'Show all steps';vis.setAttribute('aria-pressed',String(_showAllSteps));vis.disabled=activePT==='supps'||activePT==='weekly';}
+  const reo=byId('proto-reorder-quick');if(reo){reo.textContent=_reorderMode?'Done reordering':'Reorder steps';reo.setAttribute('aria-pressed',String(_reorderMode));reo.disabled=activePT==='supps';}
+
   // Helper text
   const helper=PROTO_HELPER[activePT]||'';
 
@@ -3900,6 +3978,7 @@ function renderProtocols(){try{
 
   // ── WEEKLY tab ──
   if(activePT==='weekly'){
+    const inv=readStore(KEYS.inv);
     if(_reorderMode){
       // Reorder mode for weekly — same flat list as other tabs
       const weeklySteps=steps.filter(s=>s.timing.includes('weekly')).sort((a,b)=>(a.order??999)-(b.order??999));
@@ -11424,8 +11503,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.6';
-const APP_BUILD='2026.10.24.ux-approved.1';
+const APP_VERSION='0.9.5-beta.7';
+const APP_BUILD='2026.10.24.ux-approved.2';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11451,6 +11530,13 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {
+    version:'0.9.5-beta.7',date:'October 24, 2026',status:'Beta — approved UX Phase 2',
+    added:['Body quick-log actions and optional advanced history filters','Protocols contextual progress and visible show-all/reorder tools','Settings separates professional summaries, backups and advanced or destructive actions'],
+    changed:['Keeps existing Body tabs and linked entry forms','Retains routine grouping, templates and step order handlers','Uses native collapsible Settings sections while keeping setup and reset options available'],
+    fixed:['Hidden high-frequency Body logging actions','Protocol reorder and show-all actions buried behind menu','Backups and doctor reports previously competing for attention in Settings'],
+    known:['Real Safari photo export/import round-trip still pending','VoiceOver and full manual app regression not yet verified','Production main unchanged; beta review only']
+  },
   {
     version:'0.9.5-beta.6',date:'October 24, 2026',status:'Beta — approved UX improvements',
     added:['Task-first Today with visible check-in, quick log and grouped observation history','Vault inventory summary, contextual review and collapsed secondary stock','Insights leads with observations; evidence and extended analysis expand on demand'],

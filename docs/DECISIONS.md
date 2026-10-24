@@ -27,3 +27,8 @@
 - DEC-022: Batch 1 covers Today/Vault/Insights first for small regression surface. Body, Protocols, Settings designs remain approved for separate reviewable implementation.
 - DEC-023: Today total uses real scheduled routine step count + one daily skin check-in; dash when none scheduled rather than misleading zero. Not a health/adherence rating.
 - DEC-024: Use native details/summary and semantic buttons for discoverable optional content, preserve all existing lists/edit routes, and maintain observational context on Insights.
+
+
+- DEC-025 (2026-10-24): User-approved six-screen design implemented in two incremental batches, Beta6 and Beta7, without merging to main or altering record structures.
+- DEC-026: Surface existing Show all and Reorder protocol affordances with truthful counts, disable unsupported supplement controls.
+- DEC-027: Separate professional summaries from backups and hide destructive reset behind discoverable native disclosure. Existing functionality remains available.

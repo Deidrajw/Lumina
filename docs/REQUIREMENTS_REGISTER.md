@@ -74,3 +74,7 @@ Older LUM-008–020 beta fixes remain not verified for full cross-origin IDB/pho
 **LUM-024 Insights | P1 | IMPLEMENTED BETA NOT VERIFIED:** primary finding with timeframe and observational caveat, expandable evidence/extended context, existing Patterns/Timeline/Calendar preserved. Acceptance: evidence sample size/date agreement, 7/30/90, empty/populated, no unsupported causality.
 **LUM-025 Body/Protocols and Settings | P1 | APPROVED CONCEPT, NOT YET IMPLEMENTED:** staged in next low-regression batch with CRUD/photo, search and reorder tests.
 Approval of preview/design != production release. All 69 automated tests use mocked storage, not Safari/real IDB.
+
+
+## 2026-10-24 LUM-025 approved UX Phase 2
+Status IMPLEMENTED BETA, not real-device Verified. Priority P1. Affected: Body renderBody/renderSymptoms/renderConcerns and quick logging, Protocols renderProtocols/show-all/reorder/weekly, Settings doctor/export/import/reset groups. Expected: easier primary tasks without lost CRUD, backed-up records, or link changes. Acceptance: 320/375/390/393/430 dark/light; actual iPhone Safari, complete edit/save/cancel and photo, Rx/skin/weekly/supplements, accessibility and error recovery. Dependencies LUM-008–020 and Beta6. Risk visible reorder path, filter focus and collapsed reset discoverability. No data/migration impact. 80/80 isolated Chromium PASS; device/full QA NOT TESTED. Design approval not production merge approval.

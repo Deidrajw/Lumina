@@ -34,3 +34,7 @@ Beta.4 targets the Vault JSON import bypass, unsafe product/detail/search/CSV te
 **Implemented beta6:** Today, Vault and Insights (LUM-022/023/024) progressive hierarchy and evidence, original data contracts and feature paths intact, real Safari review pending.
 **Approved design, next batch:** Body task-first logging/filters, Protocols clearer steps and non-drag reorder, Settings prominent backup/restore and professional reports (LUM-025). Stage and test before implementation.
 **Release gates:** real Safari + clean-origin photo backup restore, broad security, all-screen regression, explicit production authorization. Main remains v0.9.4 until release.
+
+
+## 2026-10-24 UX design implementation progress
+Beta6 candidate implemented Today/Vault/Insights; Beta7 candidate now implemented approved Body/Protocols/Settings. Both stacked in feature branches and not deployed to production main. Next verify physical iPhone Safari, photo-complete clean-origin IndexedDB restore, all functional CRUD, screen-reader/security/error tests, then separate production merge approval. No new feature category before stability.

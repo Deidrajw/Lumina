@@ -1,3 +1,7 @@
+# LATEST STATE — 2026-10-24 Beta 7
+Production main 2e02f304 (v0.9.4) unchanged. Candidate feature/approved-uiux-body-protocols-settings-beta7 based on Beta6 32e66d5. User approved six-screen design direction, not production merge. Implemented Body quick logs/collapsed history filters, Protocols visible progress/show-all/reorder and weekly inventory fix, Settings prominent doctor reports/separate backup/reset. No schema, storage, IDB photo migrations. QA 80/80 PASS automated isolated Chromium with fictional mock storage and Node syntax PASS. Physical Safari/real cross-origin IndexedDB backup, VoiceOver, complete security and functional regression NOT TESTED. Next: Cloudflare branch preview SHA, iPhone test, clean-origin photo restore, separate main approval. See docs/APPROVED_UIUX_PHASE2_2026-10-24.md.
+
+---
 # LATEST STATE — 2026-10-24, v0.9.5-beta.6
 **Main production:** v0.9.4, commit 2e02f304 unchanged. **Feature:** feature/approved-uiux-today-vault-insights-beta6, parent beta5 a7d9ae2.
 **User approval:** approved six-screen UI concept, not live production deployment. **Implemented Phase 1:** Today check-in/quick actions, accurate bounded routine total, preserved reminders, collapsible older observations; Vault counts, review shortcut, stable search/filter/status disclosure; Insights top observational finding, context, supporting evidence disclosures. **Approved but pending Phase 2:** Body, Protocols, Settings.

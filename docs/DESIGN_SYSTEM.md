@@ -11,3 +11,7 @@ Existing dark/light Lumina aesthetics and Instrument Serif/Manrope remain. Candi
 
 ## 2026-10-24 approved IA implementation: Beta 6
 Preserve Instrument Serif/Manrope and existing plum/mauve tokens. Today: primary check-in and quick actions before bounded scheduled progress; urgent reminders never hidden; old history behind native accessible details. Vault: context-first total/review/search, only secondary stock collapsed; status section controls are semantic buttons with aria-expanded/controls. Insights: primary observation and date range first; evidence, dated entries, secondary analysis expandable; never overclaim causality. Body/Protocols/Settings approved concept remains separate implementation scope. Do not replace shared data models or hide error/success states to achieve aesthetic goals.
+
+
+## 2026-10-24 Beta7 Body/Protocols/Settings implementation
+Preserve Instrument Serif/Manrope and dark/light Lumina tokens. Body primary log actions min 44px and advanced filters via native details; Protocols contextual count, visible Show all/Reorder touch actions with aria-pressed and unsupported supp mode disabled; Settings doctor vs backup separation and independent setup/destructive disclosures. No data model/renderer feature removed. True Safari/VoiceOver/focus state pending verification.

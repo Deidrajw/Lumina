@@ -80,3 +80,15 @@ NO-GO production; rollback code main 2e02f304 does not restore browser data.
 - [ ] Comprehensive injection and data-write-boundary audit
 - [ ] User explicitly approves merge/deploy production
 **NO-GO for production** until above. Rollback beta5 a7d9ae2, production main 2e02f304. Code rollback does not restore lost browser data.
+
+
+## Beta7 GO/NO-GO — 2026-10-24
+- [x] Latest GitHub Beta6 source, history and pending bugs reviewed
+- [x] Beta7 complete root index.html, fictional HTML preview, ZIP, notes, screenshots
+- [x] 80/80 isolated Chromium fake-storage checks PASS; JS syntax PASS
+- [ ] Cloudflare Beta7 preview SHA verified and physical iPhone Safari QA
+- [ ] Real clean-origin JSON/IndexedDB photo restore including after refresh and failure recovery
+- [ ] Full Body/Protocols/Settings CRUD, weekly reorder persistence, Rx/supplement and doctor report regression
+- [ ] VoiceOver/safe-area/zoom/keyboard, quota, data privacy, injection and mutator review
+- [ ] Separate explicit authorization to merge/deploy main
+NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback does not restore browser data.
