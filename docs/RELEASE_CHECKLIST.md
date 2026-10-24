@@ -92,3 +92,17 @@ NO-GO production; rollback code main 2e02f304 does not restore browser data.
 - [ ] VoiceOver/safe-area/zoom/keyboard, quota, data privacy, injection and mutator review
 - [ ] Separate explicit authorization to merge/deploy main
 NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback does not restore browser data.
+
+
+## Beta8 GO/NO-GO — 2026-10-24
+- [x] Latest GitHub branch and project continuity inspected; Beta7 app blob verified exact from deployable package
+- [x] Doctor Summary selection, result and presentation escaped; numeric handler events
+- [x] Current-origin photo readiness check + v2 complete JSON validation/empty checks fallback
+- [x] Syntax and 27/27 automated synthetic Chromium checks PASS, 320–430px both themes
+- [x] Versioned root index.html, ZIP, fictional preview, QA checklist, release notes, screenshot
+- [ ] Cloudflare beta8 preview SHA and actual iPhone Safari check
+- [ ] Real IDB photo save/export, separate HTTPS origin import, refresh and verify 4 categories with photo ID/bytes
+- [ ] Real quota, missing blob, failed write + backup rollback on Safari
+- [ ] Full doctor report/copy/share, editable imported records and all app regression
+- [ ] Comprehensive security/VoiceOver, origin migration and explicit user production approval
+**NO GO for main** until these complete. Code rollback previous Beta7 b48dca8 / production 2e02f304, which cannot restore lost browser data.

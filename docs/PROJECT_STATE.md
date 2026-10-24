@@ -1,3 +1,7 @@
+# LATEST — 2026-10-24, Beta 8 data-safety candidate
+Production main 2e02f304 / v0.9.4 UNCHANGED. Work branch fix/photo-backup-doctor-summary-beta8 from audit docs PR #9 head bbb1377 (the app base is exact Beta7 blob 1c2fa20d). Implemented LUM-029 Doctor Summary selection/results/presentation display escaping and safe checkbox handlers; added Settings photo readiness self-check, full-v2-backup completeness, pre-import image validation and section/photo counts; empty checks object on new installs. No data migration, IDs or photo deletions. 27/27 PASS automated isolated Chromium fake storage, Node JS syntax PASS. **Real iPhone Safari IndexedDB clean-origin restoration NOT TESTED** and still P0 release gate. No main deployment approval. See docs/BETA8_BACKUP_DOCTOR_SAFETY_2026-10-24.md. Next: confirm Cloudflare preview SHA; user Safari fictional image-backed backup clean-origin roundtrip; then full QA/security and release decision.
+
+---
 # LATEST STATE — Every-page design + delivery grading (2026-10-24)
 **Baseline:** production main 2e02f304 v0.9.4; reviewed Beta7 feature HEAD b48dca80645540ab45d483e5283af947b44aaa6d. Audit-only branch audit/every-page-uiux-pm-scorecard-2026-10-24; no app source, storage or production changed.
 **Report:** docs/AUDIT_PAGE_GRADES_2026-10-24.md. 57 surfaces (navigation, forms, action sheets), average heuristic UX 73/100 (C); separate project-management maturity 61.4/100 (D). All scores are judgments, not measured task-success results or release proof.

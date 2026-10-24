@@ -36,3 +36,7 @@
 
 - DEC-028 (2026-10-24): Treat UX heuristic scores and release-readiness evidence as **separate** dimensions. Every significant Beta7 page/subflow gets reviewer strength, gap, severity and acceptance; no self-graded numeric score implies Verified functional testing.
 - DEC-029: Data safety and unescaped Doctor Summary output are production release gates even when visual grade is good; feature branch patches/real-origin regression precede merge.
+
+
+- DEC-030 (2026-10-24): Doctor Summary untrusted text must be escaped on display; preserve original strings for user editing and clipboard/share. Checkbox action binding uses state indices rather than imported item IDs in inline handlers.
+- DEC-031: Add read-only current-origin photo readiness check as preflight; never label it portable backup verification. Complete v2 JSON snapshots required; legacy partial format remains supported. Actual cross-origin Safari restoration is release gate.

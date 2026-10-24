@@ -42,3 +42,7 @@ Beta6 candidate implemented Today/Vault/Insights; Beta7 candidate now implemente
 
 ## 2026-10-24 — scorecard-directed sequence
 57 graded Beta7 pages/subflows (see AUDIT_PAGE_GRADES_2026-10-24.md). P0 first: clean origin IDB photos+JSON restore validation, sanitize Doctor Summary confirmation/result. P1: Vault independent form/category filters, weekly reorder persistence in Safari, Data Cleanup bulk-change preview, full modal/focus/VoiceOver regression and transparent Insights evidence. Next: user-measured task completion on iPhone and compare scores after verified change. Main remains v0.9.4; audit not a production release.
+
+
+## 2026-10-24 Beta8 repair progress
+Doctor Summary text safety + current-origin photo readiness check and stricter backup validation implemented Beta8 candidate. Next gating task: real iPhone Safari fresh HTTPS-origin export/import/refresh of four photo categories with recovery, then full regressions. After real data protection verification address LUM-030 Vault Form/Category filter, LUM-031 bulk cleanup confirmation and test Doctor Summary copy/share accessibility. Continue page grading with measured tests, not cosmetic inflation. No production release without approval.

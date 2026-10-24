@@ -82,3 +82,9 @@ LUM-BUG-030 Body/Protocols/Settings density improved as user-approved design can
 **LUM-BUG-033 | P1 | CODE-CONFIRMED logic defect:** applyFilterSheet reads fs-form but stores it into _vaultFilterCat (shared with fs-cat); applyVaultFilters compares that value with item.cat. Form filter cannot reliably select by item.form. Separate independent filters and test combined/reset selections.
 **LUM-BUG-034 | P1 | UX SAFETY REVIEW (not functionally reproduced):** Data Cleanup auto-assign/bulk-finish actions lack preview/undo, dangerous when many records. Create explicit confirmation and rollback acceptance tests.
 Original unverified photo portability, quota, iPhone Safari, weekly reorder remain OPEN. No fixes performed in audit branch.
+
+
+## 2026-10-24 Beta8 candidate status
+LUM-BUG-032 / LUM-029: Doctor Summary escaped names/strength/timing/route/prescriber/instructions across 3 renderers, malicious synthetic fixture PASS automated. User-supplied IDs no longer interpolated into event attributes. **Implemented beta, not production Verified.**
+LUM-BUG-001 / LUM-009: Photo-aware export/import reinforced with current-origin integrity checker, strict new-format snapshots, invalid/missing image rejection, sections/photo counts and missing-checks fallback; 27 simulated focused tests PASS. **Actual Safari clean-origin restore P0 remains BLOCKED/NOT TESTED; do not close.**
+Other imported-text sinks, Vault form/category bug LUM-BUG-033, bulk cleanup LUM-BUG-034, quota failure/rollback and sample side effects remain open for future prioritized work. No production data modified.

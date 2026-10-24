@@ -47,3 +47,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## Latest page-level audit
 [57-surface UI/UX + project management gradebook (2026-10-24)](docs/AUDIT_PAGE_GRADES_2026-10-24.md). Heuristic UX average 73/100; separate delivery maturity 61.4/100. Audit-only branch and draft PR; no production changes. Prioritize photo backup restoration and Doctor Summary HTML output risk before release.
+
+
+## v0.9.5-beta.8 current candidate
+[Photo backup self-check + Doctor Summary safety](docs/BETA8_BACKUP_DOCTOR_SAFETY_2026-10-24.md) improves Doctor Summary rendering and checks linked current-origin photo blobs while preserving all app data contracts. Mocked storage QA 27/27 PASS; real iPhone Safari/photo backup restore and comprehensive security/regression pending. Production main still v0.9.4. NO GO for production until separate approval.

@@ -68,3 +68,10 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - No app code, data schema, production branch or Cloudflare deployment changed.
 - Added 57-surface UI/UX grading report and separate project-management maturity assessment with P0/P1 requirements.
 - Current QA 37 isolated render/open checks PASS; actual Safari, cross-origin IndexedDB restore, full security and functional regression remain NOT TESTED.
+
+
+## v0.9.5-beta.8 — Doctor Summary & photo backup protection (2026-10-24) — unreleased beta
+- Doctor Summary selection/confirm, generated result and presentation view safely render user/imported text; checkboxes use listeners and numeric indexes, not raw IDs inside inline JavaScript. Clipboard and share text unchanged.
+- Settings Backup & Restore now offers Check saved photos: checks existence, nonzero size and MIME type for each linked symptom/concern/product/progress IDB photo on THIS ORIGIN; missing photos get warning. This does NOT verify a cross-origin restore.
+- JSON export validates assembled full v2 file and refuses incomplete images; fresh install without checks data exports checks as {}; v2 import requires complete sections and nonempty image photo blobs before writes; legacy partial backup compatibility retained. Import confirmation displays section/photo counts.
+- No changes to record schema/IDs, existing photo blobs, migrations or production main. PASS JS syntax, 27/27 isolated Chromium fake-storage tests. Physical Safari, real IDB clean-origin photo restore, quota and complete app QA NOT TESTED. NO GO production.

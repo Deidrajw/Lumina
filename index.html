@@ -1095,6 +1095,8 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   <div class="card">
     <div class="card-title">Backup &amp; restore</div>
     <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Includes photos; export stops if an image cannot be backed up</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
+    <div class="tog-row"><div class="tog-info"><h4>Check saved photos</h4><p>Check that this browser can read every photo linked to your records, without changing any data</p></div><button class="btn btn-g btn-sm" onclick="luminaCheckPhotoBackup()">Check</button></div>
+    <div id="backup-photo-check-result" role="status" aria-live="polite" class="f12 tx2" style="line-height:1.5;margin:8px 0 10px"></div>
     <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Review before replacing data on this device</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
     <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
     <p class="f11 tx3" style="margin-top:12px;line-height:1.6">Backups include photos when available. A restore replaces records after your confirmation; it does not merge them.</p>
@@ -1165,7 +1167,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.7</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.8</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -7811,17 +7813,26 @@ function renderDocSummaryConfirm(){
   const inv=readStore(KEYS.inv,[]);
   const byId_=id=>inv.find(x=>x.id===id);
   const el=byId('doc-sum-confirm-list');if(!el)return;
-  el.innerHTML=_docSummaryState.map(sec=>{
-    const rows=sec.items.map(row=>{
+  // Keep imported names and IDs out of HTML event attributes. Event handlers
+  // use numeric indices into the already-reviewed local selection state.
+  el.innerHTML=_docSummaryState.map((sec,si)=>{
+    const rows=sec.items.map((row,ri)=>{
       const item=byId_(row.id);if(!item)return'';
       const sub=[item.strength,item.status].filter(Boolean).join(' · ');
       return '<label class="flex ac gap8" style="padding:9px 0;border-bottom:1px solid var(--b1);cursor:pointer">'+
-        '<input type="checkbox" style="accent-color:var(--p)" '+(row.checked?'checked':'')+' onchange="toggleDocSummaryItem(\''+sec.key+'\',\''+row.id+'\',this.checked)">'+
-        '<span style="flex:1"><span class="f14">'+item.name+'</span>'+(sub?' <span class="f12 tx3">'+sub+'</span>':'')+'</span>'+
+        '<input type="checkbox" style="accent-color:var(--p)" '+(row.checked?'checked':'')+' data-doc-section="'+si+'" data-doc-row="'+ri+'">'+
+        '<span style="flex:1"><span class="f14">'+luminaText(item.name)+'</span>'+(sub?' <span class="f12 tx3">'+luminaText(sub)+'</span>':'')+'</span>'+
       '</label>';
     }).join('');
-    return '<div class="mb12"><div class="flabel mb4">'+sec.label+'</div>'+rows+'</div>';
+    return '<div class="mb12"><div class="flabel mb4">'+luminaText(sec.label)+'</div>'+rows+'</div>';
   }).join('');
+  el.querySelectorAll('input[data-doc-section]').forEach(input=>{
+    input.addEventListener('change',()=>{
+      const sec=_docSummaryState[Number(input.dataset.docSection)];
+      const row=sec?.items[Number(input.dataset.docRow)];
+      if(row)toggleDocSummaryItem(sec.key,row.id,input.checked);
+    });
+  });
   updateDocSummaryGenerateCount();
 }
 function toggleDocSummaryItem(sectionKey,id,checked){
@@ -7883,12 +7894,12 @@ function renderDoctorSummaryResult(){
   const dateStr=_docSummaryResult.generatedAt.toLocaleDateString(undefined,{dateStyle:'long'});
   byId('doc-sum-result-updated').textContent='Updated: '+dateStr;
   byId('doc-sum-result-body').innerHTML=_docSummaryResult.sections.map(sec=>
-    '<div class="mb16"><div class="fw6 f15 mb8">'+sec.label+'</div>'+
+    '<div class="mb16"><div class="fw6 f15 mb8">'+luminaText(sec.label)+'</div>'+
     sec.items.map(item=>{
       const rows=buildDoctorSummaryRows(item);
       return '<div class="entry" style="margin-bottom:8px;padding:12px">'+
-        '<div class="fw6 f14 mb4">'+item.name+'</div>'+
-        rows.map(([label,val])=>'<div class="f13 tx2" style="margin-top:2px"><span class="tx3">'+label+':</span> '+val+'</div>').join('')+
+        '<div class="fw6 f14 mb4">'+luminaText(item.name)+'</div>'+
+        rows.map(([label,val])=>'<div class="f13 tx2" style="margin-top:2px"><span class="tx3">'+luminaText(label)+':</span> '+luminaText(val)+'</div>').join('')+
       '</div>';
     }).join('')+
     '</div>'
@@ -7954,12 +7965,12 @@ function openDoctorSummaryView(){
   byId('doc-sum-view-updated').textContent='Updated '+_docSummaryResult.generatedAt.toLocaleDateString(undefined,{dateStyle:'long'});
   byId('doc-sum-view-body').innerHTML=_docSummaryResult.sections.map(sec=>
     '<div style="margin-bottom:28px">'+
-    '<div style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a8a8a;margin-bottom:10px">'+sec.label+'</div>'+
+    '<div style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a8a8a;margin-bottom:10px">'+luminaText(sec.label)+'</div>'+
     sec.items.map(item=>{
       const rows=buildDoctorSummaryRows(item);
       return '<div style="margin-bottom:18px">'+
-        '<div style="font-size:20px;font-weight:700;color:#fff">'+item.name+'</div>'+
-        rows.map(([label,val])=>'<div style="font-size:16px;color:#ddd;margin-top:2px">'+label+': '+val+'</div>').join('')+
+        '<div style="font-size:20px;font-weight:700;color:#fff">'+luminaText(item.name)+'</div>'+
+        rows.map(([label,val])=>'<div style="font-size:16px;color:#ddd;margin-top:2px">'+luminaText(label)+': '+luminaText(val)+'</div>').join('')+
       '</div>';
     }).join('')+
     '</div>'
@@ -8233,14 +8244,40 @@ function luminaBackupPhotoRefs(data){
   });
   return ids;
 }
+function luminaBackupStatus(message,isError=false){
+  const el=byId('backup-photo-check-result');
+  if(el){el.textContent=message;el.style.color=isError?'var(--r)':'var(--tx2)';}
+}
+async function luminaCheckPhotoBackup(){
+  if(demoPreviewMode){luminaBackupStatus('Sample Preview contains fictional entries. Exit preview to check photos saved on this browser.');return null;}
+  const data={};Object.entries(KEYS).forEach(([key,storageKey])=>data[key]=load(storageKey));
+  const ids=[...luminaBackupPhotoRefs(data)];
+  if(!ids.length){
+    luminaBackupStatus('No IndexedDB-linked photos found. Older inline photos will still be included in a JSON backup. This check does not test restoration on another site.');
+    return {total:0,verified:0,missing:0};
+  }
+  luminaBackupStatus('Checking '+ids.length+' linked photo'+(ids.length!==1?'s':'')+' on this browser…');
+  let verified=0,missing=0,totalBytes=0;
+  for(const id of ids){
+    try{
+      const blob=await luminaGetPhoto(id);
+      if(!blob||!blob.size||!String(blob.type||'').startsWith('image/')){missing++;continue;}
+      verified++;totalBytes+=blob.size;
+    }catch(err){missing++;console.warn('[Backup check] Could not read a referenced photo',err?.name||'Storage error');}
+  }
+  const result={total:ids.length,verified,missing,totalBytes};
+  if(missing)luminaBackupStatus('Check failed: '+verified+' of '+ids.length+' linked photos were readable. '+missing+' missing or invalid. Do not rely on an export until these are resolved.',true);
+  else luminaBackupStatus('On-device check passed: '+verified+' linked photos readable ('+(totalBytes/1048576).toFixed(1)+' MB). A separate clean-origin restore is still required before calling this backup portable.');
+  return result;
+}
 async function exportData(){
   if(demoPreviewMode){canWrite();return;}
   try{
-    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=load(storageKey));
+    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=load(storageKey,key==='checks'?{}:[]));
     const blobs={};
     for(const id of luminaBackupPhotoRefs(d)){
       const blob=await luminaGetPhoto(id);
-      if(!blob)throw new Error('A referenced photo is missing: '+id);
+      if(!blob||!blob.size||!String(blob.type||'').startsWith('image/'))throw new Error('A referenced photo is missing or unreadable');
       blobs[id]=await new Promise((resolve,reject)=>{
         const reader=new FileReader();reader.onload=()=>resolve(reader.result);
         reader.onerror=()=>reject(reader.error||new Error('Unable to read photo'));
@@ -8250,18 +8287,24 @@ async function exportData(){
     d._photoBlobs=blobs;
     d._backupVersion=2;
     d._exportedAt=new Date().toISOString();
+    luminaValidateBackup(d);
     const file=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=`lumina-${today()}.json`;a.click();
     setTimeout(()=>URL.revokeObjectURL(a.href),60000);
+    luminaBackupStatus('JSON export prepared with '+Object.keys(blobs).length+' linked photos. Keep the file safely, then verify a restore on a separate test origin.');
   }catch(err){
     console.error('[Backup] export blocked',err);
-    alert('Backup was not created because at least one photo could not be included. Your records are unchanged. Please try again before moving devices or addresses.');
+    luminaBackupStatus('Export blocked: the backup is incomplete. Existing records are unchanged.',true);
+    alert('Backup was not created because a photo or data section could not be included. Your records are unchanged. Please try again before moving devices or addresses.');
   }
 }
 function luminaValidateBackup(d){
   if(!d||typeof d!=='object'||Array.isArray(d))throw new Error('Not a Lumina backup');
   const found=Object.keys(KEYS).filter(k=>Object.prototype.hasOwnProperty.call(d,k));
   if(!found.length)throw new Error('No Lumina data found');
+  // New-format backups are complete snapshots. Legacy partial backups are
+  // still accepted for backward compatibility, after explicit confirmation.
+  if(d._backupVersion>=2&&found.length!==Object.keys(KEYS).length)throw new Error('The version 2 backup is missing a data section');
   for(const k of found){
     if(['checks'].includes(k)){
       if(d[k]===null||typeof d[k]!=='object'||Array.isArray(d[k]))throw new Error('Invalid '+k);
@@ -8281,7 +8324,11 @@ async function luminaRestoreBackup(d){
   const keys=luminaValidateBackup(d);
   const photos=Object.entries(d._photoBlobs||{});
   const prepared=[];
-  for(const [id,raw] of photos){prepared.push([id,await luminaDataUrlBlob(raw)]);}
+  for(const [id,raw] of photos){
+    const blob=await luminaDataUrlBlob(raw);
+    if(!blob.size||!String(blob.type||'').startsWith('image/'))throw new Error('The backup contains an invalid photo');
+    prepared.push([id,blob]);
+  }
   const oldValues=new Map(keys.map(k=>[KEYS[k],localStorage.getItem(KEYS[k])]));
   const priorBlobs=new Map();const changed=[];
   try{
@@ -8323,8 +8370,8 @@ function importData(e){
     try{data=JSON.parse(event.target.result);luminaValidateBackup(data);}
     catch(err){alert('This backup is incomplete or invalid: '+err.message+' No changes were made.');return;}
     showConfirm('Restore Lumina backup?',
-      'This will replace the records in this browser with the selected backup, including backed-up photos. Existing records will not be merged.',
-      'Keep a separate backup of your current data before continuing.',
+      'This will replace '+Object.keys(KEYS).filter(k=>Object.prototype.hasOwnProperty.call(data,k)).length+' data sections and restore '+luminaBackupPhotoRefs(data).size+' linked photos. Existing records will not be merged.',
+      'Keep a separate backup of your current data. The photos must still be checked after restoration.',
       'Restore backup','btn-p',async()=>{
         try{
           const result=await luminaRestoreBackup(data);
@@ -11503,8 +11550,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.7';
-const APP_BUILD='2026.10.24.ux-approved.2';
+const APP_VERSION='0.9.5-beta.8';
+const APP_BUILD='2026.10.24.data-safety.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11530,6 +11577,12 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {version:'0.9.5-beta.8',date:'October 24, 2026',
+    title:'Photo Backup Checks & Doctor Summary Safety',
+    added:['Check whether all IndexedDB photos linked to current records are readable before export','Show the number of data sections and photos in the backup restore confirmation'],
+    changed:['Doctor Summary selection, result and presentation views display saved text safely','New-format JSON backups require every stored data section; legacy partial backups remain supported'],
+    fixed:['Doctor Summary dynamic HTML injection paths','Incomplete or invalid photo payloads rejected before backup import writes'],
+    known:['Photo check proves local readability only; cross-origin Safari restore still requires real-device test','Full app security and data/CRU(D) regression remain unverified','This is a Cloudflare beta, not a production release']},
   {
     version:'0.9.5-beta.7',date:'October 24, 2026',status:'Beta — approved UX Phase 2',
     added:['Body quick-log actions and optional advanced history filters','Protocols contextual progress and visible show-all/reorder tools','Settings separates professional summaries, backups and advanced or destructive actions'],
