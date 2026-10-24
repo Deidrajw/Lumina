@@ -36,3 +36,11 @@ See `AUDIT_2026-10-24.md` for test statuses and UI review.
 - LUM-010 full localStorage+IDB clear — **IMPLEMENTED beta**, NOT VERIFIED iPhone.
 - LUM-011 progress IDB photo + failure-safe form — **IMPLEMENTED beta**, NOT VERIFIED quota/real restore.
 Acceptance tests still pending; see `PHASE_A_DATA_INTEGRITY_2026-10-24.md`. Other audit issues remain Requested.
+
+
+## 2026-10-24 Phase B implementation status
+LUM-012 / LUM-BUG-013 Vault Cleanup: IMPLEMENTED beta. Populated automated isolated PASS, real Safari NOT TESTED.
+LUM-013 / LUM-BUG-014 Safe text rendering: PARTIALLY IMPLEMENTED beta in key Today/Body/Vault/Insights/Timeline renderers, synthetic injection PASS; full inline-HTML security review remains OPEN.
+LUM-014 / LUM-BUG-015 Local dates: IMPLEMENTED beta; Toronto evening date test PASS, legacy DST and doctor exports NOT TESTED.
+LUM-015 / LUM-BUG-019 Demo isolation: IMPLEMENTED beta for central save/load and photo primitives, simulated PASS. All direct localStorage/migration paths NOT FULLY AUDITED.
+Do not mark Verified before actual browser, Safari, empty/populated and failure testing. See PHASE_B_STABILITY_2026-10-24.md.

@@ -18,3 +18,11 @@ Future entry template: date | version | PR/commit | added/changed/fixed | data i
 - Clear All wipes Lumina localStorage and image store; Onboarding Fresh respects existing data.
 - Capture-to-Vault product photo moved to IDB on save; removed sensitive log; Settings copy and beta version updated.
 - **Data:** backward-compatible reads; new progress photo metadata `photoId`. **QA:** 17/17 simulated Chromium checks + Node syntax; real Safari/Cloudflare/cross-origin storage NOT TESTED. **Deploy:** NOT MERGED or DEPLOYED TO MAIN.
+
+
+## v0.9.5-beta.2 — 2026-10-24 — UNRELEASED
+Added safe display escaping for stored strings in tested primary Today/Body/Vault/Insights/Timeline views; browser-local date helper.
+Fixed Vault Cleanup populated ReferenceError, selected HTML event injection exposures, and known sample-mode central storage write boundary.
+Changed sample greeting to Sample User and denied IndexedDB photo mutation during Sample Preview. Phase A photo safeguards preserved.
+No schema migration; existing UTC-derived dates remain stored, new dates local. No production deployment.
+Tests: 13/13 focused isolated Chromium + 17/17 Phase A simulated regression PASS; genuine iPhone Safari/Cloudflare/real cross-origin photo restore NOT TESTED. Broader security review remains open.

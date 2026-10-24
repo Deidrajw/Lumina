@@ -10,3 +10,7 @@ Do not expand major features before stabilizing core flows.
 3. Real iPhone/Safari functional regression: photo save, search edit, reorder, physician reports and QR/download flows.
 4. P2 visual polish: contrast, touch sizes, reliable modal escape, honest Smart Capture, current version banner, Today/Insights density.
 5. Cloudflare build SHA/preview/rollback verification and user-approved release.
+
+
+## Phase B status 2026-10-24
+Beta v0.9.5-beta.2 implements selected Cleanup, date, demo isolation and output escaping fixes. NOT release-ready: broader HTML/handler security review, all storage mutators, actual iPhone Safari and genuine photo backup restoration remain. Preserve v0.9.4 main until approved. Next after stabilization: Phase C overlay Escape and safe-area polish, user-approved grouped cards/accordion density improvements, honest Smart Capture wording.

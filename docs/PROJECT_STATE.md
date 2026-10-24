@@ -1,3 +1,11 @@
+# Latest state — Phase B beta.2 (2026-10-24)
+Production main: 2e02f304 / v0.9.4 unchanged. Beta branch: fix/lumina-phase-b-stability-v0.9.5-beta.2, stacked on Phase A PR #2 and docs PR #1. NOT MERGED or DEPLOYED.
+Built: populated Vault Cleanup fix; targeted escaping of saved text in Today/Body/Vault/Insights/Timeline; browser-local date calculations; Sample Preview central record and photo write guards.
+QA: Node syntax PASS; Phase B 13/13 isolated Chromium fictional-data tests PASS; Phase A 17/17 simulated-storage regression PASS; 320–430px navigation PASS. Actual iPhone Safari, genuine fresh-origin photo restore, Cloudflare SHA, full UI/UX regression and exhaustive HTML/security review NOT TESTED.
+Data impact: no schema migration; historic UTC-derived dates unchanged, new dates local; no real records touched.
+Next: verify real Cloudflare preview + Safari with fictional records, audit remaining unsafe HTML, then request explicit production approval. Full notes in docs/PHASE_B_STABILITY_2026-10-24.md.
+
+---
 # Latest state — 2026-10-24 Phase A Beta
 **Production:** main 2e02f304, v0.9.4 unchanged. **User-reported Cloudflare:** https://lumina-9w6.pages.dev/ (live SHA unverified).
 **Beta:** v0.9.5-beta.1 branch `fix/photo-data-integrity-v0.9.5-beta.1`, stacked on governance branch; not merged/deployed to production.
