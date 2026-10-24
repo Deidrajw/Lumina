@@ -32,3 +32,12 @@ Next exact step:
 **QA:** 17/17 controlled Chromium cases PASS with simulated localStorage and IndexedDB; syntax PASS; real origin/Cloudflare/iPhone NOT TESTED. Tests and limitations in `PHASE_A_DATA_INTEGRITY_2026-10-24.md`.
 **Data impact:** Old inline progress data remains readable; new photos IDB; imports replace present sections with confirmation. No private data or code changes to main.
 **Next:** actual Safari and clean-domain restore, Cloudflare preview, security/functional audit Phase B, explicit merge approval. No production deployment.
+
+
+## 2026-10-24 — Phase B beta.2 stabilization handoff
+Branch: fix/lumina-phase-b-stability-v0.9.5-beta.2, created from Phase A head 97ccf9c, production 2e02f304 unchanged.
+Implemented root index.html: removed Cleanup dead search-focus access; luminaText/luminaJsArg and targeted markup escaping; localISODate date helpers and calendar/streak conversion; load/save preview boundaries; photo write/delete/clear preview rejection; fictional demo greeting; update beta What's New.
+Affected requirements: LUM-012, LUM-013 (partial), LUM-014, LUM-015.
+QA evidence: 13/13 automated focused tests with fictional mocked storage, 17/17 simulated Phase A regressions and Node syntax PASS. Real origin IndexedDB, Safari and Cloudflare preview NOT TESTED.
+Data: no data migration; stored text unchanged; historical UTC keys not rewritten; no private data used. Known unresolved bugs: injection risks in untested renderers, modal Escape and old audit issues.
+Next exact step: PR beta review and genuine Cloudflare/Safari test with fictional photos before any production merge.

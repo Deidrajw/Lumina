@@ -37,3 +37,11 @@ Historical BUG-003 supplement search: PASS isolated with fictional Vault item; B
 ## 2026-10-24 Phase A candidate status
 LUM-BUG-001/010/011/012: code fixes proposed in v0.9.5-beta.1; 17 controlled storage-simulation checks PASS, **not real-device Verified**. Old onboarding Start Fresh partial clear also revised.
 Other high-priority findings remain: LUM-BUG-013 Vault Cleanup, 014 unescaped HTML, 015 UTC dates, 019 low-level preview write boundary, and further audit backlog. Do not close issues before regression and Safari/clean-origin verification.
+
+
+## Phase B 2026-10-24 — evidence and residual risks
+LUM-BUG-013: removed undefined search focus variable from renderDataCleanup. Populated fictional record PASS automated isolated. Implemented beta; verification pending.
+LUM-BUG-014: prior arbitrary imported HTML executing event handler; targeted escaping in five tab views now blocked tested fixture. Still OPEN as full security audit incomplete (other innerHTML, embedded attributes, product detail).
+LUM-BUG-015: UTC date generation replaced with local calendar helpers in frequent paths. Legacy keys untouched; DST/historical/doctor ranges need testing.
+LUM-BUG-019: central save denied during preview, load shows fictional data, photo mutation primitives denied; more direct storage side effects require review.
+Other historical overlay and cross-view defects still open. Phase A photo migration/backup needs actual Safari and real origin QA.

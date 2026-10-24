@@ -32,3 +32,10 @@ Run record: date | version+SHA | environment | case | result | evidence | blocke
 ## Phase A v0.9.5-beta.1 — 2026-10-24
 **PASS automated, controlled simulated storage:** 17/17 checks in Chromium with fake localStorage/IDB transactions: add photo fixture; Cancel preservation; draft cleanup; committed removal; export JSON; clean browser-context import; missing image validation; injection of storage write failure+rollback; progress photo storage/error draft; clear-all simulation; no overflow through 320/375/390/393/430px major tabs. JS syntax passed Node check.
 **NOT TESTED/BLOCKED:** real-origin IndexedDB, iPhone Safari, actual separate-domain backup migration, quota, permissions, real camera, OS share, full screen-by-screen regression, Cloudflare preview deployment verification. DO NOT label production Verified. [Acceptance details](PHASE_A_DATA_INTEGRITY_2026-10-24.md).
+
+
+## Phase B beta.2 test results — 2026-10-24
+PASS automated isolated Chromium with mock localStorage and fictional data: 13/13 focused checks — Vault Cleanup populated, injected HTML literal display in Symptoms/Concerns/Vault/Cleanup/Timeline, Today/Insights cross-tab, raw saved strings unchanged, Toronto date parsing, symptom save, sample preview record and photo write isolation.
+PASS automated simulated-storage regressions: Phase A 17/17 cases; basic navigation at 320,375,390,393,430px. PASS embedded JavaScript syntax validation.
+NOT TESTED: actual iPhone Safari; genuine IndexedDB photo persistence and clean-origin restore; live Cloudflare preview/deployed SHA; exhaustive dangerous HTML sinks, remaining direct writes, legacy date DST, full doctor/share/overlay flows.
+Status: beta candidate / NO GO production until real testing and approval.

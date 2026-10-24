@@ -1049,7 +1049,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.1</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.2</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -2360,14 +2360,34 @@ const DAYS_F=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satur
 const CAT_ICONS={Cleanse:'🧼','Double Cleanse':'🫧',Exfoliate:'✨',Tone:'💦','Vitamin C':'🍊',Serum:'💧','Eye Care':'👁️',Moisturise:'🧴','Face Oil':'🌿','Protect (SPF)':'☀️',Mask:'🎭',Prescription:'💊','Spot Treat':'🎯',Lip:'💋',Shampoo:'🚿',Conditioner:'💆',Hair:'🌊','Hair Treatment':'🌊','Scalp Treatment':'🧖','Body':'🫶',Other:'⭐'};
 const KEYS={symp:'lm_symp',conc:'lm_conc',skin:'lm_skin',inv:'lm_inv',steps:'lm_steps',supps:'lm_supps',checks:'lm_checks',photos:'lm_photos',captures:'lm_captures',reminders:'lm_reminders',reminderStates:'lm_reminder_states',activity:'lm_activity',protocolTemplates:'lm_proto_templates'};
 const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36);
-const today=()=>new Date().toISOString().slice(0,10);
+function localISODate(value=new Date()){
+  const d=value instanceof Date?value:new Date(value);
+  if(!Number.isFinite(d.getTime()))return '';
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+const today=()=>localISODate();
+// Display-only escaping: NEVER write entity-encoded text into user records.
+function luminaText(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+// Safe argument for onclick handlers inside double-quoted HTML attributes.
+function luminaJsArg(value){return luminaText(JSON.stringify(String(value??'')));}
+
 const dow=()=>DAYS[new Date().getDay()===0?6:new Date().getDay()-1];
-const load=(k,fb=[])=>{try{return JSON.parse(localStorage.getItem(k))??fb}catch{return fb}};
+const load=(k,fb=[])=>{
+  if(typeof demoPreviewMode!=='undefined' && demoPreviewMode && demoPreviewData && Object.prototype.hasOwnProperty.call(demoPreviewData,k)){
+    return JSON.parse(JSON.stringify(demoPreviewData[k]));
+  }
+  try{return JSON.parse(localStorage.getItem(k))??fb}catch{return fb}
+};
 // save() now NEVER throws uncaught — it instruments the write, logs full diagnostics on
 // failure, and returns true/false so callers can detect a failed save instead of the
 // modal silently going dead. Existing callers that ignore the return value are unaffected.
 let _lastSaveError=null;
 function save(k,d){
+  // Central write protection supplements individual canWrite() checks.
+  if(typeof demoPreviewMode!=='undefined'&&demoPreviewMode){
+    _lastSaveError=new Error('Sample preview is read-only');
+    return false;
+  }
   let serialized;
   try{
     serialized=JSON.stringify(d);
@@ -2401,7 +2421,7 @@ const byId=id=>document.getElementById(id);
 // ── DEMO DATA BUILDER (tag all demo records with _demo:true) ──
 function buildDemoData(){
   const D=DAYS.slice();
-  const ago=(n)=>new Date(Date.now()-n*86400000).toISOString().slice(0,10);
+  const ago=(n)=>{const d=new Date();d.setDate(d.getDate()-n);return localISODate(d);};
   const out={};
 
   // ── Protocol steps ──
@@ -2693,7 +2713,7 @@ function renderToday(){try{
   const now=new Date(),h=now.getHours();
 
   // Greeting
-  const _un=localStorage.getItem('lumina_user_name');
+  const _un=demoPreviewMode?'Sample User':localStorage.getItem('lumina_user_name');
   byId('greet').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+(_un?', '+_un:'')+' ✦';
   byId('tdate').textContent=now.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'});
 
@@ -2737,8 +2757,8 @@ function renderToday(){try{
     byId('d-concerns').innerHTML='<div class="sec-title">Active Concerns</div>'+
       ac.slice(0,3).map(co=>
         '<div class="entry" style="margin-bottom:8px;cursor:pointer" onclick="switchTab(\x27body\x27);activeBT=\x27concerns\x27;renderBody()">'+
-          '<div class="flex jb ac"><span class="fw6 f14">'+co.title+'</span><span class="pill '+spill(co.status)+'">'+co.status+'</span></div>'+
-          '<div class="entry-m">'+(co.area||'')+'</div>'+
+          '<div class="flex jb ac"><span class="fw6 f14">'+luminaText(co.title)+'</span><span class="pill '+spill(co.status)+'">'+luminaText(co.status)+'</span></div>'+
+          '<div class="entry-m">'+luminaText(co.area||'')+'</div>'+
         '</div>'
       ).join('');
   } else {
@@ -2750,9 +2770,9 @@ function renderToday(){try{
     byId('d-symptoms').innerHTML='<div class="sec-title">Symptoms Today</div>'+
       ts.map(s=>
         '<div class="entry" style="margin-bottom:8px;cursor:pointer" onclick="switchTab(\x27body\x27);activeBT=\x27symptoms\x27;renderBody()">'+
-          '<div class="flex jb ac"><span class="fw6">'+s.name+'</span><span class="pill '+cpill(s.cat)+'">'+s.cat+'</span></div>'+
+          '<div class="flex jb ac"><span class="fw6">'+luminaText(s.name)+'</span><span class="pill '+cpill(s.cat)+'">'+luminaText(s.cat)+'</span></div>'+
           '<div class="flex ac gap8 mt4"><span class="f12 tx3">Sev '+s.sev+'/10</span>'+
-            '<div class="sev-bar"><div class="sev-fill" style="width:'+(s.sev*10)+'%;background:'+sc(s.sev)+'"></div></div>'+
+            '<div class="sev-bar"><div class="sev-fill" style="width:'+(Math.min(10,Math.max(0,Number(s.sev)||0))*10)+'%;background:'+sc(Number(s.sev)||0)+'"></div></div>'+
           '</div>'+
         '</div>'
       ).join('');
@@ -2854,7 +2874,7 @@ function formatScheduleDays(days){
 
 function calcStreak(){
   const c=getChecks();let s=0;const d=new Date();
-  for(let i=0;i<365;i++){const k=d.toISOString().slice(0,10),dc=c[k];const has=dc&&(Object.values(dc.steps||{}).some(Boolean)||Object.values(dc.supps||{}).some(Boolean));if(has)s++;else if(i>0)break;d.setDate(d.getDate()-1)}
+  for(let i=0;i<365;i++){const k=localISODate(d),dc=c[k];const has=dc&&(Object.values(dc.steps||{}).some(Boolean)||Object.values(dc.supps||{}).some(Boolean));if(has)s++;else if(i>0)break;d.setDate(d.getDate()-1)}
   return s;
 }
 
@@ -3138,7 +3158,7 @@ function renderSympToolbar(allSymps){
   const sortOpts=[['date-desc','Newest'],['date-asc','Oldest'],['sev-desc','High sev'],['sev-asc','Low sev'],['cat-az','Cat A–Z'],['cat-za','Cat Z–A'],['time','Time'],['name','Name'],['status','Status']];
   let h='<div class="body-toolbar">';
   h+='<select class="fsel body-toolbar-sel" onchange="_sympStatusFilter=this.value;renderSymptoms()">'+statusOpts.map(v=>'<option value="'+v+'"'+(_sympStatusFilter===v?' selected':'')+'>'+v+'</option>').join('')+'</select>';
-  h+='<select class="fsel body-toolbar-sel" onchange="_sympCategoryFilter=this.value;renderSymptoms()">'+cats.map(v=>'<option value="'+v+'"'+(_sympCategoryFilter===v?' selected':'')+'>'+v+'</option>').join('')+'</select>';
+  h+='<select class="fsel body-toolbar-sel" onchange="_sympCategoryFilter=this.value;renderSymptoms()">'+cats.map(v=>'<option value="'+luminaText(v)+'"'+(_sympCategoryFilter===v?' selected':'')+'>'+luminaText(v)+'</option>').join('')+'</select>';
   h+='<select class="fsel body-toolbar-sel" onchange="_sympSort=this.value;renderSymptoms()">'+sortOpts.map(([v,l])=>'<option value="'+v+'"'+(_sympSort===v?' selected':'')+'>'+l+'</option>').join('')+'</select>';
   h+='</div>';
   h+='<div class="symp-sev-filters">';
@@ -3171,22 +3191,22 @@ function renderSymptoms(){
     return '<div class="entry symp-card">'+
       '<div class="symp-card-header">'+
         '<div class="symp-card-main">'+
-          '<div class="entry-t">'+s.name+'</div>'+
-          '<div class="entry-m f12">'+s.cat+' \u00b7 '+s.time+' \u00b7 '+s.date+'</div>'+
+          '<div class="entry-t">'+luminaText(s.name)+'</div>'+
+          '<div class="entry-m f12">'+luminaText(s.cat)+' \u00b7 '+luminaText(s.time)+' \u00b7 '+luminaText(s.date)+'</div>'+
         '</div>'+
-        '<button type="button" class="symp-more-btn" onclick="showSympOverflow(\x27'+s.id+'\x27)">\u2022\u2022\u2022</button>'+
+        '<button type="button" class="symp-more-btn" onclick="showSympOverflow('+luminaJsArg(s.id)+')">\u2022\u2022\u2022</button>'+
       '</div>'+
       '<div class="symp-badges">'+
-        '<span class="pill '+statusColor+' f11">'+s.status+'</span>'+
+        '<span class="pill '+statusColor+' f11">'+luminaText(s.status)+'</span>'+
         (s.rec?'<span class="pill plv f11">\u21ba Recurring</span>':'')+
       '</div>'+
       '<div class="flex ac gap8 mt8">'+
-        '<span class="f12 tx3">Sev '+s.sev+'/10</span>'+
-        '<div class="sev-bar" style="flex:1"><div class="sev-fill" style="width:'+(s.sev*10)+'%;background:'+sc(s.sev)+'"></div></div>'+
+        '<span class="f12 tx3">Sev '+Math.min(10,Math.max(0,Number(s.sev)||0))+'/10</span>'+
+        '<div class="sev-bar" style="flex:1"><div class="sev-fill" style="width:'+(Math.min(10,Math.max(0,Number(s.sev)||0))*10)+'%;background:'+sc(Number(s.sev)||0)+'"></div></div>'+
       '</div>'+
-      (s.trig?'<div class="entry-n mt6 tx3">Triggers: '+s.trig+'</div>':'')+
-      (s.notes?'<div class="entry-n mt4">'+s.notes+'</div>':'')+
-      (linkedConc?'<div class="f11 tx3 mt4">Concern: '+linkedConc.title+'</div>':'')+
+      (s.trig?'<div class="entry-n mt6 tx3">Triggers: '+luminaText(s.trig)+'</div>':'')+
+      (s.notes?'<div class="entry-n mt4">'+luminaText(s.notes)+'</div>':'')+
+      (linkedConc?'<div class="f11 tx3 mt4">Concern: '+luminaText(linkedConc.title)+'</div>':'')+
       (linkedProds?'<div class="f11 tx3 mt2">'+linkedProds+' product'+(linkedProds>1?'s':'')+' linked</div>':'')+
       ((s.photos||[]).length?'<div class="f11 tx3 mt2" onclick="event.stopPropagation();viewRecordPhotos(\'symp\',\''+s.id+'\')" style="cursor:pointer">📷 '+s.photos.length+' photo'+(s.photos.length>1?'s':'')+'</div>':'')+
     '</div>';
@@ -3279,24 +3299,24 @@ function renderConcerns(){
   byId('body-list').innerHTML=h;
 }
 function concCard(co,arch=false){
-  const now=new Date().toISOString().slice(0,10);
+  const now=today();
   const followupOverdue=co.followup&&co.followup<now&&co.status!=='Resolved';
-  const followupSoon=co.followup&&co.followup>=now&&co.followup<=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
+  const followupSoon=co.followup&&co.followup>=now&&co.followup<=localISODate(new Date(Date.now()+7*86400000));
   const metaParts=[co.area,co.started?'Since '+co.started:''].filter(Boolean).join(' · ');
   return '<div class="entry" style="'+(arch?'opacity:.55;':'')+'">'+
     '<div class="symp-card-header">'+
       '<div class="symp-card-main">'+
-        '<div class="entry-t">'+co.title+'</div>'+
-        (metaParts?'<div class="entry-m">'+metaParts+'</div>':'')+
+        '<div class="entry-t">'+luminaText(co.title)+'</div>'+
+        (metaParts?'<div class="entry-m">'+luminaText(metaParts)+'</div>':'')+
       '</div>'+
-      '<button type="button" class="symp-more-btn" onclick="showConcOverflow(\x27'+co.id+'\x27,'+arch+')">\u2022\u2022\u2022</button>'+
+      '<button type="button" class="symp-more-btn" onclick="showConcOverflow('+luminaJsArg(co.id)+','+arch+')">\u2022\u2022\u2022</button>'+
     '</div>'+
     '<div class="symp-badges" style="margin-bottom:6px">'+
-      '<span class="pill '+spill(co.status)+'">'+co.status+'</span>'+
+      '<span class="pill '+spill(co.status)+'">'+luminaText(co.status)+'</span>'+
       (co.recurring?'<span class="pill plv f11">\u21ba Recurring</span>':'')+
     '</div>'+
-    (co.followup?'<div class="f11 mt6 '+(followupOverdue?'tx3" style="color:var(--r)':followupSoon?'tx3" style="color:var(--w)':'tx3"')+'>Follow-up: '+co.followup+(followupOverdue?' (overdue)':followupSoon?' (soon)':'')+'</div>':'')+
-    (co.notes?'<div class="entry-n mt4">'+co.notes.slice(0,120)+(co.notes.length>120?'…':'')+'</div>':'')+
+    (co.followup?'<div class="f11 mt6 '+(followupOverdue?'tx3" style="color:var(--r)':followupSoon?'tx3" style="color:var(--w)':'tx3"')+'>Follow-up: '+luminaText(co.followup)+(followupOverdue?' (overdue)':followupSoon?' (soon)':'')+'</div>':'')+
+    (co.notes?'<div class="entry-n mt4">'+luminaText(co.notes.slice(0,120))+(co.notes.length>120?'…':'')+'</div>':'')+
     (co.doc?'<span class="doctor-badge"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 1v11"/><path d="M2 2h8l-2 3 2 3H2"/></svg>For doctor</span>':'')+
     ((co.productLinks||[]).length?'<div class="f11 tx3 mt4">'+co.productLinks.length+' linked product'+(co.productLinks.length>1?'s':'')+'</div>':'')+
     ((co.photos||[]).length?'<div class="f11 tx3 mt2" onclick="event.stopPropagation();viewRecordPhotos(\'conc\',\''+co.id+'\')" style="cursor:pointer">📷 '+co.photos.length+' photo'+(co.photos.length>1?'s':'')+'</div>':'')+
@@ -3802,7 +3822,7 @@ function renderProtocols(){try{
   let dh='';
   for(let i=6;i>=0;i--){
     const d=new Date();d.setDate(d.getDate()-i);
-    const k=d.toISOString().slice(0,10),dc=checks[k];
+    const k=localISODate(d),dc=checks[k];
     const done=dc&&(Object.values(dc.steps||{}).some(v=>v==='done'||v===true)||Object.values(dc.supps||{}).some(Boolean));
     const lbl=['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()];
     dh+=`<div style="text-align:center"><div class="sdot ${done?'done':i===0?'today':''}">${done?'✓':lbl}</div></div>`;
@@ -6243,7 +6263,7 @@ function shouldShowAddedMeta(){
 }
 
 function invRowHtml(item){
-  const qPct=item.qty||0;
+  const qPct=Math.min(100,Math.max(0,Number(item.qty)||0));
   const qc=qPct<=20?'low':qPct<=40?'mid':'';
   const dot=STATUS_COLOR[item.status]||'var(--tx3)';
   // Type-aware subtitle
@@ -6257,17 +6277,17 @@ function invRowHtml(item){
   const predTxt=pred&&!item.archived?'~'+pred.daysLeft+'d left':'';
   const selClass=_bulkSelected.has(item.id)?' selected':'';
   const addedTxt=shouldShowAddedMeta()?formatAddedLabel(_vaultSort==='updated'?(item.updatedAt||item.createdAt):item.createdAt):'';
-  return `<div class="inv-row${selClass}" data-iid="${item.id}">
+  return `<div class="inv-row${selClass}" data-iid="${luminaText(item.id)}">
     <div class="inv-row-dot" style="background:${dot}"></div>
     <div class="inv-row-info">
-      <div class="inv-row-name">${fav}${item.name}</div>
+      <div class="inv-row-name">${fav}${luminaText(item.name)}</div>
       <div class="inv-row-meta">
-        ${sub?`<span class="inv-row-sub">${sub}</span>`:''}
+        ${sub?`<span class="inv-row-sub">${luminaText(sub)}</span>`:''}
         ${item.review?.rating?`<span class="f11" style="color:var(--w);letter-spacing:.5px">★ ${(+item.review.rating).toFixed(1)}</span>`:''}
         ${item.decision==='Would Repurchase'?'<span class="decision-badge decision-repurchase">✓ Repurchase</span>':item.decision==='Would Not Repurchase'?'<span class="decision-badge decision-avoid">✗ Won\'t repurchase</span>':item.decision==='Avoid'?'<span class="decision-badge decision-avoid">Avoid</span>':item.decision==='Maybe Repurchase'?'<span class="decision-badge decision-maybe">Maybe</span>':''}
         ${isExpired?'<span class="inv-row-badge expired">Expired</span>':''}
         ${predTxt?`<span class="inv-row-badge">${predTxt}</span>`:''}
-        ${addedTxt?`<span class="f11 tx3">${addedTxt}</span>`:''}
+        ${addedTxt?`<span class="f11 tx3">${luminaText(addedTxt)}</span>`:''}
       </div>
     </div>
     <div class="inv-row-right">
@@ -6305,7 +6325,7 @@ function renderInventory(){
   // ── Filter/sort bar (permanent) ──
   h+=renderVaultFilterBar(inv);
 
-  if(alerts.length)h+=`<div style="margin-bottom:12px">${alerts.slice(0,3).map(a=>`<div class="banner ${a.t==='low'?'bw':'br'}" style="cursor:pointer" onclick="editInv('${a.id}')">${a.t==='low'?'⚠️':'📅'} ${a.name}: ${a.msg}</div>`).join('')}</div>`;
+  if(alerts.length)h+=`<div style="margin-bottom:12px">${alerts.slice(0,3).map(a=>`<div class="banner ${a.t==='low'?'bw':'br'}" style="cursor:pointer" onclick="editInv(${luminaJsArg(a.id)})">${a.t==='low'?'⚠️':'📅'} ${luminaText(a.name)}: ${luminaText(a.msg)}</div>`).join('')}</div>`;
 
   if(!pool.length){
     const _hasFilter=_vaultFilterStatus||_vaultFilterCat||_vaultFilterExpiry||q;
@@ -6367,10 +6387,10 @@ function renderInventory(){
           ${sec.isTrash
             ?sec.items.map(i=>`<div class="inv-row archived">
                 <div class="inv-row-dot" style="background:var(--tx3)"></div>
-                <div class="inv-row-info"><div class="inv-row-name">${i.name}</div><div class="inv-row-sub">${[i.brand,i.type,i.archivedAt?'Archived '+i.archivedAt:''].filter(Boolean).join(' · ')}</div></div>
+                <div class="inv-row-info"><div class="inv-row-name">${luminaText(i.name)}</div><div class="inv-row-sub">${luminaText([i.brand,i.type,i.archivedAt?'Archived '+i.archivedAt:''].filter(Boolean).join(' · '))}</div></div>
                 <div class="flex gap6" style="flex-shrink:0">
-                  <button class="btn btn-g btn-sm" onclick="restoreInv('${i.id}')" style="font-size:11px;padding:3px 8px">Restore</button>
-                  <button class="btn btn-d btn-sm" onclick="permDeleteInv('${i.id}')" style="font-size:11px;padding:3px 8px">Delete</button>
+                  <button class="btn btn-g btn-sm" onclick="restoreInv(${luminaJsArg(i.id)})" style="font-size:11px;padding:3px 8px">Restore</button>
+                  <button class="btn btn-d btn-sm" onclick="permDeleteInv(${luminaJsArg(i.id)})" style="font-size:11px;padding:3px 8px">Delete</button>
                 </div>
               </div>`).join('')
             :sec.items.map(invRowHtml).join('')
@@ -6810,6 +6830,7 @@ function openLuminaPhotoDB(){
   return _luminaPhotoDBPromise;
 }
 async function luminaSavePhoto(id,blob){
+  if(demoPreviewMode)throw new Error('Sample preview cannot change saved photos');
   const db=await openLuminaPhotoDB();
   return new Promise((resolve,reject)=>{
     const tx=db.transaction(LUMINA_PHOTO_STORE,'readwrite');
@@ -6828,6 +6849,7 @@ async function luminaGetPhoto(id){
   });
 }
 async function luminaDeletePhoto(id){
+  if(demoPreviewMode)throw new Error('Sample preview cannot change saved photos');
   const db=await openLuminaPhotoDB();
   return new Promise((resolve,reject)=>{
     const tx=db.transaction(LUMINA_PHOTO_STORE,'readwrite');
@@ -6842,6 +6864,7 @@ async function luminaDataUrlBlob(data){
   return res.blob();
 }
 async function luminaClearPhotoStore(){
+  if(demoPreviewMode)throw new Error('Sample preview cannot change saved photos');
   const db=await openLuminaPhotoDB();
   await new Promise((resolve,reject)=>{
     const tx=db.transaction(LUMINA_PHOTO_STORE,'readwrite');
@@ -7803,13 +7826,13 @@ function insightCard(label,conf,title,body,related,caveat){
   const confColor={High:'var(--p)',Medium:'var(--w)',Low:'var(--tx3)'}[conf]||'var(--tx3)';
   return `<div class="insight-card">
     <div class="insight-card-hdr">
-      <span class="insight-card-type">${label}</span>
-      <span class="insight-card-conf" style="color:${confColor}">${conf}</span>
+      <span class="insight-card-type">${luminaText(label)}</span>
+      <span class="insight-card-conf" style="color:${confColor}">${luminaText(conf)}</span>
     </div>
-    <div class="insight-card-title">${title}</div>
-    ${body?`<div class="insight-card-body">${body}</div>`:''}
-    ${related?.length?`<div class="insight-card-tags">${related.map(r=>`<span class="pill pm">${r}</span>`).join('')}</div>`:''}
-    <div class="insight-card-cav">${caveat||'Observational only — not medical advice.'}</div>
+    <div class="insight-card-title">${luminaText(title)}</div>
+    ${body?`<div class="insight-card-body">${luminaText(body)}</div>`:''}
+    ${related?.length?`<div class="insight-card-tags">${related.map(r=>`<span class="pill pm">${luminaText(r)}</span>`).join('')}</div>`:''}
+    <div class="insight-card-cav">${luminaText(caveat||'Observational only — not medical advice.')}</div>
   </div>`;
 }
 
@@ -7873,9 +7896,9 @@ function renderInsights(){
   if(last3d.length){
     h+=`<div class="sec-title">What Changed Recently (3 days)</div>`;
     h+=`<div class="card">${last3d.map(s=>`<div class="flex jb ac mb8">
-      <div><div class="fw6 f14">${s.name}</div><div class="entry-m">${s.date} · ${s.time}</div></div>
+      <div><div class="fw6 f14">${luminaText(s.name)}</div><div class="entry-m">${luminaText(s.date)} · ${luminaText(s.time)}</div></div>
       <div class="flex ac gap6">
-        <span class="pill ${cpill(s.cat)}">${s.cat}</span>
+        <span class="pill ${cpill(s.cat)}">${luminaText(s.cat)}</span>
         <span class="f12 fw6" style="color:${sc(s.sev)}">${s.sev}/10</span>
       </div>
     </div>`).join('')}</div>`;
@@ -7887,7 +7910,7 @@ function renderInsights(){
     const cc={};recent.forEach(s=>cc[s.cat]=(cc[s.cat]||0)+1);
     h+=`<div class="card">${Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([cat,n])=>`
       <div class="symp-chart">
-        <span class="pill ${cpill(cat)} symp-chart-pill">${cat}</span>
+        <span class="pill ${cpill(cat)} symp-chart-pill">${luminaText(cat)}</span>
         <span class="symp-chart-count">${n}x</span>
         <div class="symp-chart-bar"><div class="symp-chart-fill" style="width:${Math.min(100,n/recent.length*100)}%"></div></div>
       </div>`).join('')}</div>`;
@@ -7917,7 +7940,7 @@ function renderInsights(){
     h+=`<div class="sec-title">Skin Log Patterns</div>`;
     const sc2={};rSkin.forEach(l=>l.conds.forEach(co=>sc2[co]=(sc2[co]||0)+1));
     const sorted=Object.entries(sc2).sort((a,b)=>b[1]-a[1]);
-    h+=`<div class="card">${sorted.map(([co,n])=>`<div class="flex jb ac mb8"><span>${condEmoji(co)} ${co}</span><div class="flex ac gap6"><div class="sev-bar" style="width:60px"><div class="sev-fill" style="width:${Math.min(100,n/rSkin.length*100)}%;background:var(--p)"></div></div><span class="f12 tx2">${n}/${rSkin.length}d</span></div></div>`).join('')}</div>`;
+    h+=`<div class="card">${sorted.map(([co,n])=>`<div class="flex jb ac mb8"><span>${condEmoji(co)} ${luminaText(co)}</span><div class="flex ac gap6"><div class="sev-bar" style="width:60px"><div class="sev-fill" style="width:${Math.min(100,n/rSkin.length*100)}%;background:var(--p)"></div></div><span class="f12 tx2">${n}/${rSkin.length}d</span></div></div>`).join('')}</div>`;
   }
 
   // ── RX EFFECTIVENESS ──
@@ -7931,11 +7954,11 @@ function renderInsights(){
       const last=checkins[0];
       const trend=checkins.length>=2?(checkins[0].eff>checkins[1].eff?'↑ Improving':checkins[0].eff<checkins[1].eff?'↓ Declining':'→ Stable'):'';
       return '<div class="ins-card">'+
-        '<div class="flex jb ac mb4"><span class="fw6 f14">'+rx.name+'</span>'+
+        '<div class="flex jb ac mb4"><span class="fw6 f14">'+luminaText(rx.name)+'</span>'+
           (avg?'<span class="fw6 f14" style="color:var(--w)">'+avg+'/5</span>':'')+
         '</div>'+
         (trend?'<div class="f12 tx3 mb4">'+trend+' · '+checkins.length+' check-in'+(checkins.length>1?'s':'')+'</div>':'')+
-        (last&&last.notes?'<div class="f13 tx2">"'+last.notes.slice(0,80)+(last.notes.length>80?'…':'')+'"</div>':'')+
+        (last&&last.notes?'<div class="f13 tx2">"'+luminaText(last.notes.slice(0,80))+(last.notes.length>80?'…':'')+'"</div>':'')+
       '</div>';
     }).join('');
   }
@@ -7949,9 +7972,9 @@ function renderInsights(){
     if(flagged.length)h+='<div class="banner bw mb8">⚕ '+flagged.length+' concern'+(flagged.length>1?'s':'')+' flagged for your doctor</div>';
     if(overdue.length)h+='<div class="banner br mb8">📅 '+overdue.length+' follow-up'+(overdue.length>1?'s':'')+' overdue</div>';
     h+=upcoming.slice(0,4).map(co=>'<div class="ins-card">'+
-      '<div class="flex jb ac mb4"><span class="fw6 f14">'+co.title+'</span><span class="pill '+spill(co.status)+'">'+co.status+'</span></div>'+
-      '<div class="f12 tx3">'+(co.area||'')+(co.started?' · Since '+co.started:'')+(co.followup?' · Follow-up '+co.followup:'')+'</div>'+
-      (co.notes?'<div class="f13 tx2 mt4">'+co.notes.slice(0,100)+(co.notes.length>100?'…':'')+'</div>':'')+
+      '<div class="flex jb ac mb4"><span class="fw6 f14">'+luminaText(co.title)+'</span><span class="pill '+spill(co.status)+'">'+luminaText(co.status)+'</span></div>'+
+      '<div class="f12 tx3">'+luminaText(co.area||'')+(co.started?' · Since '+co.started:'')+(co.followup?' · Follow-up '+co.followup:'')+'</div>'+
+      (co.notes?'<div class="f13 tx2 mt4">'+luminaText(co.notes.slice(0,100))+(co.notes.length>100?'…':'')+'</div>':'')+
     '</div>').join('');
     if(upcoming.length>4)h+=['<button class="btn btn-g btn-sm mt8"',
       'onclick="switchTab(\x27body\x27);activeBT=\x27concerns\x27;renderBody()">',
@@ -7961,7 +7984,7 @@ function renderInsights(){
   byId('ins-content').innerHTML=h;
   }catch(err){
     console.warn('renderInsights error:',err);
-    byId('ins-content').innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Could not load insights</h3><p>${err.message}</p></div>`;
+    byId('ins-content').innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Could not load insights</h3><p>${luminaText(err.message)}</p></div>`;
   }
 }
 
@@ -9162,7 +9185,7 @@ function getAutoReminders(){
   });
 
   // Rx check-in reminders (if no check-in in 14 days)
-  const cutoff14=new Date(now.getTime()-14*86400000).toISOString().slice(0,10);
+  const cutoff14=localISODate(new Date(now.getTime()-14*86400000));
   readStore(KEYS.inv).filter(i=>!i.archived&&i.type==='Prescription'&&(i.status==='In Use')).forEach(i=>{
     const id='rxci-'+i.id;
     if(isHidden(id))return;
@@ -9304,6 +9327,7 @@ function logActivity(type,title,sub,linkedId,linkedType,meta){
 
 // Rebuild activity log from existing data (run once on first launch)
 function seedActivityFromExistingData(){
+  if(demoPreviewMode)return;
   if(localStorage.getItem('lm_activity_seeded'))return;
   const events=[];
   readStore(KEYS.inv).forEach(i=>{
@@ -9354,14 +9378,14 @@ function renderTimeline(){
   log.forEach(ev=>{if(!groups[ev.date])groups[ev.date]=[];groups[ev.date].push(ev)});
   const today2=today();
   el.innerHTML=Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,30).map(([date,evs])=>{
-    const label=date===today2?'Today':date===new Date(Date.now()-86400000).toISOString().slice(0,10)?'Yesterday':date;
-    return`<div class="sec-title">${label}</div>`+evs.map(ev=>`
+    const label=date===today2?'Today':date===localISODate(new Date(Date.now()-86400000))?'Yesterday':date;
+    return`<div class="sec-title">${luminaText(label)}</div>`+evs.map(ev=>`
       <div class="tl-item">
-        <div class="tl-dot">${ev.icon}</div>
+        <div class="tl-dot">${luminaText(ev.icon)}</div>
         <div class="tl-body">
-          <div class="tl-title">${ev.title}</div>
-          ${ev.sub?`<div class="tl-sub">${ev.sub}</div>`:''}
-          ${ev.time?`<div class="tl-time">${ev.time}</div>`:''}
+          <div class="tl-title">${luminaText(ev.title)}</div>
+          ${ev.sub?`<div class="tl-sub">${luminaText(ev.sub)}</div>`:''}
+          ${ev.time?`<div class="tl-time">${luminaText(ev.time)}</div>`:''}
         </div>
       </div>`).join('');
   }).join('');
@@ -9858,7 +9882,7 @@ function renderComplianceView(){
   const steps=readStore(KEYS.steps),checks=getChecks();
   const today2=today();
   // Last 7 days
-  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days7.push(d.toISOString().slice(0,10));}
+  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days7.push(localISODate(d));}
 
   function dayCompletion(date,timing){
     const dc=checks[date];if(!dc)return{done:0,total:0};
@@ -10051,7 +10075,7 @@ function getStepStreak(stepId){
   let streak=0;
   const d=new Date();
   for(let i=0;i<90;i++){
-    const k=d.toISOString().slice(0,10);
+    const k=localISODate(d);
     const dc=checks[k];
     const v=dc?.steps?.[stepId];
     if(v==='done'||v===true)streak++;
@@ -10089,10 +10113,10 @@ function renderDataCleanup(){
       ${(_cleanupExpanded.cat?needsCat:needsCat.slice(0,8)).map(i=>{
         const suggestedCat=guessCategoryFromName(i.name,i.type);
         return `<div class="cleanup-row">
-          <div style="flex:1;min-width:0"><div class="fw6 f13" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div>
-          ${suggestedCat?`<div class="f12 tx3">Suggested: ${suggestedCat}</div>`:''}</div>
-          ${suggestedCat?`<button class="btn btn-g btn-sm" onclick="quickSetCat('${i.id}','${suggestedCat.replace(/'/g,'\'')}')" style="font-size:11px;padding:3px 10px">Apply</button>`:''}
-          <button class="btn btn-g btn-sm" onclick="editInv('${i.id}')" style="font-size:11px;padding:3px 10px">Edit</button>
+          <div style="flex:1;min-width:0"><div class="fw6 f13" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${luminaText(i.name)}</div>
+          ${suggestedCat?`<div class="f12 tx3">Suggested: ${luminaText(suggestedCat)}</div>`:''}</div>
+          ${suggestedCat?`<button class="btn btn-g btn-sm" onclick="quickSetCat(${luminaJsArg(i.id)},${luminaJsArg(suggestedCat)})" style="font-size:11px;padding:3px 10px">Apply</button>`:''}
+          <button class="btn btn-g btn-sm" onclick="editInv(${luminaJsArg(i.id)})" style="font-size:11px;padding:3px 10px">Edit</button>
         </div>`;
       }).join('')}
       ${needsCat.length>8&&!_cleanupExpanded.cat?`<button class="btn btn-g btn-sm mt8" onclick="expandCleanupSection('cat')" style="font-size:12px">+ ${needsCat.length-8} more</button>`:''}
@@ -10106,9 +10130,9 @@ function renderDataCleanup(){
       <div class="card-title">Missing expiry date (${needsExpiry.length} items)</div>
       <p class="f13 tx2 mb12">Skincare and Rx items should have an expiry or shelf life set.</p>
       ${(_cleanupExpanded.expiry?needsExpiry:needsExpiry.slice(0,5)).map(i=>`<div class="cleanup-row">
-        <div style="flex:1;min-width:0"><div class="fw6 f13" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div>
-        <div class="f12 tx3">${i.type}${i.opened?' · Opened '+i.opened:''}</div></div>
-        <button class="btn btn-g btn-sm" onclick="editInv('${i.id}')" style="font-size:11px;padding:3px 10px">Edit</button>
+        <div style="flex:1;min-width:0"><div class="fw6 f13" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${luminaText(i.name)}</div>
+        <div class="f12 tx3">${luminaText(i.type)}${i.opened?' · Opened '+luminaText(i.opened):''}</div></div>
+        <button class="btn btn-g btn-sm" onclick="editInv(${luminaJsArg(i.id)})" style="font-size:11px;padding:3px 10px">Edit</button>
       </div>`).join('')}
       ${needsExpiry.length>5&&!_cleanupExpanded.expiry?`<button class="btn btn-g btn-sm mt8" onclick="expandCleanupSection('expiry')" style="font-size:12px">+ ${needsExpiry.length-5} more</button>`:''}
     </div>`;
@@ -10124,12 +10148,7 @@ function renderDataCleanup(){
   }
 
   byId('vault-content').innerHTML=h;
-  // Restore search focus if the search field had focus before re-render
-  if(_invSearchFocused){
-    const si=byId('vault-content').querySelector('input[type=search]');
-    if(si){si.focus();si.setSelectionRange(si.value.length,si.value.length);}
-    _invSearchFocused=false;
-  }
+  // Search lives outside #vault-content; no stale focus state to restore.
 }
 
 function guessCategoryFromName(name,type){
@@ -11019,8 +11038,12 @@ const CAL_EVENT_TYPES=[
 
 function safeDate(s){
   if(!s)return null;
-  const d=new Date(s.includes('T')?s:s+'T00:00:00');
-  return isNaN(d)?null:d.toISOString().slice(0,10);
+  if(typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    const d=new Date(s+'T12:00:00');
+    return !Number.isNaN(d.getTime())&&localISODate(d)===s?s:null;
+  }
+  const d=new Date(s);
+  return isNaN(d)?null:localISODate(d);
 }
 
 function buildCalendarEvents(){
@@ -11111,7 +11134,7 @@ function renderCalendar(){
   let startOffset=(firstDay.getDay()+6)%7;
   const daysInMonth=new Date(year,month+1,0).getDate();
   const daysInPrevMonth=new Date(year,month,0).getDate();
-  const todayStr=new Date().toISOString().slice(0,10);
+  const todayStr=today();
 
   const totalCells=Math.ceil((startOffset+daysInMonth)/7)*7;
   for(let i=0;i<totalCells;i++){
@@ -11119,15 +11142,15 @@ function renderCalendar(){
     if(i<startOffset){
       dayNum=daysInPrevMonth-startOffset+i+1;
       const d=new Date(year,month-1,dayNum);
-      dateStr=d.toISOString().slice(0,10);
+      dateStr=localISODate(d);
       isOther=true;
     } else if(i-startOffset<daysInMonth){
       dayNum=i-startOffset+1;
-      dateStr=new Date(year,month,dayNum).toISOString().slice(0,10);
+      dateStr=localISODate(new Date(year,month,dayNum));
     } else {
       dayNum=i-startOffset-daysInMonth+1;
       const d=new Date(year,month+1,dayNum);
-      dateStr=d.toISOString().slice(0,10);
+      dateStr=localISODate(d);
       isOther=true;
     }
     const isToday=dateStr===todayStr;
@@ -11193,7 +11216,7 @@ function calNextMonth(){
 function calGoToday(){
   const now=new Date();
   _calYear=now.getFullYear();_calMonth=now.getMonth();
-  _calSelectedDate=now.toISOString().slice(0,10);
+  _calSelectedDate=localISODate(now);
   renderCalendar();
 }
 function calSelectDate(dateStr){
@@ -11298,8 +11321,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.1';
-const APP_BUILD='2026.10.24.phase-a.1';
+const APP_VERSION='0.9.5-beta.2';
+const APP_BUILD='2026.10.24.phase-b.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11326,13 +11349,13 @@ const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
   {
-    version:'0.9.5-beta.1',
+    version:'0.9.5-beta.2',
     date:'October 24, 2026',
     status:'Beta — preview only',
-    added:['Photo-aware JSON restore with confirmation and rollback attempt', 'IndexedDB storage for new progress photos'],
-    changed:['Cancelled symptom/concern photo edits leave existing photos intact', 'Clear All also clears IndexedDB photo storage', 'Incomplete photo exports no longer silently download'],
-    fixed:['Photo edit cancel data loss in symptom and concern forms', 'Progress photo save failure no longer dismisses unsaved entry'],
-    known:['Needs iPhone Safari QA before production release', 'Other findings from 2026-10-24 audit remain open']
+    added:['Local-calendar date helpers for logs, streaks and calendar', 'Output escaping for saved text in key Body, Vault, Today, Insights and Timeline views'],
+    changed:['Demo Preview now blocks shared record/photo writes', 'Photo backup and progress photo improvements remain from beta.1', 'Missing and archived product cleanup data stays accessible'],
+    fixed:['Vault Data Cleanup undefined search-focus variable', 'Sample preview no longer reaches the central save path', 'Known HTML event injection examples in tested record views', 'UTC day-shift in common date and calendar views'],
+    known:['Real Safari/Cloudflare and photo migration QA still required', 'Other stored-text renderers and direct writes require full security review', 'Beta is not merged or released to production']
   },
   {
     version:'0.9.3',
@@ -11573,7 +11596,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initSwipe();
   initLongPress();
   checkShowWhatsNew();
-  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v0.9.5-beta.1 · Build 2026.10.24.phase-a.1 · Preview';
+  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v0.9.5-beta.2 · Build 2026.10.24.phase-b.1 · Preview';
 
 });
 
