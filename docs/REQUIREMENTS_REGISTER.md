@@ -66,3 +66,11 @@ LUM-016 / BUG-017 Escape foremost overlay implemented candidate (isolated PASS);
 **LUM-026 | P1 | REQUESTED** — consistent save/error/empty/draft recovery across all forms, confirm data persistence including photos; all mobile failure scenarios.
 **LUM-027 | P2 | REQUESTED** — actual Safari VoiceOver, enlarged text, zoom, keyboard focus, LCP/INP/CLS and accessibility baseline; distinguish measured from assumed performance.
 Older LUM-008–020 beta fixes remain not verified for full cross-origin IDB/photo/whole-app QA. Full details and risks: docs/AUDIT_UIUX_FULL_2026-10-24.md.
+
+
+## 2026-10-24: Approved concept → Phase 1 implementation
+**LUM-022 Today | P1 | IMPLEMENTED BETA NOT VERIFIED:** primary logging, reminders and main status visible; history in disclosure; progress based on completed/scheduled counts. Acceptance: Safari empty/populated/save/cancel/refresh; realistic denominator and all alerts reachable. RenderToday + Today markup/CSS; no migration.
+**LUM-023 Vault | P1 | IMPLEMENTED BETA NOT VERIFIED:** in-use count, Review shortcut, search/filter and statuses retained; unopened collapsed; accessible group buttons/expanded state. Acceptance: 20+ records, archive, filter/search-to-edit, keyboard/VoiceOver and empty/no-match paths. renderInventory/toggleInvSection; no migration.
+**LUM-024 Insights | P1 | IMPLEMENTED BETA NOT VERIFIED:** primary finding with timeframe and observational caveat, expandable evidence/extended context, existing Patterns/Timeline/Calendar preserved. Acceptance: evidence sample size/date agreement, 7/30/90, empty/populated, no unsupported causality.
+**LUM-025 Body/Protocols and Settings | P1 | APPROVED CONCEPT, NOT YET IMPLEMENTED:** staged in next low-regression batch with CRUD/photo, search and reorder tests.
+Approval of preview/design != production release. All 69 automated tests use mocked storage, not Safari/real IDB.

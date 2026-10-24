@@ -830,6 +830,37 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* LUM-022–024 · Approved IA: progressive disclosure while retaining old data, tabs and edits. */
+.lum-kicker{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--tx3)}
+.lum-meta,.lum-muted{font-size:11px;color:var(--tx3)}
+.lum-today-primary{margin:0 16px 14px;padding:16px;border:1px solid var(--b2);border-top:2px solid var(--p);background:var(--s1);border-radius:var(--rad)}
+.lum-topline{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.lum-today-primary #d-checkin .entry{margin:0!important;border:0!important;padding:3px 0 12px!important;background:transparent}
+.lum-today-primary #d-checkin .fw6{font-size:15px}
+.lum-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lum-quick-action{min-height:44px;padding:9px 8px;border:1px solid var(--p);background:var(--pd);color:var(--tx);border-radius:12px;font-family:var(--font-body);font-size:12px;font-weight:700;cursor:pointer}
+.lum-quick-action.secondary{border-color:var(--b2);background:var(--s2);font-weight:600}
+.lum-routine-card{margin-top:8px}
+.lum-overview-counts{margin-top:12px}
+.lum-disclosure{margin:12px 16px 14px;border-radius:var(--rad);border:1px solid var(--b1);background:var(--s1);overflow:hidden}
+.lum-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;font-size:13px;font-weight:700;min-height:48px;color:var(--tx)}
+.lum-disclosure>summary::-webkit-details-marker{display:none}
+.lum-summary-arrow{display:inline-block;color:var(--tx2);font-size:18px;transition:transform .16s}
+.lum-disclosure[open] .lum-summary-arrow{transform:rotate(180deg)}
+.lum-observation-history .lum-secondary-stats{margin:0 12px 8px}
+.lum-observation-history #d-concerns,.lum-observation-history #d-symptoms{padding:0 12px 6px}
+.lum-observation-history .sec-title{padding:0;margin:12px 0 8px}
+.lum-vault-intro{margin:2px 0 12px;padding:12px 14px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--rad);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lum-vault-count{font-family:var(--font-display);font-size:20px;color:var(--tx);margin-top:4px}
+.lum-review-link{font:600 12px var(--font-body);border:1px solid var(--b2);border-radius:10px;color:var(--tx);padding:9px 10px;min-height:44px;background:var(--s2);white-space:nowrap}
+.lum-vault-reviews{margin:10px 0 12px}.lum-alert-list{padding:0 10px 12px}.lum-alert-list .banner{margin-bottom:6px}
+.lum-inv-section-btn{width:100%;border:0;border-bottom:1px solid var(--b1);background:transparent;font-family:var(--font-body);text-align:left;cursor:pointer;color:var(--tx);-webkit-appearance:none;appearance:none}
+.lum-ins-lead{margin:10px 16px 0}.lum-ins-subline{font-size:12px;color:var(--tx2);margin-top:5px;line-height:1.5}
+.lum-ins-evidence,.lum-ins-more{margin:12px 16px 16px}
+.lum-ins-evidence>.sec-title,.lum-ins-more>.sec-title{margin-top:10px}
+.lum-ins-evidence>.card,.lum-ins-more>.card,.lum-ins-more>.ins-card{margin-left:10px;margin-right:10px}
+@media(max-width:350px){.lum-vault-intro{flex-wrap:wrap}.lum-quick-actions{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -838,24 +869,33 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
 <!-- TODAY -->
 <div class="panel active" id="tab-today">
   <div class="hdr"><div class="hdr-row"><div><h1 id="greet">Good morning ✦</h1><p id="tdate"></p></div><button class="icon-btn" aria-label="Open Settings" title="Settings" onclick="switchTab('settings',null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div></div>
-  <div class="ring-card">
-    <div class="flex jb ac" style="margin-bottom:14px"><span class="serif" style="font-size:18px">Today</span><span id="ring-total" class="tx2 f12"></span></div>
+  <section class="lum-today-primary" aria-label="Today's check-in">
+    <div class="lum-topline"><span class="lum-kicker">YOUR NEXT STEP</span><span class="lum-meta">Saved on this browser</span></div>
+    <div id="d-checkin"></div>
+    <div class="lum-quick-actions"><button class="lum-quick-action" onclick="openModal('symp')">+ Log symptom</button><button class="lum-quick-action secondary" onclick="switchTab('protocols')">View routines →</button></div>
+  </section>
+  <div id="d-alerts"></div>
+  <div class="ring-card lum-routine-card">
+    <div class="flex jb ac" style="margin-bottom:14px"><span class="serif" style="font-size:18px">Routine progress</span><span id="ring-total" class="tx2 f12"></span></div>
     <div class="rings">
       <div class="ring-item"><div class="ring-wrap"><svg viewBox="0 0 70 70"><circle class="ring-track" cx="35" cy="35" r="29"/><circle class="ring-arc" id="r-skin" cx="35" cy="35" r="29" stroke="#b07eb8" stroke-dasharray="182.2" stroke-dashoffset="182.2"/></svg><div class="ring-icon">🧴</div></div><div class="ring-lbl">Skincare</div><div class="ring-pct" id="rp-skin">0%</div></div>
       <div class="ring-item"><div class="ring-wrap"><svg viewBox="0 0 70 70"><circle class="ring-track" cx="35" cy="35" r="29"/><circle class="ring-arc" id="r-supp" cx="35" cy="35" r="29" stroke="#c4957a" stroke-dasharray="182.2" stroke-dashoffset="182.2"/></svg><div class="ring-icon">💊</div></div><div class="ring-lbl">Supps</div><div class="ring-pct" id="rp-supp">0%</div></div>
       <div class="ring-item"><div class="ring-wrap"><svg viewBox="0 0 70 70"><circle class="ring-track" cx="35" cy="35" r="29"/><circle class="ring-arc" id="r-log" cx="35" cy="35" r="29" stroke="#c9a96e" stroke-dasharray="182.2" stroke-dashoffset="182.2"/></svg><div class="ring-icon">📋</div></div><div class="ring-lbl">Log</div><div class="ring-pct" id="rp-log">0%</div></div>
     </div>
   </div>
-  <div class="grid2">
-    <div class="stat" role="button" tabindex="0" onclick="switchTab('body');activeBT='symptoms';renderBody()" style="cursor:pointer"><div class="stat-n" id="d-symp">0</div><div class="stat-l">Today's symptoms</div></div>
-    <div class="stat" role="button" tabindex="0" onclick="switchTab('body');activeBT='concerns';renderBody()" style="cursor:pointer"><div class="stat-n" id="d-conc">0</div><div class="stat-l">Active concerns</div></div>
-    <div class="stat" role="button" tabindex="0" onclick="switchTab('vault');activeVT='review';renderVault()" style="cursor:pointer"><div class="stat-n" id="d-inv">0</div><div class="stat-l">Needs attention</div></div>
-    <div class="stat" role="button" tabindex="0" onclick="switchTab('protocols')" style="cursor:pointer"><div class="stat-n" id="d-str">0</div><div class="stat-l">Day streak</div></div>
+  <div class="lum-overview-counts grid2">
+    <div class="stat" role="button" tabindex="0" onclick="switchTab('body');activeBT='concerns';renderBody()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" aria-label="View active concerns" style="cursor:pointer"><div class="stat-n" id="d-conc">0</div><div class="stat-l">Active concerns</div></div>
+    <div class="stat" role="button" tabindex="0" onclick="switchTab('vault');activeVT='review';renderVault()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" aria-label="Review product attention items" style="cursor:pointer"><div class="stat-n" id="d-inv">0</div><div class="stat-l">Needs attention</div></div>
   </div>
-  <div id="d-alerts"></div>
-  <div id="d-concerns" style="margin-bottom:4px"></div>
-  <div id="d-symptoms"></div>
-  <div id="d-checkin"></div>
+  <details class="lum-disclosure lum-observation-history" id="today-observations">
+    <summary>Recent observations and history <span class="lum-summary-arrow" aria-hidden="true">⌄</span></summary>
+    <div class="grid2 lum-secondary-stats">
+      <div class="stat" role="button" tabindex="0" onclick="switchTab('body');activeBT='symptoms';renderBody()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer"><div class="stat-n" id="d-symp">0</div><div class="stat-l">Today's symptoms</div></div>
+      <div class="stat" role="button" tabindex="0" onclick="switchTab('protocols')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" style="cursor:pointer"><div class="stat-n" id="d-str">0</div><div class="stat-l">Day streak</div></div>
+    </div>
+    <div id="d-concerns" style="margin-bottom:4px"></div>
+    <div id="d-symptoms"></div>
+  </details>
   <div id="d-reminders-header"></div>
   <div id="d-reminders" style="display:none"></div>
   <div class="sec-title">Insight</div>
@@ -1067,7 +1107,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.5</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.6</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -2762,10 +2802,12 @@ function renderToday(){try{
   const ts2=supps.filter(s=>suppToday(s));
   const suppPct=ts2.length?Math.round(ts2.filter(s=>tc.supps?.[s.id]).length/ts2.length*100):0;
   const logPct=hasSkinLog?100:0;
-  setRing('r-skin',skinPct);byId('rp-skin').textContent=skinPct+'%';
-  setRing('r-supp',suppPct);byId('rp-supp').textContent=suppPct+'%';
+  const suppDone=ts2.filter(s=>tc.supps?.[s.id]).length;
+  setRing('r-skin',skinPct);byId('rp-skin').textContent=amPm.length?skinPct+'%':'—';
+  setRing('r-supp',suppPct);byId('rp-supp').textContent=ts2.length?suppPct+'%':'—';
   setRing('r-log',logPct);byId('rp-log').textContent=logPct+'%';
-  byId('ring-total').textContent=Math.round((skinPct+suppPct+logPct)/3)+'% complete';
+  const completed=skinDone+suppDone+(hasSkinLog?1:0),scheduled=amPm.length+ts2.length+1;
+  byId('ring-total').textContent=completed+' of '+scheduled+' completed';
 
   // Badges
   updateBadges();
@@ -2815,7 +2857,7 @@ function renderToday(){try{
       checkinEl.innerHTML='<div class="entry" style="cursor:pointer" onclick="switchTab(\x27body\x27);activeBT=\x27skin\x27;renderBody()">'+
         '<div class="flex ac gap10"><span style="font-size:20px">\u2728</span>'+
           '<div><div class="fw6 f14">Skin logged '+(log?.overall?'\u2014 '+log.overall+'/10':'today')+'</div>'+
-            '<div class="f12 tx3">'+(conds||'Tap to view')+'</div>'+
+            '<div class="f12 tx3">'+luminaText(conds||'Tap to view')+'</div>'+
           '</div>'+
         '</div>'+
       '</div>';
@@ -6322,6 +6364,8 @@ function toggleInvSection(id){
   const arr=byId('inva-'+id);
   if(body)body.classList.toggle('collapsed',_collapsedSections.has(id));
   if(arr)arr.classList.toggle('collapsed',_collapsedSections.has(id));
+  const btn=body?.previousElementSibling;
+  if(btn)btn.setAttribute('aria-expanded',String(!_collapsedSections.has(id)));
 }
 
 function renderInventory(){
@@ -6334,8 +6378,12 @@ function renderInventory(){
   const alerts=invAlerts(inv.filter(i=>!i.archived));
   let h='';
 
+  const inUseCount=inv.filter(i=>!i.archived&&['In Use','Active','Using'].includes(i.status)).length;
+  h+=`<div class="lum-vault-intro">
+     <div><div class="lum-kicker">YOUR PRODUCTS</div><div class="lum-vault-count">${inUseCount} in use <span class="lum-muted">· ${inv.filter(i=>!i.archived).length} available</span></div></div>
+     ${alerts.length?`<button class="lum-review-link" onclick="activeVT='review';renderVault()" aria-label="Review ${alerts.length} products that need attention">${alerts.length} to review →</button>`:''}
+  </div>`;
   h+=renderVaultTypeSelector(inv);
-
 
   // ── Inline search ──
   showVaultSearch(true, TYPE_LABELS[activeIT]||'inventory'); // stable search
@@ -6343,7 +6391,7 @@ function renderInventory(){
   // ── Filter/sort bar (permanent) ──
   h+=renderVaultFilterBar(inv);
 
-  if(alerts.length)h+=`<div style="margin-bottom:12px">${alerts.slice(0,3).map(a=>`<div class="banner ${a.t==='low'?'bw':'br'}" style="cursor:pointer" onclick="editInv(${luminaJsArg(a.id)})">${a.t==='low'?'⚠️':'📅'} ${luminaText(a.name)}: ${luminaText(a.msg)}</div>`).join('')}</div>`;
+  if(alerts.length)h+=`<details class="lum-disclosure lum-vault-reviews"><summary>Product details to review (${alerts.length}) <span class="lum-summary-arrow" aria-hidden="true">⌄</span></summary><div class="lum-alert-list">${alerts.slice(0,3).map(a=>`<div class="banner ${a.t==='low'?'bw':'br'}" style="cursor:pointer" onclick="editInv(${luminaJsArg(a.id)})">${a.t==='low'?'⚠️':'📅'} ${luminaText(a.name)}: ${luminaText(a.msg)}</div>`).join('')}</div></details>`;
 
   if(!pool.length){
     const _hasFilter=_vaultFilterStatus||_vaultFilterCat||_vaultFilterExpiry||q;
@@ -6378,7 +6426,7 @@ function renderInventory(){
 
   const sections=[
     {id:'active',   label:'In Use',   emoji:'🟢',items:sortBucket(buckets.active),   defaultOpen:true},
-    {id:'unopened', label:'Unopened', emoji:'📦',items:sortBucket(buckets.unopened), defaultOpen:true},
+    {id:'unopened', label:'Unopened', emoji:'📦',items:sortBucket(buckets.unopened), defaultOpen:false},
     {id:'watch',    label:'On Hold',  emoji:'⏸', items:sortBucket(buckets.watch),   defaultOpen:false},
     {id:'empty',    label:'Empty',    emoji:'⬜',items:sortBucket(buckets.empty),    defaultOpen:false},
     {id:'archived', label:'Archived', emoji:'🗄️',items:sortBucket(buckets.archived), defaultOpen:false,isTrash:true},
@@ -6394,13 +6442,13 @@ function renderInventory(){
       if(!_collapsedSections.has(sec.id)&&!sec.defaultOpen)_collapsedSections.add(sec.id);
       const isCollapsed=_collapsedSections.has(sec.id);
       h+=`<div class="inv-section">
-        <div class="inv-section-hdr" onclick="toggleInvSection('${sec.id}')">
+        <button type="button" class="inv-section-hdr lum-inv-section-btn" aria-expanded="${!isCollapsed}" aria-controls="invb-${sec.id}" onclick="toggleInvSection('${sec.id}')">
           <span class="inv-section-title">${sec.emoji} ${sec.label}</span>
           <div class="inv-section-meta">
             <span class="pill pm f11">${sec.items.length}</span>
             <span class="inv-section-arr ${isCollapsed?'collapsed':''}" id="inva-${sec.id}">⌄</span>
           </div>
-        </div>
+        </button>
         <div class="inv-section-body ${isCollapsed?'collapsed':''} card card-sm" id="invb-${sec.id}" style="padding:0 12px;margin-top:0;border-radius:0 0 var(--rad) var(--rad)">
           ${sec.isTrash
             ?sec.items.map(i=>`<div class="inv-row archived">
@@ -7872,14 +7920,9 @@ function renderInsights(){
     return;
   }
 
-  let h='';
-
-  // ── SUMMARY STATS ──
-  const avg=recent.length?(recent.reduce((s,x)=>s+x.sev,0)/recent.length).toFixed(1):'–';
-  h+=`<div class="grid2 mb8">
-    <div class="stat"><div class="stat-n">${recent.length}</div><div class="stat-l">Symptoms (${iDays}d)</div></div>
-    <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">Avg severity</div></div>
-  </div>`;
+  const evidenceWasOpen=byId('ins-evidence')?.open||false;
+  const moreWasOpen=byId('ins-more-context')?.open||false;
+  let h=`<div class="lum-ins-lead"><span class="lum-kicker">YOUR WELLNESS JOURNAL</span><div class="lum-ins-subline">${iDays}-day view · Based on your logged entries, not medical conclusions</div></div>`;
 
   // ── BIGGEST OBSERVATION ──
   h+=`<div class="sec-title">Biggest Observation</div>`;
@@ -7912,6 +7955,15 @@ function renderInsights(){
     h+=`<div class="card"><p class="tx2 f13">Log more entries to see your biggest observation.</p></div>`;
   }
 
+  // ── SUMMARY STATS (after the key observation) ──
+  const avg=recent.length?(recent.reduce((s,x)=>s+x.sev,0)/recent.length).toFixed(1):'–';
+  h+=`<div class="grid2 mb8">
+    <div class="stat"><div class="stat-n">${recent.length}</div><div class="stat-l">Symptoms (${iDays}d)</div></div>
+    <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">Avg severity</div></div>
+  </div>`;
+
+  // ── SUPPORTING EVIDENCE ──
+  h+=`<details class="lum-disclosure lum-ins-evidence" id="ins-evidence"><summary>See supporting entries and categories <span class="lum-summary-arrow" aria-hidden="true">⌄</span></summary>`;
   // ── WHAT CHANGED RECENTLY ──
   const last3d=symp.filter(s=>new Date(s.date)>=new Date(Date.now()-3*86400000));
   if(last3d.length){
@@ -7943,6 +7995,7 @@ function renderInsights(){
     </div></div>`;
   }
 
+  h+='</details>';
   // ── PATTERNS SHORTCUT ──
   const patternCount=detectPatterns(symp,skin,inv,readStore(KEYS.checks,{}),iDays).length;
   h+=`<div class="sec-title">Patterns</div>`;
@@ -7950,12 +8003,13 @@ function renderInsights(){
     <div class="flex jb ac">
       <div>
         <div class="fw6 f14">${patternCount} pattern${patternCount!==1?'s':''} detected</div>
-        <div class="f12 tx3 mt2">Tap to see correlations, triggers, and trends</div>
+        <div class="f12 tx3 mt2">Review logged patterns and time periods</div>
       </div>
       <span class="arr tx3" style="font-size:18px">›</span>
     </div>
   </div>`;
 
+  h+=`<details class="lum-disclosure lum-ins-more" id="ins-more-context"><summary>More supporting analysis <span class="lum-summary-arrow" aria-hidden="true">⌄</span></summary>`;
   // ── SKIN PATTERNS ──
   if(rSkin.length){
     h+=`<div class="sec-title">Skin Log Patterns</div>`;
@@ -7984,6 +8038,7 @@ function renderInsights(){
     }).join('');
   }
 
+  h+='</details>';
   // ── THINGS TO WATCH ──
   const upcoming=conc.filter(co=>!co.archived&&co.status!=='Resolved');
   const flagged=upcoming.filter(co=>co.doc);
@@ -8003,6 +8058,8 @@ function renderInsights(){
   }
 
   byId('ins-content').innerHTML=h;
+  if(evidenceWasOpen&&byId('ins-evidence'))byId('ins-evidence').open=true;
+  if(moreWasOpen&&byId('ins-more-context'))byId('ins-more-context').open=true;
   }catch(err){
     console.warn('renderInsights error:',err);
     byId('ins-content').innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Could not load insights</h3><p>${luminaText(err.message)}</p></div>`;
@@ -11367,8 +11424,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.5';
-const APP_BUILD='2026.10.24.ux-audit.1';
+const APP_VERSION='0.9.5-beta.6';
+const APP_BUILD='2026.10.24.ux-approved.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11394,6 +11451,13 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {
+    version:'0.9.5-beta.6',date:'October 24, 2026',status:'Beta — approved UX improvements',
+    added:['Task-first Today with visible check-in, quick log and grouped observation history','Vault inventory summary, contextual review and collapsed secondary stock','Insights leads with observations; evidence and extended analysis expand on demand'],
+    changed:['Routine completion uses actual scheduled counts instead of averaging unrelated percentages','Unsheduled skincare/supplements show a dash rather than false zero progress','Existing records, editing flows, filters, reports and storage remain in place'],
+    fixed:['Overcrowded Today first screen','Excessive default Vault and Insights detail'],
+    known:['Photo backup restoration still requires actual cross-origin iPhone Safari test','Full end-to-end CRUD/security and assistive technology QA remains pending','Production main stays unchanged until explicit release approval']
+  },
   {
     version:'0.9.5-beta.5',
     date:'October 24, 2026',

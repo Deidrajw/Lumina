@@ -28,3 +28,9 @@ Beta.4 targets the Vault JSON import bypass, unsafe product/detail/search/CSV te
 **Implemented candidate:** nonstructural accessibility/contrast/touch/focus/zoom improvements LUM-021 on separate PR and Cloudflare preview when confirmed.
 **Design proposed only:** interactive six-screen concept studio (docs/prototypes/UIUX_Concept_Studio.html) for LUM-022–025 Today, Body, Protocols, Vault, Insights, Settings. Preserve original data/functionality; substantial redesign requires user approval after comparison.
 **Next:** actual iPhone Safari, VoiceOver/200% zoom and synthetic photo restore/rollback. Full security and UX regression and documented approval before production release; add meaningful performance baseline LCP/INP/CLS, not inferred values.
+
+
+## User approved UI/UX concept — Phase 1 implementation, 2026-10-24
+**Implemented beta6:** Today, Vault and Insights (LUM-022/023/024) progressive hierarchy and evidence, original data contracts and feature paths intact, real Safari review pending.
+**Approved design, next batch:** Body task-first logging/filters, Protocols clearer steps and non-drag reorder, Settings prominent backup/restore and professional reports (LUM-025). Stage and test before implementation.
+**Release gates:** real Safari + clean-origin photo backup restore, broad security, all-screen regression, explicit production authorization. Main remains v0.9.4 until release.
