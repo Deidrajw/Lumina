@@ -71,3 +71,7 @@ Previous data portability, security and preview isolation issues await real Safa
 LUM-BUG-029 Today card overload and unweighted progress total: candidate improved with task-first hierarchy and bounded scheduled count (isolated PASS, real Safari/data NOT VERIFIED).
 LUM-BUG-030 Vault/Insights default density: candidate collapsible secondary buckets/evidence; 69 isolated checks PASS; no screen-reader/device verification. Body/Protocols/Settings design debt staged next.
 Existing P0 photo clean-origin import/restore and broad injected-HTML/direct-storage writer reviews remain OPEN and block any main release. No data schema change, no personal data involved.
+
+
+## 2026-10-24 Beta7
+LUM-BUG-030 Body/Protocols/Settings density improved as user-approved design candidate. 80/80 isolated fake-storage checks PASS, Safari NOT VERIFIED. Pre-existing weekly reorder referenced an undeclared inventory variable; candidate defines it locally, but real touch/keyboard persistence remains NOT TESTED. Critical photo-backed cross-origin restore, injection/security and demo isolation issues remain open until true device testing. No bugs silently closed.

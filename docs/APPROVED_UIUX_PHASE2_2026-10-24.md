@@ -1,0 +1,10 @@
+# Lumina v0.9.5-beta.7 — Approved UI/UX Phase 2
+2026-10-24. Branch feature/approved-uiux-body-protocols-settings-beta7, parent Beta6 32e66d5, production main 2e02f304 unchanged.
+Approval: user approved proposed six-screen UX layout direction, NOT merge/deploy to production.
+Body: visible quick log buttons to existing Symptom/Concern/Skin form; history tabs preserved; symptoms/concerns sorting and filters now use accessible native disclosure with expanded state retained on rerender. Rx and Progress stay in More.
+Protocols: context-first count of completed scheduled steps, visible Show all/Reorder actions and aria-pressed state; weekly count; unsupported supplement controls disabled. Existing routines, templates, edit/skip/delete, Rx, hair, weekly and supplement features preserved. Previously weekly reorder referenced undeclared inventory; corrected local lookup.
+Settings: Doctor Summary/Export prominent, separate JSON Backup/Restore and origin-specific privacy note, setup/testing and destructive Clear All behind distinct labeled disclosures. Original action handlers retained.
+Version 0.9.5-beta.7 build 2026.10.24.ux-approved.2. No stored record, migration, IDB photo or secret data changes.
+QA: PASS 60 isolated Chromium section/width/theme cases (320/375/390/393/430 px x dark/light x six panels), PASS 20 targeted interactions, Node syntax PASS, zero page exceptions or horizontal overflow. Uses fictional mocked localStorage. NOT TESTED real Safari, VoiceOver, true photo save and clean origin IDB backup restore, quota, entire CRUD, doctor printing/sharing and broad security.
+Release NO-GO until independent release consent and testing. Roll back to Beta6 32e66d5; code rollback cannot restore deleted browser data.
+Next: verify branch Cloudflare deploy, user previews Safari with fictional records, complete photo portability and broader QA before production merge.

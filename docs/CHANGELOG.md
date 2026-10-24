@@ -55,3 +55,10 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Insights: lead with logged observation and timeframe/caveat; grouped supporting entries/category and extended skin/Rx sections without deleting historical views.
 - Six-screen user-approved concept, Body/Protocols/Settings staged next. No schema/ID or photo storage changes, no migrations.
 - **PASS isolated automated Chromium:** 69/69 across 5 widths/2 themes/six screens + 9 populated interactions; JS syntax PASS. **NOT TESTED:** actual iPhone Safari, fresh-origin JSON+photo restoration, full app security, VoiceOver and regression. No production main merge or deployment.
+
+
+## v0.9.5-beta.7 — Approved UX Phase 2 (2026-10-24), UNRELEASED
+- Body: quick Symptom, Concern and Skin Log; optional filter/sort disclosure and explicit history headings, all original tabs/forms.
+- Protocols: scheduled/completed routine context and visible Show all/Reorder, aria-pressed, supported-mode disabling; weekly reorder inventory reference corrected.
+- Settings: Professional Summaries separate from JSON Backup/Restore; local browser storage/replacement explanation; setup and destructive reset behind separate native disclosures, original controls retained.
+- No schema/ID/migration/IDB photo changes; Beta6 features preserved. PASS 80/80 automated isolated Chromium (five widths/two themes and 20 interactions), Node JS syntax. NOT TESTED real iPhone Safari/photo restore/complete regression/security. No main merge or deployment.

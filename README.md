@@ -39,3 +39,7 @@ Public repo: never store actual personal wellness data, photos, backups or secre
 
 ## Approved UX Phase 1 (v0.9.5-beta.6)
 The user-approved six-screen UI concept is implemented incrementally. [Phase 1](docs/APPROVED_UIUX_PHASE1_2026-10-24.md) updates Today, Vault and Insights with progressive disclosure and task-first hierarchy, without record-schema changes. Body/Protocols/Settings are the next approved layout batch. Draft PR preview only; main stays v0.9.4 pending real Safari/photo QA and production approval.
+
+
+## Latest design candidate — Beta7
+[Approved UI/UX Phase2 Body/Protocols/Settings](docs/APPROVED_UIUX_PHASE2_2026-10-24.md) builds on Beta6 Today/Vault/Insights. All original record schema and workflows retained; mobile preview on feature branch only. iPhone Safari/full photo backup/security verification pending; production main unchanged.
