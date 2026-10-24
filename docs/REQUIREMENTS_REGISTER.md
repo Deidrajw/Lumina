@@ -29,3 +29,10 @@ LUM-003/LUM-004: Audit report produced (CODE REVIEW + PARTIAL AUTOMATED TESTS); 
 | LUM-017 | P2 | Requested | Fix Smart Capture wording, version banner, density, contrast and touch-size issues |
 
 See `AUDIT_2026-10-24.md` for test statuses and UI review.
+
+## 2026-10-24 Phase A update
+- LUM-008 staged photo edit/cancel/save semantics — **IMPLEMENTED beta**, NOT VERIFIED Safari/IDB.
+- LUM-009 photo-complete backup/import with confirmation and rollback attempt — **IMPLEMENTED beta**, NOT VERIFIED clean origin.
+- LUM-010 full localStorage+IDB clear — **IMPLEMENTED beta**, NOT VERIFIED iPhone.
+- LUM-011 progress IDB photo + failure-safe form — **IMPLEMENTED beta**, NOT VERIFIED quota/real restore.
+Acceptance tests still pending; see `PHASE_A_DATA_INTEGRITY_2026-10-24.md`. Other audit issues remain Requested.
