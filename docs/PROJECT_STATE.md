@@ -3,7 +3,7 @@
 **Audit:** docs/AUDIT_UIUX_FULL_2026-10-24.md covers Today, Body, Protocols, Vault, Insights, Settings, onboarding, overlays, privacy and UX-guide principles. **Separate design concept:** docs/prototypes/UIUX_Concept_Studio.html, six-screen fictional interactive proposal, not app functionality.
 **Implemented in app:** contrast/token corrections, larger labels/tap targets, Safari form font/zoom, keyboard focus, reduced-motion, Settings/nav accessible names and current-page state. No data migration or IA restructuring.
 **QA:** 60/60 PASS automated isolated Chromium synthetic Sample Preview (6 tabs × 5 widths × 2 themes), embedded JS syntax PASS, no horizontal overflow/uncaught errors. Concept tabs/search/theme PASS isolated. **NOT TESTED:** real iPhone Safari of beta.5, IndexedDB photo portability, VoiceOver/200% zoom, full security+functional regression, production performance.
-**Next exact step:** Verify Cloudflare preview SHA, review the interactive design proposal, test Safari and real clean-origin photo restore, user approves any substantial changes before implementation. No merge to main without approval.
+**Cloudflare verified:** initial Beta 5 implementation commit 33bfd9652b1219951e53cb580998f9433e106f9c deployed on preview https://e5424f90.lumina-9w6.pages.dev (not production). Draft PR #6. **Next exact step:** Verify Cloudflare preview SHA, review the interactive design proposal, test Safari and real clean-origin photo restore, user approves any substantial changes before implementation. No merge to main without approval.
 
 ---
 # Latest status — 2026-10-24, v0.9.5-beta.4
