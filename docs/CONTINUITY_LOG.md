@@ -25,3 +25,10 @@ Next exact step:
 **Re-tested positives:** supplement picker search and product-detail edit/save work in isolated smoke; never assume prior historical reports remain broken.
 **Changes:** Documentation-only audit, bug backlog and test notes on docs branch; index.html not modified; no private data involved.
 **Next:** Obtain approval for P0 photo/data fixes; validate clean photo restore and iPhone Safari; verify Cloudflare deployment SHA/preview settings before production changes.
+
+## 2026-10-24 — Data Integrity Phase A beta
+**Branch:** `fix/photo-data-integrity-v0.9.5-beta.1`, based on docs branch e8cf060, production main unchanged (2e02f304). **Version:** v0.9.5-beta.1.
+**Implemented:** staged photo removal and Cancel cleanup for symptom/concern/Vault; JSON photo export/validated replace-style import/rollback attempt; new progress photo IDB storage and failure drafts; localStorage+IDB reset; safer onboarding fresh start, reduced sensitive logs; version and settings copy.
+**QA:** 17/17 controlled Chromium cases PASS with simulated localStorage and IndexedDB; syntax PASS; real origin/Cloudflare/iPhone NOT TESTED. Tests and limitations in `PHASE_A_DATA_INTEGRITY_2026-10-24.md`.
+**Data impact:** Old inline progress data remains readable; new photos IDB; imports replace present sections with confirmation. No private data or code changes to main.
+**Next:** actual Safari and clean-domain restore, Cloudflare preview, security/functional audit Phase B, explicit merge approval. No production deployment.

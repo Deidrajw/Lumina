@@ -28,3 +28,7 @@ Run record: date | version+SHA | environment | case | result | evidence | blocke
 - NOT TESTED: real IndexedDB photo lifecycle, cancel restore, quota, fresh-origin JSON restore, actual iPhone Safari, print/share/PDF, touch reorder, full global search-to-edit entry, large datasets.
 - BLOCKED: live Cloudflare URL fetch/build SHA verification.
 - Reusable evidence available in audit report; verify on real browser environment before any release status becomes Verified.
+
+## Phase A v0.9.5-beta.1 — 2026-10-24
+**PASS automated, controlled simulated storage:** 17/17 checks in Chromium with fake localStorage/IDB transactions: add photo fixture; Cancel preservation; draft cleanup; committed removal; export JSON; clean browser-context import; missing image validation; injection of storage write failure+rollback; progress photo storage/error draft; clear-all simulation; no overflow through 320/375/390/393/430px major tabs. JS syntax passed Node check.
+**NOT TESTED/BLOCKED:** real-origin IndexedDB, iPhone Safari, actual separate-domain backup migration, quota, permissions, real camera, OS share, full screen-by-screen regression, Cloudflare preview deployment verification. DO NOT label production Verified. [Acceptance details](PHASE_A_DATA_INTEGRITY_2026-10-24.md).

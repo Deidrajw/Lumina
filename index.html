@@ -981,8 +981,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   <!-- Data -->
   <div class="card">
     <div class="card-title">Data</div>
-    <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Full backup of all your data</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
-    <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Restore a previous backup</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
+    <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Includes photos; export stops if an image cannot be backed up</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
+    <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Review before replacing data on this device</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
     <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
     <div class="tog-row"><div class="tog-info"><h4>Doctor Summary</h4><p>What you're currently taking — organized for an appointment</p></div><button class="btn btn-g btn-sm" onclick="openDoctorSummary()">Open</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Doctor Export</h4><p>Generate a report for your doctor</p></div><button class="btn btn-g btn-sm" onclick="openModal('export-doc')">Export</button></div>
@@ -994,7 +994,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
     <div class="tog-row"><div class="tog-info"><h4>Open setup screen</h4><p>Return to the welcome / setup options</p></div><button class="btn btn-g btn-sm" onclick="showOnboarding()">Open</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Preview sample app</h4><p>Add sample entries to explore the app</p></div><button class="btn btn-g btn-sm" onclick="loadDemoData()">Load</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Remove demo data</h4><p>Delete only entries tagged as demo</p></div><button class="btn btn-g btn-sm" onclick="exitDemoPreview()">Remove</button></div>
-    <div class="tog-row" style="border-top:1px solid var(--r);margin-top:8px;padding-top:16px"><div class="tog-info"><h4 style="color:var(--r)">Clear all data</h4><p>Permanently wipe everything and start fresh</p></div><button class="btn btn-d btn-sm" onclick="clearAllData()">Clear</button></div>
+    <div class="tog-row" style="border-top:1px solid var(--r);margin-top:8px;padding-top:16px"><div class="tog-info"><h4 style="color:var(--r)">Clear all data</h4><p>Delete browser records and saved photos on this address</p></div><button class="btn btn-d btn-sm" onclick="clearAllData()">Clear</button></div>
   </div>
 
   <!-- Help -->
@@ -1049,7 +1049,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.4</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.1</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -2619,9 +2619,14 @@ function obToggleGoal(goal,btn){if(_obGoals.includes(goal))_obGoals=_obGoals.fil
 function obSaveGoals(){if(_obGoals.length)localStorage.setItem('lumina_user_goals',JSON.stringify(_obGoals));obNext();}
 function obChooseStart(choice){
   if(choice==='fresh'){
-    const hasData=[KEYS.symp,KEYS.conc,KEYS.inv,KEYS.steps,KEYS.supps].some(k=>(readStore(k)||[]).length>0);
-    if(hasData){showConfirm('Start fresh?','This will clear all your existing data. This cannot be undone.','','Clear everything','btn-d',()=>{[KEYS.symp,KEYS.conc,KEYS.skin,KEYS.inv,KEYS.steps,KEYS.supps,KEYS.photos,KEYS.captures].forEach(k=>save(k,[]));save(KEYS.checks,{});_obStep=OB_SCREENS.length-1;_obDirection=1;obRender();});return;}
-    [KEYS.symp,KEYS.conc,KEYS.skin,KEYS.inv,KEYS.steps,KEYS.supps,KEYS.photos,KEYS.captures].forEach(k=>save(k,[]));save(KEYS.checks,{});
+    if(demoPreviewMode){canWrite();return;}
+    const hasData=Object.values(KEYS).some(k=>{
+      const v=load(k,[]);return Array.isArray(v)?v.length>0:(v&&typeof v==='object'&&Object.keys(v).length>0);
+    });
+    if(hasData){clearAllData();return;}
+    // Fresh/empty means initialize absent stores, never overwrite saved records.
+    [KEYS.symp,KEYS.conc,KEYS.skin,KEYS.inv,KEYS.steps,KEYS.supps,KEYS.photos,KEYS.captures].forEach(k=>{if(localStorage.getItem(k)===null)save(k,[])});
+    if(localStorage.getItem(KEYS.checks)===null)save(KEYS.checks,{});
   } else if(choice==='demo'){obFinish();enterDemoPreview();return;}
   else if(choice==='import'){setTimeout(()=>{switchTab('vault');activeVT='import';renderVault();},400);}
   _obStep=OB_SCREENS.length-1;_obDirection=1;obRender();
@@ -2629,8 +2634,9 @@ function obChooseStart(choice){
 // Legacy aliases
 function skipOnboarding(){obSkip();}
 function startEmpty(){
-  [KEYS.symp,KEYS.conc,KEYS.skin,KEYS.inv,KEYS.steps,KEYS.supps,KEYS.photos,KEYS.captures].forEach(k=>save(k,[]));save(KEYS.checks,{});
-  hideOnboarding();renderToday();updateBadges();
+  const hasData=Object.values(KEYS).some(k=>{const v=load(k,[]);return Array.isArray(v)?v.length>0:(v&&typeof v==='object'&&Object.keys(v).length>0)});
+  if(hasData){clearAllData();return;}
+  obChooseStart('fresh');hideOnboarding();renderToday();updateBadges();
 }
 function startDemo(){
   // Non-destructive: enter preview mode only
@@ -3612,7 +3618,7 @@ function editSkin(id){
 }
 
 // PROGRESS PHOTOS
-let _progressPhotoData=null;
+let _progressPhotoData=null,_progressPhotoFile=null;
 function renderProgressPhotos(){
   const photos=readStore(KEYS.photos).sort((a,b)=>new Date(b.date)-new Date(a.date));
   if(!photos.length){byId('body-list').innerHTML=`<div class="empty"><div class="ico">📸</div><h3>No progress photos</h3><p>Document your skin and hair journey over time.</p><button class="btn btn-p" onclick="openModal('photo')">Add First Photo</button></div>`;return}
@@ -3622,27 +3628,45 @@ function renderProgressPhotos(){
   Object.entries(byMonth).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([month,ps])=>{
     const [y,m]=month.split('-');const label=new Date(+y,+m-1).toLocaleDateString('en-CA',{month:'long',year:'numeric'});
     h+=`<div class="sec-title">${label}</div><div class="photo-grid">`;
-    ps.forEach(p=>{h+=`<div style="position:relative"><img src="${p.data}" class="photo-thumb" onclick="viewPhoto('${p.id}')"><div style="position:absolute;bottom:4px;left:4px;right:4px;font-size:10px;color:rgba(255,255,255,.8);text-shadow:0 1px 3px rgba(0,0,0,.8)">${p.area||''}</div></div>`});
+    ps.forEach(p=>{const image=isLegacyPhoto(p)?`src="${p.data}"`:(p.photoId?`data-lumina-photo-id="${p.photoId}"`:'');h+=`<div style="position:relative"><img ${image} class="photo-thumb" onclick="viewPhoto('${p.id}')"><div style="position:absolute;bottom:4px;left:4px;right:4px;font-size:10px;color:rgba(255,255,255,.8);text-shadow:0 1px 3px rgba(0,0,0,.8)">${p.area||''}</div></div>`});
     h+=`<div class="photo-add" onclick="openModal('photo')">+</div></div>`;
   });
   byId('body-list').innerHTML=h;
+  hydrateLuminaPhotoImages(byId('body-list'));
 }
 function handleProgressPhoto(e){
   const file=e.target.files[0];if(!file)return;
+  if(!canWrite())return;
+  _progressPhotoFile=file;e.target.value='';
   const reader=new FileReader();reader.onload=ev=>{_progressPhotoData=ev.target.result;byId('photo-preview-img').src=ev.target.result;byId('photo-preview-img').style.display='block';byId('photo-preview-hint').style.display='none'};reader.readAsDataURL(file);
 }
-function saveProgressPhoto(){
-  if(!_progressPhotoData){alert('Please select a photo.');return}
-  const e={id:uid(),data:_progressPhotoData,area:byId('photo-area').value.trim(),notes:byId('photo-notes').value.trim(),date:today()};
-  const a=readStore(KEYS.photos);a.unshift(e);
-  // Keep photos reasonable - warn if over 20
-  if(a.length>20){if(!confirm('You have 20+ photos stored. LocalStorage has limited space. Continue?'))return}
-  save(KEYS.photos,a);logActivity('photo_added','Progress photo',e.area||'',e.id,'photo');_progressPhotoData=null;closeModal('photo');renderBody();
+async function saveProgressPhoto(){
+  if(!canWrite())return;
+  if(!_progressPhotoFile){alert('Please select a photo.');return;}
+  const btn=document.querySelector('#modal-photo .btn-p');
+  if(btn){btn.disabled=true;btn.textContent='Saving…';}
+  let newId=null;
+  try{
+    const processed=await processLuminaImage(_progressPhotoFile);
+    newId=processed.id;
+    await luminaSavePhoto(newId,processed.blob);
+    const e={id:uid(),photoId:newId,storage:'indexeddb',mimeType:processed.mimeType,byteSize:processed.byteSize,area:byId('photo-area').value.trim(),notes:byId('photo-notes').value.trim(),date:today()};
+    const a=readStore(KEYS.photos);a.unshift(e);
+    if(!save(KEYS.photos,a))throw _lastSaveError||new Error('Could not write the progress photo record');
+    _progressPhotoData=null;_progressPhotoFile=null;
+    logActivity('photo_added','Progress photo',e.area||'',e.id,'photo');
+    closeModal('photo');renderBody();
+  }catch(err){
+    if(newId)await luminaDeletePhoto(newId).catch(e=>console.warn('[Progress Photo] rollback failed',e));
+    console.error('[Progress Photo] save failed',err);
+    alert('Could not save this photo. Your entry is still open; check storage space and try again.');
+  }finally{if(btn){btn.disabled=false;btn.textContent='Save';}}
 }
-function viewPhoto(id){
-  const p=readStore(KEYS.photos).find(x=>x.id===id);
-  if(!p)return;
-  openLightbox(p.data,[p.date,p.area,p.notes].filter(Boolean).join(' · '));
+async function viewPhoto(id){
+  const p=readStore(KEYS.photos).find(x=>x.id===id);if(!p)return;
+  const src=isLegacyPhoto(p)?p.data:(p.photoId?await luminaGetPhotoURL(p.photoId):null);
+  if(!src){alert('Photo unavailable.');return;}
+  openLightbox(src,[p.date,p.area,p.notes].filter(Boolean).join(' · '));
 }
 
 // ── PROTOCOLS TAB ──
@@ -6473,12 +6497,11 @@ document.addEventListener('click', function(e){
   else if(b.classList.contains('rv-view'))openProductPage(id);
 }, false);
 
-function saveInv(){
+async function saveInv(){
   if(!canWrite())return;
   try{
     const productId=byId('inv-id').value;
     const name=byId('inv-name').value.trim();
-    console.log('ADD PRODUCT SAVE CLICKED — id:',productId,'name:',name);
     if(!name){alert('Product name is required.');return;}
 
     const tags=byId('inv-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
@@ -6487,6 +6510,20 @@ function saveInv(){
     const photosEl=byId('inv-photos-data');
     let photos=[];try{photos=JSON.parse(photosEl.value||'[]');}catch(pe){console.warn('Photos parse error',pe);}
 
+    // Capture may arrive as a legacy base64 image; move it to IDB before committing.
+    // Preserve the original draft until the parent record has saved.
+    const converted=[];
+    for(const p of photos){
+      if(isLegacyPhoto(p)){
+        const blob=await luminaDataUrlBlob(p.data);
+        const id='photo_'+uid();await luminaSavePhoto(id,blob);
+        if(!_luminaPhotoDrafts.inv)luminaBeginPhotoDraft('inv');
+        _luminaPhotoDrafts.inv.added.add(id);
+        const {data,...rest}=p;
+        converted.push({...rest,id,storage:'indexeddb',mimeType:blob.type||'image/jpeg',byteSize:blob.size,createdAt:p.createdAt||new Date().toISOString()});
+      }else converted.push(p);
+    }
+    photos=converted;
     // Use f() to avoid shadowing 'productId'
     const f=elId=>byId(elId);
 
@@ -6538,7 +6575,7 @@ function saveInv(){
     }
     product.updatedAt=nowIso;
 
-    console.log('PRODUCT TO SAVE',product);
+    // Never log personal products, prescriptions, image or note fields.
 
     if(productId){
       const idx=inv.findIndex(x=>x.id===productId);
@@ -6558,7 +6595,7 @@ function saveInv(){
         :"Couldn't save this product. The photo may be too large.");
       return;
     }
-    console.log('SAVED — closing modal');
+    luminaFinishPhotoDraft('inv',true,product.photos);
     closeModal('inv');
     updateBadges();
 
@@ -6588,6 +6625,7 @@ function editInv(id){
   byId('inv-tags').value=(i.tags||[]).join(', ');byId('inv-notes').value=i.notes||'';
   byId('inv-strength').value=i.strength||'';byId('inv-prescriber').value=i.prescriber||'';byId('inv-directions').value=i.directions||'';
   byId('inv-photos-data').value=JSON.stringify(i.photos||[]);
+  luminaBeginPhotoDraft('inv',i.photos||[]);
   toggleRxFields(i.type);renderInvPhotos(i.photos||[]);
   openModal('inv',{skipReset:true});
 }
@@ -6714,12 +6752,15 @@ function addInvPhoto(){byId('inv-photo-input').click()}
 async function handleInvPhoto(e){
   const file=e.target.files[0];e.target.value='';
   if(!file)return;
+  if(!canWrite())return;
+  const draft=_luminaPhotoDrafts.inv;
   const grid=byId('inv-photos-grid');
   const placeholder=document.createElement('div');
   placeholder.className='tx3 f11';placeholder.textContent='Processing photo…';
   if(grid)grid.appendChild(placeholder);
   try{
     const photo=await processAndStoreLuminaPhoto(file);
+    if(!luminaMarkDraftPhoto('inv',photo,draft))return;
     photo.label='';photo.date=today();
     _invPhotos.push(photo);
     byId('inv-photos-data').value=JSON.stringify(_invPhotos);
@@ -6794,6 +6835,21 @@ async function luminaDeletePhoto(id){
     tx.oncomplete=()=>resolve();
     tx.onerror=()=>reject(tx.error);
   });
+}
+async function luminaDataUrlBlob(data){
+  if(typeof data!=='string'||!data.startsWith('data:image/'))throw new Error('Invalid image data');
+  const res=await fetch(data);if(!res.ok)throw new Error('Image data could not be loaded');
+  return res.blob();
+}
+async function luminaClearPhotoStore(){
+  const db=await openLuminaPhotoDB();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction(LUMINA_PHOTO_STORE,'readwrite');
+    tx.objectStore(LUMINA_PHOTO_STORE).clear();
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Photo clear aborted'));
+  });
+  for(const url of _luminaPhotoURLCache.values())URL.revokeObjectURL(url);
+  _luminaPhotoURLCache.clear();
 }
 const _luminaPhotoURLCache=new Map();
 async function luminaGetPhotoURL(id){
@@ -6906,16 +6962,57 @@ async function migrateLegacyPhotosToIndexedDB(){
 
 // ── SYMPTOM / CONCERN PHOTOS ──
 let _sympPhotos=[],_concPhotos=[];
+// Photo changes remain a draft until their parent record is saved successfully.
+// New blobs are placed in IDB immediately for preview, but cancelled drafts are cleaned up.
+const _luminaPhotoDrafts={symp:null,conc:null,inv:null};
+function luminaBeginPhotoDraft(kind,original=[]){
+  _luminaPhotoDrafts[kind]={baseline:new Set(original.filter(p=>p?.storage==='indexeddb').map(p=>p.id)),added:new Set()};
+}
+function luminaMarkDraftPhoto(kind,photo,originalDraft){
+  if(!_luminaPhotoDrafts[kind]||_luminaPhotoDrafts[kind]!==originalDraft){
+    if(photo?.storage==='indexeddb')luminaDeletePhoto(photo.id).catch(err=>console.warn('[Photo draft] cleanup failed',err));
+    return false;
+  }
+  originalDraft.added.add(photo.id);
+  return true;
+}
+function luminaReferencedPhotoIds(){
+  const ids=new Set();
+  [KEYS.symp,KEYS.conc,KEYS.inv,KEYS.photos].forEach(key=>{
+    load(key,[]).forEach(rec=>{
+      (rec.photos||[]).forEach(p=>{if(p?.storage==='indexeddb'&&p.id)ids.add(p.id)});
+      if(rec.storage==='indexeddb'&&rec.photoId)ids.add(rec.photoId);
+    });
+  });
+  return ids;
+}
+async function luminaDeleteUnreferencedPhoto(id){
+  if(!id||luminaReferencedPhotoIds().has(id))return;
+  await luminaDeletePhoto(id);
+}
+function luminaFinishPhotoDraft(kind,committed=false,finalPhotos=[]){
+  const draft=_luminaPhotoDrafts[kind];_luminaPhotoDrafts[kind]=null;
+  if(!draft)return;
+  const finalIds=new Set(finalPhotos.filter(p=>p?.storage==='indexeddb').map(p=>p.id));
+  const toClean=committed?
+    [...draft.baseline,...draft.added].filter(id=>!finalIds.has(id)):
+    [...draft.added];
+  toClean.forEach(id=>luminaDeleteUnreferencedPhoto(id).catch(err=>console.warn('[Photo draft] cleanup failed',id,err)));
+}
+
 
 async function handleSympPhotoFile(e){
   const file=e.target.files[0];e.target.value='';
   if(!file)return;
+  if(!canWrite())return;
+  const draft=_luminaPhotoDrafts.symp;
   const grid=byId('symp-photos-grid');
   const placeholder=document.createElement('div');
   placeholder.className='tx3 f11';placeholder.textContent='Processing photo…';
   if(grid)grid.appendChild(placeholder);
   try{
     const photo=await processAndStoreLuminaPhoto(file);
+    if(!luminaMarkDraftPhoto('symp',photo,draft))return;
     _sympPhotos.push(photo);
     renderSympPhotos();
   }catch(err){
@@ -6935,8 +7032,7 @@ function renderSympPhotos(){
   hydrateLuminaPhotoImages(el);
 }
 function removeSympPhoto(i){
-  const p=_sympPhotos[i];
-  if(p&&!isLegacyPhoto(p)&&p.storage==='indexeddb')luminaDeletePhoto(p.id).catch(err=>console.warn('[Symptom Photo] delete failed',err));
+  // Removal is only from this draft. The underlying blob stays until Save succeeds.
   _sympPhotos.splice(i,1);
   renderSympPhotos();
 }
@@ -6950,12 +7046,15 @@ async function viewSympPhotoEdit(i){
 async function handleConcPhotoFile(e){
   const file=e.target.files[0];e.target.value='';
   if(!file)return;
+  if(!canWrite())return;
+  const draft=_luminaPhotoDrafts.conc;
   const hist=byId('conc-photos-history');
   const placeholder=document.createElement('div');
   placeholder.className='tx3 f11 mt6';placeholder.textContent='Processing photo…';
   if(hist)hist.prepend(placeholder);
   try{
     const photo=await processAndStoreLuminaPhoto(file);
+    if(!luminaMarkDraftPhoto('conc',photo,draft))return;
     _concPhotos.unshift(photo);
     renderConcPhotos();
   }catch(err){
@@ -6981,8 +7080,7 @@ function renderConcPhotos(){
   hydrateLuminaPhotoImages(el);
 }
 function removeConcPhoto(id){
-  const p=_concPhotos.find(x=>x.id===id);
-  if(p&&!isLegacyPhoto(p)&&p.storage==='indexeddb')luminaDeletePhoto(p.id).catch(err=>console.warn('[Concern Photo] delete failed',err));
+  // Defer deletion so Cancel can safely return to the original entry.
   _concPhotos=_concPhotos.filter(p=>p.id!==id);
   renderConcPhotos();
 }
@@ -7129,6 +7227,7 @@ function saveManualCapture(){
   byId('inv-name').value=name;byId('inv-brand').value=brand;byId('inv-type').value=type;
   byId('inv-status').value='In Use';byId('inv-qty').value=100;
   // Attach photo if captured
+  luminaBeginPhotoDraft('inv');
   _invPhotos=_captureImageData?[{data:_captureImageData,label:'Product photo',date:today()}]:[];
   byId('inv-photos-data').value=JSON.stringify(_invPhotos);
   byId('inv-photos-grid').innerHTML=_invPhotos.map((p,i)=>`<img src="${p.data}" class="photo-thumb" onclick="viewInvPhoto(${i})">`).join('');
@@ -7870,24 +7969,25 @@ function renderInsights(){
 function openModal(name,opts={}){
   const skip=opts.skipReset===true;
   if(!skip){
-    if(name==='symp'&&!byId('symp-id').value){byId('symp-mtitle').textContent='Log Symptom';['symp-name','symp-trig','symp-notes'].forEach(i=>byId(i).value='');byId('symp-cat').value='Digestive';byId('symp-sev').value=5;byId('sev-num').textContent='5';byId('symp-time').value='Morning';byId('symp-rec').classList.remove('on');const ss=byId('symp-status');if(ss)ss.value='Watching';resetSympLinks();_sympPhotos=[];renderSympPhotos();}
-    if(name==='conc'&&!byId('conc-id').value){byId('conc-mtitle').textContent='Add Concern';['conc-title','conc-area','conc-notes'].forEach(i=>byId(i).value='');byId('conc-status').value='Watching';byId('conc-started').value=today();byId('conc-followup').value='';byId('conc-doc').classList.remove('on');const cr=byId('conc-recurring');if(cr)cr.classList.remove('on');resetConcLinks();_concPhotos=[];renderConcPhotos();}
+    if(name==='symp'&&!byId('symp-id').value){luminaBeginPhotoDraft('symp');byId('symp-mtitle').textContent='Log Symptom';['symp-name','symp-trig','symp-notes'].forEach(i=>byId(i).value='');byId('symp-cat').value='Digestive';byId('symp-sev').value=5;byId('sev-num').textContent='5';byId('symp-time').value='Morning';byId('symp-rec').classList.remove('on');const ss=byId('symp-status');if(ss)ss.value='Watching';resetSympLinks();_sympPhotos=[];renderSympPhotos();}
+    if(name==='conc'&&!byId('conc-id').value){luminaBeginPhotoDraft('conc');byId('conc-mtitle').textContent='Add Concern';['conc-title','conc-area','conc-notes'].forEach(i=>byId(i).value='');byId('conc-status').value='Watching';byId('conc-started').value=today();byId('conc-followup').value='';byId('conc-doc').classList.remove('on');const cr=byId('conc-recurring');if(cr)cr.classList.remove('on');resetConcLinks();_concPhotos=[];renderConcPhotos();}
     if(name==='skin'){skinReset();}else if(false&&!byId('skin-id').value){document.querySelectorAll('#skin-conds .cond-btn').forEach(b=>b.classList.remove('sel'));['skin-breakout','skin-notes'].forEach(i=>byId(i).value='');byId('skin-id').value=''}
     if(name==='search'){byId('search-input').value='';byId('search-results').innerHTML='<p class="tx3 f13" style="text-align:center;padding:20px 0">Start typing to search</p>';setTimeout(()=>byId('search-input').focus(),200)}
     if(name==='supp'){openSuppModal(null);return;}
-    if(name==='inv'&&!byId('inv-id').value){byId('inv-mtitle').textContent='Add Item';['inv-name','inv-brand','inv-cat','inv-purpose','inv-tags','inv-notes','inv-opened','inv-expiry','inv-size','inv-strength2','inv-ingr','inv-strength','inv-prescriber','inv-directions','inv-form'].forEach(i=>byId(i).value='');byId('inv-type').value='Skincare';updateInvTypeFields('Skincare');byId('inv-status').value='In Use';byId('inv-qty').value=100;byId('inv-photos-data').value='[]';byId('rx-fields').style.display='none';byId('inv-photos-grid').innerHTML='';_invPhotos=[];['inv-pkg-qty'].forEach(id=>{const el=byId(id);if(el)el.value=''});
+    if(name==='inv'&&!byId('inv-id').value){luminaBeginPhotoDraft('inv');byId('inv-mtitle').textContent='Add Item';['inv-name','inv-brand','inv-cat','inv-purpose','inv-tags','inv-notes','inv-opened','inv-expiry','inv-size','inv-strength2','inv-ingr','inv-strength','inv-prescriber','inv-directions','inv-form'].forEach(i=>byId(i).value='');byId('inv-type').value='Skincare';updateInvTypeFields('Skincare');byId('inv-status').value='In Use';byId('inv-qty').value=100;byId('inv-photos-data').value='[]';byId('rx-fields').style.display='none';byId('inv-photos-grid').innerHTML='';_invPhotos=[];['inv-pkg-qty'].forEach(id=>{const el=byId(id);if(el)el.value=''});
   if(byId('inv-cat-custom'))byId('inv-cat-custom').value='';
   if(byId('inv-cat-custom-row'))byId('inv-cat-custom-row').style.display='none';if(byId('inv-fav'))byId('inv-fav').classList.remove('on')}
-    if(name==='photo'){byId('photo-preview-img').style.display='none';byId('photo-preview-hint').style.display='block';['photo-area','photo-notes'].forEach(i=>byId(i).value='');_progressPhotoData=null}
+    if(name==='photo'){byId('photo-file').value='';byId('photo-preview-img').style.display='none';byId('photo-preview-hint').style.display='block';['photo-area','photo-notes'].forEach(i=>byId(i).value='');_progressPhotoData=null;_progressPhotoFile=null}
     if(name==='import'){_impStep=1;_impRows=[];_impHeaders=[];_impMap={};renderImpStep();byId('imp-next-btn').style.display='none'}
   }
   const _om=byId('modal-'+name);if(_om){_om.classList.add('open');const _ms=_om.querySelector('.modal');if(_ms)_ms.scrollTop=0;}else console.warn('openModal: no element modal-'+name);
 }
 function closeModal(name){
   const _cm=byId('modal-'+name);if(_cm)_cm.classList.remove('open');
-  if(name==='symp')byId('symp-id').value='';
-  if(name==='conc')byId('conc-id').value='';
+  if(name==='symp'){luminaFinishPhotoDraft('symp',false);byId('symp-id').value='';}
+  if(name==='conc'){luminaFinishPhotoDraft('conc',false);byId('conc-id').value='';}
   if(name==='inv'){
+    luminaFinishPhotoDraft('inv',false);
     const wasEditing=byId('inv-id').value;
     byId('inv-id').value='';_invPhotos=[];
     // If cancelled from product page edit, keep product page open
@@ -7896,6 +7996,7 @@ function closeModal(name){
       openProductPage(_currentProductId);
     }
   }
+  if(name==='photo'){_progressPhotoFile=null;_progressPhotoData=null;}
   if(name==='skin')byId('skin-id').value='';
   if(name==='supp')byId('supp-id').value='';
   if(name==='step')byId('step-id').value='';
@@ -7939,30 +8040,121 @@ function weekends(id){document.querySelectorAll(`#${id} .dchip:not(.dchip-all)`)
 function clearDays(id){document.querySelectorAll(`#${id} .dchip:not(.dchip-all)`).forEach(b=>b.classList.remove('on'))}
 function getDayPicker(id){return [...document.querySelectorAll(`#${id} .dchip.on:not(.dchip-all)`)].map(b=>DAYS.find(d=>d.slice(0,2)===b.textContent)||b.textContent)}
 function toggleColl(id){const c=byId(id),b=c.previousElementSibling;c.classList.toggle('open');b.classList.toggle('open')}
-async function exportData(){
-  const d={};
-  Object.entries(KEYS).forEach(([k,v])=>d[k]=load(v));
-  // Embed IndexedDB-stored photo blobs (as base64) so the export stays a single
-  // self-contained, portable file — matches legacy behavior where photos were
-  // already inline, just sourced from IndexedDB instead of the record itself now.
-  const photoIds=new Set();
-  [d.symp,d.conc,d.inv].forEach(arr=>{
-    (arr||[]).forEach(rec=>{
-      (rec.photos||[]).forEach(p=>{if(p&&p.storage==='indexeddb'&&p.id)photoIds.add(p.id);});
+// Backup format remains compatible with old JSON exports. IndexedDB blobs are
+// included in _photoBlobs, and export refuses to produce a misleading partial file.
+function luminaBackupPhotoRefs(data){
+  const ids=new Set();
+  [data.symp,data.conc,data.inv,data.photos].forEach(records=>{
+    if(!Array.isArray(records))return;
+    records.forEach(rec=>{
+      (Array.isArray(rec.photos)?rec.photos:[]).forEach(p=>{if(p?.storage==='indexeddb'&&p.id)ids.add(p.id);});
+      if(rec.storage==='indexeddb'&&rec.photoId)ids.add(rec.photoId);
     });
   });
-  const photoBlobs={};
-  for(const id of photoIds){
-    try{
-      const blob=await luminaGetPhoto(id);
-      if(blob)photoBlobs[id]=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(blob);});
-    }catch(err){console.warn('[Export] could not include photo',id,err);}
-  }
-  d._photoBlobs=photoBlobs;
-  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`lumina-${today()}.json`;a.click();
+  return ids;
 }
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);Object.entries(KEYS).forEach(([k,v])=>{if(d[k]){let val=d[k];if(k==='inv'&&Array.isArray(val)){val=val.map(item=>item.type==='Supplement'&&!Array.isArray(item.timing)?{...item,timing:normalizeTimingArray(item.timing)}:item);}save(v,val);}});migrateSupplementTimingSchema();rerenderActiveTab();alert('Imported! Legacy supplement timing normalized.')}catch(err){console.error('Import error:',err);alert('Invalid file.')}};r.readAsText(f)}
+async function exportData(){
+  if(demoPreviewMode){canWrite();return;}
+  try{
+    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=load(storageKey));
+    const blobs={};
+    for(const id of luminaBackupPhotoRefs(d)){
+      const blob=await luminaGetPhoto(id);
+      if(!blob)throw new Error('A referenced photo is missing: '+id);
+      blobs[id]=await new Promise((resolve,reject)=>{
+        const reader=new FileReader();reader.onload=()=>resolve(reader.result);
+        reader.onerror=()=>reject(reader.error||new Error('Unable to read photo'));
+        reader.readAsDataURL(blob);
+      });
+    }
+    d._photoBlobs=blobs;
+    d._backupVersion=2;
+    d._exportedAt=new Date().toISOString();
+    const file=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=`lumina-${today()}.json`;a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),60000);
+  }catch(err){
+    console.error('[Backup] export blocked',err);
+    alert('Backup was not created because at least one photo could not be included. Your records are unchanged. Please try again before moving devices or addresses.');
+  }
+}
+function luminaValidateBackup(d){
+  if(!d||typeof d!=='object'||Array.isArray(d))throw new Error('Not a Lumina backup');
+  const found=Object.keys(KEYS).filter(k=>Object.prototype.hasOwnProperty.call(d,k));
+  if(!found.length)throw new Error('No Lumina data found');
+  for(const k of found){
+    if(['checks'].includes(k)){
+      if(d[k]===null||typeof d[k]!=='object'||Array.isArray(d[k]))throw new Error('Invalid '+k);
+    }else if(!Array.isArray(d[k]))throw new Error('Invalid '+k);
+  }
+  if(d._photoBlobs!==undefined&&(!d._photoBlobs||typeof d._photoBlobs!=='object'||Array.isArray(d._photoBlobs)))throw new Error('Invalid photo backup');
+  const refs=luminaBackupPhotoRefs(d);
+  for(const id of refs){
+    if(typeof d._photoBlobs?.[id]!=='string'||!d._photoBlobs[id].startsWith('data:image/')){
+      throw new Error('Backup lacks photo data for '+id);
+    }
+  }
+  return found;
+}
+async function luminaRestoreBackup(d){
+  // Validate all content and decode image blobs BEFORE touching current records.
+  const keys=luminaValidateBackup(d);
+  const photos=Object.entries(d._photoBlobs||{});
+  const prepared=[];
+  for(const [id,raw] of photos){prepared.push([id,await luminaDataUrlBlob(raw)]);}
+  const oldValues=new Map(keys.map(k=>[KEYS[k],localStorage.getItem(KEYS[k])]));
+  const priorBlobs=new Map();const changed=[];
+  try{
+    for(const [id,blob] of prepared){
+      priorBlobs.set(id,await luminaGetPhoto(id));
+      await luminaSavePhoto(id,blob);changed.push(id);
+    }
+    for(const k of keys){
+      let val=d[k];
+      if(k==='inv'&&Array.isArray(val)){
+        val=val.map(item=>item.type==='Supplement'&&!Array.isArray(item.timing)?{...item,timing:normalizeTimingArray(item.timing)}:item);
+      }
+      if(!save(KEYS[k],val))throw _lastSaveError||new Error('Browser storage write failed');
+    }
+    for(const url of _luminaPhotoURLCache.values())URL.revokeObjectURL(url);
+    _luminaPhotoURLCache.clear();
+    rerenderActiveTab();updateBadges();
+    return {records:keys.length,photos:prepared.length};
+  }catch(err){
+    // The import is replace-style; on any failure restore previous keys and blobs.
+    for(const [key,value] of oldValues){
+      try{if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);}
+      catch(rollbackErr){console.error('[Import] key rollback failed',key,rollbackErr);}
+    }
+    for(const id of changed.reverse()){
+      try{const old=priorBlobs.get(id);if(old)await luminaSavePhoto(id,old);else await luminaDeletePhoto(id);}
+      catch(rollbackErr){console.error('[Import] photo rollback failed',id,rollbackErr);}
+    }
+    throw err;
+  }
+}
+function importData(e){
+  if(!canWrite())return;
+  const file=e.target.files?.[0];e.target.value='';if(!file)return;
+  const reader=new FileReader();
+  reader.onerror=()=>alert('Could not read this backup file. No changes were made.');
+  reader.onload=event=>{
+    let data;
+    try{data=JSON.parse(event.target.result);luminaValidateBackup(data);}
+    catch(err){alert('This backup is incomplete or invalid: '+err.message+' No changes were made.');return;}
+    showConfirm('Restore Lumina backup?',
+      'This will replace the records in this browser with the selected backup, including backed-up photos. Existing records will not be merged.',
+      'Keep a separate backup of your current data before continuing.',
+      'Restore backup','btn-p',async()=>{
+        try{
+          const result=await luminaRestoreBackup(data);
+          alert('Backup restored: '+result.records+' data sections and '+result.photos+' photos. Please review your records and pictures.');
+        }catch(err){console.error('[Import] restore failed',err);alert('Restore failed. The app attempted to retain your previous data. Please verify records before proceeding.');}
+      }
+    );
+  };
+  reader.readAsText(file);
+}
 // confirmReset: see below
 function updateBadges(){
   const ub=(id,n)=>{const el=byId(id);if(el){el.textContent=n;el.style.display=n>0?'flex':'none'}};
@@ -8056,15 +8248,23 @@ function exitDemoPreview(){
 function loadDemoData(){enterDemoPreview();}
 function removeDemoData(){exitDemoPreview();}
 function clearAllData(){
+  if(!canWrite())return;
   showConfirm(
-    'Clear all data?',
-    'Everything will be wiped and the app will reset. This cannot be undone.',
-    '⚠️ This includes all your products, symptoms, routines, and concerns.',
-    'Clear everything','btn-d',
-    ()=>{
-      Object.values(KEYS).forEach(k=>localStorage.removeItem(k));
-      localStorage.removeItem('lm_launched');
-      location.reload();
+    'Clear all data and photos?',
+    'This removes Lumina records and locally saved images from this browser address.',
+    'Irreversible. Export and verify a separate backup first. Other browser addresses are not affected.',
+    'Clear everything','btn-d',async()=>{
+      const keys=Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)).filter(k=>k&&(k.startsWith('lm_')||k.startsWith('lumina_')));
+      const previous=new Map(keys.map(k=>[k,localStorage.getItem(k)]));
+      try{
+        keys.forEach(k=>localStorage.removeItem(k));
+        await luminaClearPhotoStore();
+        location.reload();
+      }catch(err){
+        for(const [k,v] of previous){try{localStorage.setItem(k,v);}catch(e){console.error('[Reset] rollback failed',k,e);}}
+        console.error('[Reset] cancelled after error',err);
+        alert('Could not fully clear Lumina. The app attempted to restore your records. Please check your saved data.');
+      }
     }
   );
 }
@@ -10576,6 +10776,7 @@ function saveSymptom(){
     return;
   }
   if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='Save';}
+  luminaFinishPhotoDraft('symp',true,e.photos);
   logActivity('symptom_logged',e.name,e.cat+' · Sev '+e.sev,e.id,'symptom');
   closeModal('symp');renderBody();updateBadges();
 }
@@ -10591,6 +10792,7 @@ function editSymp(id){
   const ss=byId('symp-status');if(ss)ss.value=s.status||'Watching';
   _sympProductLinks=Array.isArray(s.productLinks)?[...s.productLinks]:[];
   _sympPhotos=Array.isArray(s.photos)?[...s.photos]:[];
+  luminaBeginPhotoDraft('symp',_sympPhotos);
   populateSympConcernDropdown(s.concernId||'');
   renderProductLinkTags('symp');
   renderSympPhotos();
@@ -10633,6 +10835,7 @@ function saveConcern(){
     return;
   }
   if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='Save';}
+  luminaFinishPhotoDraft('conc',true,updated.photos);
   closeModal('conc');renderBody();renderToday();updateBadges();
 }
 
@@ -10649,6 +10852,7 @@ function editConc(id){
   co.doc?byId('conc-doc').classList.add('on'):byId('conc-doc').classList.remove('on');
   _concProductLinks=Array.isArray(co.productLinks)?[...co.productLinks]:[];
   _concPhotos=Array.isArray(co.photos)?[...co.photos]:[];
+  luminaBeginPhotoDraft('conc',_concPhotos);
   renderProductLinkTags('conc');
   renderConcPhotos();
   openModal('conc');
@@ -11094,8 +11298,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.4';
-const APP_BUILD='2026.08.08.01';
+const APP_VERSION='0.9.5-beta.1';
+const APP_BUILD='2026.10.24.phase-a.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11121,6 +11325,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {
+    version:'0.9.5-beta.1',
+    date:'October 24, 2026',
+    status:'Beta — preview only',
+    added:['Photo-aware JSON restore with confirmation and rollback attempt', 'IndexedDB storage for new progress photos'],
+    changed:['Cancelled symptom/concern photo edits leave existing photos intact', 'Clear All also clears IndexedDB photo storage', 'Incomplete photo exports no longer silently download'],
+    fixed:['Photo edit cancel data loss in symptom and concern forms', 'Progress photo save failure no longer dismisses unsaved entry'],
+    known:['Needs iPhone Safari QA before production release', 'Other findings from 2026-10-24 audit remain open']
+  },
   {
     version:'0.9.3',
     date:'August 5, 2026',
@@ -11360,7 +11573,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initSwipe();
   initLongPress();
   checkShowWhatsNew();
-  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v0.9.4 · Build 2026.08.08.01 · Standalone';
+  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v0.9.5-beta.1 · Build 2026.10.24.phase-a.1 · Preview';
 
 });
 

@@ -33,3 +33,7 @@ NOTE: isolated Chromium smoke used mock localStorage; “CODE-CONFIRMED” means
 | LUM-BUG-024 | P2 | monolithic source, duplicate renderer and large inline handler count | CODE REVIEW |
 
 Historical BUG-003 supplement search: PASS isolated with fictional Vault item; BUG-004 detail edit/save: PASS with delayed assertion. BUG-002 photo attach/save, BUG-005 image lightbox and BUG-006 reorder still require real-origin/device test. Full specifics in `docs/AUDIT_2026-10-24.md`.
+
+## 2026-10-24 Phase A candidate status
+LUM-BUG-001/010/011/012: code fixes proposed in v0.9.5-beta.1; 17 controlled storage-simulation checks PASS, **not real-device Verified**. Old onboarding Start Fresh partial clear also revised.
+Other high-priority findings remain: LUM-BUG-013 Vault Cleanup, 014 unescaped HTML, 015 UTC dates, 019 low-level preview write boundary, and further audit backlog. Do not close issues before regression and Safari/clean-origin verification.

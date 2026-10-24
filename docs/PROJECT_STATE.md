@@ -1,3 +1,10 @@
+# Latest state — 2026-10-24 Phase A Beta
+**Production:** main 2e02f304, v0.9.4 unchanged. **User-reported Cloudflare:** https://lumina-9w6.pages.dev/ (live SHA unverified).
+**Beta:** v0.9.5-beta.1 branch `fix/photo-data-integrity-v0.9.5-beta.1`, stacked on governance branch; not merged/deployed to production.
+**Built:** safer symptom/concern/Vault photo drafts; export/import photo protection; new progress IDB; full Reset; onboarding preservation. **QA:** 17/17 PASS automated *simulated-storage*, Node syntax PASS; true origin IDB, clean domain restore and Safari NOT TESTED/BLOCKED.
+**Next:** test Cloudflare PR preview and actual clean origin/real images on Safari, address Phase B unsafe HTML and Vault Cleanup, seek production approval. Full detail in `docs/PHASE_A_DATA_INTEGRITY_2026-10-24.md`.
+
+---
 # Project State
 Updated: 2026-10-24, following broad audit.
 **App code baseline:** main `2e02f304dcbb29931d3468dbb51fdbbb2a3bf962`, v0.9.4. **Docs branch:** docs/project-governance-2026-10-24. **Deployment:** user confirmed https://lumina-9w6.pages.dev/ is deployed; independent live fetch/deployment SHA verification BLOCKED.
