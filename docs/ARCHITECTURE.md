@@ -7,3 +7,7 @@ Critical gap: `exportData()` embeds `_photoBlobs` but `importData()` does not re
 
 ## Proposed Phase B v0.9.5-beta.2 architecture (unmerged)
 LocalISODate helper aligns daily keys and calendar cells with browser calendar day; no migration of legacy UTC keys. luminaText encodes untrusted values when rendering HTML, preserving raw storage; note only selected views are hardened, and app still uses many dynamic innerHTML and inline handlers. Data access load returns isolated fictional key values in Sample Preview; save rejects preview writes; IndexedDB mutators also reject. No database schema changes. Security/comprehensive mutator audits remain open.
+
+
+### Beta.3 technical note (unmerged)
+Escape now prioritizes confirmation, lightbox, open modal/sheet, then underlying product detail. Uses existing closeModal cleanup; no new store fields or migrations. Smart Capture remains manual without OCR integration. Printed summary and recent capture cards use display-only luminaText escaping; data at rest remains raw/editable. Preview avoids persisting theme/onboarding/profile/version/dev flags. Other dynamic HTML sinks and direct writers need review.

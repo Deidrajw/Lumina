@@ -14,3 +14,7 @@ Do not expand major features before stabilizing core flows.
 
 ## Phase B status 2026-10-24
 Beta v0.9.5-beta.2 implements selected Cleanup, date, demo isolation and output escaping fixes. NOT release-ready: broader HTML/handler security review, all storage mutators, actual iPhone Safari and genuine photo backup restoration remain. Preserve v0.9.4 main until approved. Next after stabilization: Phase C overlay Escape and safe-area polish, user-approved grouped cards/accordion density improvements, honest Smart Capture wording.
+
+
+## Beta.3 focus (2026-10-24)
+Escape stack, honest Smart Capture, doctor-print output safety and sample preview setting isolation implemented as candidate; real-browser/IDB/Safari QA and full security audit still gate shipping. Next design-only Phase C concepts after stable release: reduce Today and Insights density with user-approved previews, improve touch targets, colour contrast and focus states.

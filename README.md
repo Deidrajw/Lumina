@@ -23,3 +23,7 @@ Public repo: never store actual personal wellness data, photos, backups or secre
 
 ## Latest implementation candidate
 [Phase B v0.9.5-beta.2 stability notes](docs/PHASE_B_STABILITY_2026-10-24.md). This beta is stacked on Phase A and governance PRs, and does not modify production main.
+
+
+## Latest candidate
+[Beta.3 release hardening](docs/PHASE_C_HARDENING_2026-10-24.md) — stacked review branch, not production. Real Safari/IDB/security checks required before any main merge.

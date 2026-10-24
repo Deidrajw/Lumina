@@ -1,3 +1,7 @@
+# Latest beta state — 2026-10-24
+Production main: 2e02f304 v0.9.4 unchanged. Proposed v0.9.5-beta.3 branch fix/lumina-release-hardening-v0.9.5-beta.3, stacked on Phase B (PR #3), Phase A (PR #2), governance (PR #1). Built: Escape foremost overlay/confirm, honest manual Smart Capture copy, printable doctor report escaping, sample-preview settings flags write guard. Node syntax PASS; isolated Chromium 16/16 PASS; actual Safari, Cloudflare preview SHA, genuine IndexedDB backup and exhaustive security NOT TESTED. NO-GO production. Next: real origin and iPhone QA; review stacked PRs; approval before main merge.
+
+---
 # Latest state — Phase B beta.2 (2026-10-24)
 Production main: 2e02f304 / v0.9.4 unchanged. Beta branch: fix/lumina-phase-b-stability-v0.9.5-beta.2, stacked on Phase A PR #2 and docs PR #1. NOT MERGED or DEPLOYED.
 Built: populated Vault Cleanup fix; targeted escaping of saved text in Today/Body/Vault/Insights/Timeline; browser-local date calculations; Sample Preview central record and photo write guards.

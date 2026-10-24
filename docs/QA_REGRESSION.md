@@ -39,3 +39,7 @@ PASS automated isolated Chromium with mock localStorage and fictional data: 13/1
 PASS automated simulated-storage regressions: Phase A 17/17 cases; basic navigation at 320,375,390,393,430px. PASS embedded JavaScript syntax validation.
 NOT TESTED: actual iPhone Safari; genuine IndexedDB photo persistence and clean-origin restore; live Cloudflare preview/deployed SHA; exhaustive dangerous HTML sinks, remaining direct writes, legacy date DST, full doctor/share/overlay flows.
 Status: beta candidate / NO GO production until real testing and approval.
+
+
+## 2026-10-24 beta.3 isolated test results
+PASS automated Chromium with fictional data and mocked localStorage (16/16): Escape symptom sheet, confirmation Cancel, product behind sheet, photo sheet, Smart Capture no OCR overpromise, hostile text in recent captures, PDF export escaping concern/symptom/prescription/supplement, demo theme/onboarding/profile/version/dev flags non-persistence, demo central save denied, no horizontal overflow on five tabs at 320/375/390/393/430px. PASS Node JS syntax. No page errors in isolated run. BLOCKED local HTTP/HTTPS browser origin (`ERR_BLOCKED_BY_ADMINISTRATOR`), so true IndexedDB cross-origin restore not tested. NOT TESTED real iPhone Safari, full doctor/share, all HTML sinks, all direct storage writers, keyboard focus and full regression. Current release decision NO-GO.
