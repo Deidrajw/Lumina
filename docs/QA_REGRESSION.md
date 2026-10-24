@@ -57,3 +57,8 @@ PASS automated isolated Chromium, fictional Sample Preview/localStorage mock: 60
 PASS calculated: dark tertiary on card #1c1925 ~5.37:1 versus old 2.75:1; light tertiary on white ~5.82:1 versus old 2.93:1. Flat token pairs do not prove all overlays/translucency meet WCAG AA.
 PASS automated isolated design concept: six mock tabs work, fake Vault search filters, theme switch works; zero page exceptions.
 NOT TESTED actual beta.5 Cloudflare deployment SHA, iPhone Safari/VoiceOver, CRUD/photo, cross-origin IndexedDB backup, 200% zoom, full keyboard focus, data integrity/security and LCP/INP/CLS. No production release certification. See docs/AUDIT_UIUX_FULL_2026-10-24.md.
+
+
+## v0.9.5-beta.6 test evidence — 2026-10-24
+PASS isolated Chromium (fictional mocked localStorage): 60 screen renders = 6 main sections × 320/375/390/393/430px × dark/light, with no document horizontal overflow or uncaught page errors. 9 more PASS isolated cases: populated Vault group/review, expandable Unopened with aria-expanded, Vault search, Insights evidence/context details and retained expanded state, Today check-in and bounded total, quick symptom editor and history expansion. PASS JS Node syntax.
+NOT TESTED real Safari Beta 6, full create/read/edit/save/cancel/delete flows and photos, clean-origin IndexedDB photo restore, import failure/quotas, VoiceOver/zoom, full security writers/HTML audit, full doctor reports and real CWV performance. Production NO-GO pending QA and approval. Artifacts include QA_CHECKLIST.md and JSON synthetic test evidence in ZIP.

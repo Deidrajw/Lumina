@@ -65,3 +65,10 @@ Base main 2e02f304 v0.9.4 unchanged; new branch fix/lumina-import-display-safety
 **Next:** confirm Cloudflare branch preview, user review/approval of concepts, real photo/backup and Safari checks, then implement approved changes on separate branch with full regression.
 
 **GitHub review reference (2026-10-24):** draft PR #6 https://github.com/Deidrajw/Lumina/pull/6 ; beta.5 initial implementation commit 33bfd9652b1219951e53cb580998f9433e106f9c (root index.html blob 80ad69cb10a5f679826bcf7cc64adf24f54cb98b). Cloudflare Pages check SUCCESS, immutable preview https://e5424f90.lumina-9w6.pages.dev . Production main remains 2e02f304. Real Safari/backup restore is still NOT TESTED. **Next exact step:** user evaluates separate six-screen concept for approval; complete real iPhone Safari/IDB photo recovery before production merge.
+
+
+## 2026-10-24 — Approved UI/UX implementation Phase 1 v0.9.5-beta.6
+Approval: user approved six-screen concept; not an instruction to release to main. Parent: beta5 a7d9ae2; branch: feature/approved-uiux-today-vault-insights-beta6; production 2e02f304 unchanged.
+Changed root index.html: Today markup/renderToday primary check-in, quick buttons, bounded progress, grouped history; Vault renderInventory/toggleInvSection counts, review and accessible status disclosure; Insights renderInsights main observation first with evidence/secondary analysis details and preserved expanded states; existing CSS tokens, changelog/version. Data/IDB schemas and linked CRUD unchanged. Body/Protocols/Settings approved for next batch, not silently dropped.
+QA 69/69 PASS isolated automated Chromium fake localStorage, six views × widths 320/375/390/393/430 × light/dark plus nine interaction scenarios; Node syntax PASS. NOT TESTED actual iPhone Safari, real photo restore, full regression, quota/VoiceOver/security. No actual personal data. Rollback beta5 a7d9ae2, which does not restore browser data.
+Next exact step: Cloudflare preview SHA verification, user Safari review using fictional records, then Body/Protocols/Settings staged UI implementation and explicit main merge approval only after data safety QA.

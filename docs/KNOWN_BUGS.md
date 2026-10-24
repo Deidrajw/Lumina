@@ -65,3 +65,9 @@ LUM-BUG-029 P1 (UX review): populated Today excessive similar alerts/cards and e
 LUM-BUG-030 P1 (UX review): Vault dense rows with repeated statuses, Insights stacked multiple timeframes, Body/Protocols overflow and alternate reorder path. Proposed designs only.
 LUM-BUG-031 P2 (a11y outstanding): 39 static backdrop elements and 268 inline onclick attributes; complete focus, keyboard, accessible names, safe HTML and direct-write audit NOT TESTED. Counts are maintenance scope, not evidence all overlays fail.
 Previous data portability, security and preview isolation issues await real Safari/IDB QA. See docs/AUDIT_UIUX_FULL_2026-10-24.md.
+
+
+## 2026-10-24 beta.6 (approved UX Phase 1)
+LUM-BUG-029 Today card overload and unweighted progress total: candidate improved with task-first hierarchy and bounded scheduled count (isolated PASS, real Safari/data NOT VERIFIED).
+LUM-BUG-030 Vault/Insights default density: candidate collapsible secondary buckets/evidence; 69 isolated checks PASS; no screen-reader/device verification. Body/Protocols/Settings design debt staged next.
+Existing P0 photo clean-origin import/restore and broad injected-HTML/direct-storage writer reviews remain OPEN and block any main release. No data schema change, no personal data involved.

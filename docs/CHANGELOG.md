@@ -47,3 +47,11 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - No migration, new features, removed screens or IA changes. Beta.4 changelog history preserved.
 - Separate fictional six-screen interactive proposed design studio available for user review, not integrated.
 - QA 60/60 isolated Chromium screen/theme/width checks PASS, JS syntax PASS. Actual Safari/VoiceOver/photo restore/full regression NOT TESTED. Production main remains v0.9.4.
+
+
+## v0.9.5-beta.6 — Approved UX Phase 1, unreleased (2026-10-24)
+- Today: primary skin check-in, quick symptom/routines actions, needs-attention and concerns visible, additional symptom/history details collapsed but available; routine total uses completed/scheduled + daily log, no-schedule shown as dash.
+- Vault: in-use/available summary, quick needs-review route, collapsible existing alerts and secondary inventory; accessible button group headings, existing search/filter/CRUD intact.
+- Insights: lead with logged observation and timeframe/caveat; grouped supporting entries/category and extended skin/Rx sections without deleting historical views.
+- Six-screen user-approved concept, Body/Protocols/Settings staged next. No schema/ID or photo storage changes, no migrations.
+- **PASS isolated automated Chromium:** 69/69 across 5 widths/2 themes/six screens + 9 populated interactions; JS syntax PASS. **NOT TESTED:** actual iPhone Safari, fresh-origin JSON+photo restoration, full app security, VoiceOver and regression. No production main merge or deployment.

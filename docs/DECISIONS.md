@@ -21,3 +21,9 @@
 - DEC-018 (candidate implemented): Improve text contrast, visible focus, touch sizes and semantic current-page selection without changing data schema, functional layout or existing primary navigation.
 - DEC-019 (proposal, awaiting user approval): Group Today alert detail, Vault product status, and Insights supporting metrics/evidence. Never hide critical status or claim observed association caused a symptom.
 - DEC-020: Match UX proposals to the supplied 81-page UI/UX study guide; measure real task success and performance instead of equating aesthetic appearance with functional verification.
+
+
+- DEC-021 (2026-10-24): User says “i approve” of six-screen UI/UX concept. Approves planned layout implementations on feature branches, not merge/deploy to production.
+- DEC-022: Batch 1 covers Today/Vault/Insights first for small regression surface. Body, Protocols, Settings designs remain approved for separate reviewable implementation.
+- DEC-023: Today total uses real scheduled routine step count + one daily skin check-in; dash when none scheduled rather than misleading zero. Not a health/adherence rating.
+- DEC-024: Use native details/summary and semantic buttons for discoverable optional content, preserve all existing lists/edit routes, and maintain observational context on Insights.

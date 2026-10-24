@@ -1,3 +1,9 @@
+# LATEST STATE — 2026-10-24, v0.9.5-beta.6
+**Main production:** v0.9.4, commit 2e02f304 unchanged. **Feature:** feature/approved-uiux-today-vault-insights-beta6, parent beta5 a7d9ae2.
+**User approval:** approved six-screen UI concept, not live production deployment. **Implemented Phase 1:** Today check-in/quick actions, accurate bounded routine total, preserved reminders, collapsible older observations; Vault counts, review shortcut, stable search/filter/status disclosure; Insights top observational finding, context, supporting evidence disclosures. **Approved but pending Phase 2:** Body, Protocols, Settings.
+**QA:** 69/69 isolated Chromium with fictional in-memory storage (6 screens × 5 widths × 2 themes plus 9 interactions), Node JS syntax PASS. Actual Safari Beta6, IndexedDB cross-origin photo restore, full security and functional regression NOT TESTED.
+**Data:** no schema, IDs, migration or stored record changes. The Today total description now uses actual scheduled counts plus daily skin log opportunity, not unweighted mean of three rates. **Next:** Cloudflare feature preview and user Safari review, real backup/restore, staged next UX batch and explicit main approval. See docs/APPROVED_UIUX_PHASE1_2026-10-24.md.
+---
 # Latest state — 2026-10-24 (UI/UX audit + v0.9.5-beta.5 candidate)
 **Production:** main 2e02f304, Lumina v0.9.4, untouched. **Work branch:** design/lumina-uiux-foundation-v0.9.5-beta.5, stacked on beta.4 d33e0ce (PR #5). **Source candidate:** root index.html v0.9.5-beta.5, status IMPLEMENTED BETA / NOT MERGED, NOT VERIFIED ON SAFARI.
 **Audit:** docs/AUDIT_UIUX_FULL_2026-10-24.md covers Today, Body, Protocols, Vault, Insights, Settings, onboarding, overlays, privacy and UX-guide principles. **Separate design concept:** docs/prototypes/UIUX_Concept_Studio.html, six-screen fictional interactive proposal, not app functionality.

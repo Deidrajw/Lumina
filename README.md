@@ -35,3 +35,7 @@ Public repo: never store actual personal wellness data, photos, backups or secre
 
 ## October 24 UI/UX review and beta.5
 [Complete UI/UX heuristic audit](docs/AUDIT_UIUX_FULL_2026-10-24.md) compares all app areas against the user's study guide, with measured findings, priority and acceptance criteria. [Interactive six-screen proposal](docs/prototypes/UIUX_Concept_Studio.html) uses fictional data and does not save records; proposed reorganizations need approval. The actual v0.9.5-beta.5 code contains small accessibility foundation changes only, stacked on beta.4. Production main remains v0.9.4.
+
+
+## Approved UX Phase 1 (v0.9.5-beta.6)
+The user-approved six-screen UI concept is implemented incrementally. [Phase 1](docs/APPROVED_UIUX_PHASE1_2026-10-24.md) updates Today, Vault and Insights with progressive disclosure and task-first hierarchy, without record-schema changes. Body/Protocols/Settings are the next approved layout batch. Draft PR preview only; main stays v0.9.4 pending real Safari/photo QA and production approval.

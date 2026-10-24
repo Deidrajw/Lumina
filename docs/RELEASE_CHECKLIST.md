@@ -66,3 +66,17 @@ NO-GO production; rollback code main 2e02f304 does not restore browser data.
 - [ ] Approved direction for substantial visual redesign and separate implementation QA
 - [ ] Explicit merge/deploy authorization
 **NO GO for main**; rollback code beta4 commit d33e0ce, production main 2e02f304; code rollback cannot recover deleted records.
+
+
+## v0.9.5-beta.6 review release gates, 2026-10-24
+- [x] Latest repo main/parent beta HEAD and continuity read
+- [x] Root index.html deployable ZIP and fictional standalone preview produced
+- [x] 69/69 isolated Chromium screen/interaction checks PASS, JavaScript syntax PASS
+- [x] Requirements LUM-022/023/024 implemented beta, LUM-025 approved for next batch
+- [ ] Cloudflare feature branch preview commit verification and iPhone Safari user review
+- [ ] Full photo-backed clean-origin export/import and refresh using actual IndexedDB
+- [ ] All core CRUD/error/demo/empty flows and linked views across screens
+- [ ] VoiceOver, large text, keyboard and mobile safe area review
+- [ ] Comprehensive injection and data-write-boundary audit
+- [ ] User explicitly approves merge/deploy production
+**NO-GO for production** until above. Rollback beta5 a7d9ae2, production main 2e02f304. Code rollback does not restore lost browser data.
