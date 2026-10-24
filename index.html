@@ -6502,7 +6502,6 @@ async function saveInv(){
   try{
     const productId=byId('inv-id').value;
     const name=byId('inv-name').value.trim();
-    console.log('ADD PRODUCT SAVE CLICKED — id:',productId,'name:',name);
     if(!name){alert('Product name is required.');return;}
 
     const tags=byId('inv-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
