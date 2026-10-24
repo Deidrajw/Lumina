@@ -17,3 +17,5 @@ Start each development session with `PROJECT_INSTRUCTIONS.md`, `docs/PROJECT_STA
 - docs/DEPLOYMENT_CLOUDFLARE.md and docs/RELEASE_CHECKLIST.md — shipping process
 
 Public repo: never store actual personal wellness data, photos, backups or secrets here.
+## Latest audit
+[2026-10-24 v0.9.4 functional/UI/UX audit](docs/AUDIT_2026-10-24.md) — isolated browser tests, code-confirmed data risks, release gates and roadmap. No changes made to production app.

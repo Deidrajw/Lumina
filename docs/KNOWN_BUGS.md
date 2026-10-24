@@ -12,3 +12,24 @@
 | LUM-BUG-009 | High | `clearAllData()` clears localStorage; IndexedDB photo cleanup not evident in handler. | Audit |
 
 Bug template: ID / date / device / reproduction / expected / actual / severity / root cause / patch PR / regression evidence / status.
+## Confirmed new audit findings — 2026-10-24
+NOTE: isolated Chromium smoke used mock localStorage; “CODE-CONFIRMED” means source evidence, **not** actual Safari E2E verification.
+| ID | Priority | Evidence | Status |
+|---|---|---|---|
+| LUM-BUG-010 | P0 | removeSympPhoto/removeConcPhoto delete IndexedDB blob before parent save; Cancel can strand old photo reference | CODE-CONFIRMED |
+| LUM-BUG-011 | P0 | clearAllData() removes KEYS in localStorage but not IndexedDB blobs | CODE-CONFIRMED |
+| LUM-BUG-012 | P0/P1 | saveProgressPhoto() writes base64 to localStorage, ignores failed save and closes | CODE-CONFIRMED |
+| LUM-BUG-013 | P1 | Vault Data Cleanup with sample records displays `_invSearchFocused is not defined` | FAIL (isolated automated) |
+| LUM-BUG-014 | P1 | malicious fictional concern title executed img.onerror on render | FAIL (isolated automated) |
+| LUM-BUG-015 | P1 | today() uses UTC date while day-of-week local; potential evening off-by-one | CODE-CONFIRMED |
+| LUM-BUG-016 | P2 | Smart Capture landing promises AI OCR despite manual-only runOCR() | CODE-CONFIRMED |
+| LUM-BUG-017 | P2 | Escape does not close regular symptom sheet | FAIL (isolated automated) |
+| LUM-BUG-018 | P2 | v0.9.4 app's What's New header says v0.9.3 | CODE-CONFIRMED |
+| LUM-BUG-019 | P1 | save() bypasses demo write boundary; direct primitive wrote underlying mock storage; ordinary UI save blocked | AUDIT MUTATORS |
+| LUM-BUG-020 | P1 | captured product photo stored inline base64 rather than IDB | CODE-CONFIRMED |
+| LUM-BUG-021 | P2 | saveInv logs full product object to console | CODE-CONFIRMED |
+| LUM-BUG-022 | P2 | low contrast tertiary text, tiny nav captions, compact tap targets, user zoom restriction | CODE-CONFIRMED |
+| LUM-BUG-023 | P2 | overly long dense Today/Insights when populated; safe-area test pending | UX REVIEW |
+| LUM-BUG-024 | P2 | monolithic source, duplicate renderer and large inline handler count | CODE REVIEW |
+
+Historical BUG-003 supplement search: PASS isolated with fictional Vault item; BUG-004 detail edit/save: PASS with delayed assertion. BUG-002 photo attach/save, BUG-005 image lightbox and BUG-006 reorder still require real-origin/device test. Full specifics in `docs/AUDIT_2026-10-24.md`.

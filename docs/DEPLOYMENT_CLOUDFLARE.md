@@ -11,3 +11,5 @@ Current records are saved in browser localStorage/IndexedDB and WILL NOT automat
 
 ## Release / rollback
 Feature branch -> PR -> Cloudflare preview -> QA -> approval -> merge to main -> verify live URL and commit. Capture build ID, app version, screenshots/test results and rollback SHA. To roll back code, revert commit on main; this does NOT restore deleted local browser data. Never claim deploy succeeded without checking Cloudflare.
+## Deployment update — 2026-10-24
+User reported Cloudflare Pages deployed at https://lumina-9w6.pages.dev/. Audit environment was unable to fetch the URL; **deployed code SHA, deployment build ID, preview/branch controls and live user paths remain unverified**. Do not rewrite “planned” as independently verified production until Cloudflare dashboard/deployment metadata checked. Browser storage is origin-specific; do not retire old address until complete photo-preserving migration succeeds.
