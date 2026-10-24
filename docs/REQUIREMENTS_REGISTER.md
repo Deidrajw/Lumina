@@ -44,3 +44,7 @@ LUM-013 / LUM-BUG-014 Safe text rendering: PARTIALLY IMPLEMENTED beta in key Tod
 LUM-014 / LUM-BUG-015 Local dates: IMPLEMENTED beta; Toronto evening date test PASS, legacy DST and doctor exports NOT TESTED.
 LUM-015 / LUM-BUG-019 Demo isolation: IMPLEMENTED beta for central save/load and photo primitives, simulated PASS. All direct localStorage/migration paths NOT FULLY AUDITED.
 Do not mark Verified before actual browser, Safari, empty/populated and failure testing. See PHASE_B_STABILITY_2026-10-24.md.
+
+
+## 2026-10-24 Phase C beta.3
+LUM-016 / BUG-017 Escape foremost overlay implemented candidate (isolated PASS); complete focus/outside-tap/unsaved-state coverage NOT TESTED. LUM-017 / BUG-016 Smart Capture now honestly requests manual entry (isolated PASS). LUM-013 output safety expanded to printable Doctor Export and Recent Capture entries (malicious fixture PASS), full app injection audit OPEN. LUM-015 sample-preview flag persistence blocked in tested paths (PASS), full direct write review OPEN. Real iPhone/Cloudflare photo round-trip required before any feature Verified.

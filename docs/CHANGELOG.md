@@ -26,3 +26,7 @@ Fixed Vault Cleanup populated ReferenceError, selected HTML event injection expo
 Changed sample greeting to Sample User and denied IndexedDB photo mutation during Sample Preview. Phase A photo safeguards preserved.
 No schema migration; existing UTC-derived dates remain stored, new dates local. No production deployment.
 Tests: 13/13 focused isolated Chromium + 17/17 Phase A simulated regression PASS; genuine iPhone Safari/Cloudflare/real cross-origin photo restore NOT TESTED. Broader security review remains open.
+
+
+## v0.9.5-beta.3 — UNRELEASED (2026-10-24)
+Escape closes uppermost modal/confirmation before underlying product page, following existing Cancel cleanup. Smart Capture clarifies OCR not connected and manual label entry; recent capture data escaped. Printable Doctor Summary now escapes dynamic fields and provides blocked-popup feedback. Sample Preview doesn't persist theme/onboarding profile/goals/completion/version-seen/developer flags. No schema migration, no private records accessed. 16/16 PASS isolated Chromium/fictional mock storage + Node syntax; real IndexedDB, Safari and Cloudflare preview NOT TESTED. No merge to main.

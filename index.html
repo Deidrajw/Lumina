@@ -1049,7 +1049,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.2</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.3</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -2614,7 +2614,7 @@ const OB_SCREENS=[
 const OB_TOTAL=OB_SCREENS.filter(s=>s.showDots).length;
 
 function showOnboarding(){_obStep=0;_obGoals=[];_obSandboxDone=[];_obDirection=1;const ob=byId('onboarding');if(ob)ob.style.display='flex';obRender();}
-function hideOnboarding(){const ob=byId('onboarding');if(ob)ob.style.display='none';localStorage.setItem('lm_launched','1');localStorage.setItem('lumina_onboarding_completed','true');}
+function hideOnboarding(){const ob=byId('onboarding');if(ob)ob.style.display='none';if(!demoPreviewMode){localStorage.setItem('lm_launched','1');localStorage.setItem('lumina_onboarding_completed','true');}}
 function obRender(){
   const screen=OB_SCREENS[_obStep];if(!screen)return;
   const contentEl=byId('ob-content'),footerEl=byId('ob-footer');if(!contentEl||!footerEl)return;
@@ -2634,9 +2634,9 @@ function obBack(){if(_obStep>0){_obDirection=-1;_obStep--;obRender();}}
 function obSkip(){hideOnboarding();renderToday();updateBadges();}
 function obFinish(){hideOnboarding();renderToday();updateBadges();}
 function obTapSandboxStep(stepId){if(!_obSandboxDone.includes(stepId))_obSandboxDone.push(stepId);const screen=OB_SCREENS[_obStep];if(screen&&screen.id==='sandbox'){byId('ob-content').innerHTML=screen.render();byId('ob-footer').innerHTML=screen.footer();}}
-function obSaveName(){const name=(byId('ob-name')?.value||'').trim();if(name)localStorage.setItem('lumina_user_name',name);obNext();}
+function obSaveName(){const name=(byId('ob-name')?.value||'').trim();if(name&&!demoPreviewMode)localStorage.setItem('lumina_user_name',name);obNext();}
 function obToggleGoal(goal,btn){if(_obGoals.includes(goal))_obGoals=_obGoals.filter(g=>g!==goal);else _obGoals.push(goal);btn?.classList.toggle('on',_obGoals.includes(goal));}
-function obSaveGoals(){if(_obGoals.length)localStorage.setItem('lumina_user_goals',JSON.stringify(_obGoals));obNext();}
+function obSaveGoals(){if(_obGoals.length&&!demoPreviewMode)localStorage.setItem('lumina_user_goals',JSON.stringify(_obGoals));obNext();}
 function obChooseStart(choice){
   if(choice==='fresh'){
     if(demoPreviewMode){canWrite();return;}
@@ -3099,7 +3099,7 @@ function renderBody(){try{
   else if(bt==='skin')renderSkinLog();
   else if(bt==='rx')renderRxCheckinList();
   else renderProgressPhotos();
-}catch(err){console.warn("renderBody error:",err);const el=byId('body-list');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${err.message}</p></div>`;}}
+}catch(err){console.warn("renderBody error:",err);const el=byId('body-list');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${luminaText(err.message)}</p></div>`;}}
 document.getElementById('body-tabs').addEventListener('click',e=>{
   const b=e.target.closest('[data-bt]');
   if(!b||b.dataset.bt==='body-more')return;
@@ -3998,7 +3998,7 @@ function renderProtocols(){try{
       '</div>';
     }).join('');
 
-}catch(err){console.warn("renderProtocols error:",err);const el=byId('proto-list');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${err.message}</p></div>`;}}
+}catch(err){console.warn("renderProtocols error:",err);const el=byId('proto-list');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${luminaText(err.message)}</p></div>`;}}
 document.getElementById('proto-tabs').addEventListener('click',e=>{
   const b=e.target.closest('[data-pt]');
   if(!b||b.dataset.pt==='proto-more')return;
@@ -6226,7 +6226,7 @@ function renderVault(){try{
   else if(vt==='compliance')renderComplianceView();
   else if(vt==='capture')renderCaptureTab();
   else renderImportTab();
-}catch(err){console.warn("renderVault error:",err);const el=byId('vault-content');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${err.message}</p></div>`;}}
+}catch(err){console.warn("renderVault error:",err);const el=byId('vault-content');if(el)el.innerHTML=`<div class="empty"><div class="ico">⚠️</div><h3>Display error</h3><p class="f13 tx2">${luminaText(err.message)}</p></div>`;}}
 
 // INVENTORY
 let activeIT='all';
@@ -6331,7 +6331,7 @@ function renderInventory(){
     const _hasFilter=_vaultFilterStatus||_vaultFilterCat||_vaultFilterExpiry||q;
     h+=_hasFilter
       ?'<div class="empty"><div class="ico">🔍</div><h3>No results</h3><p>Try clearing some filters.</p><button class="btn btn-g btn-sm mt8" onclick="resetVaultFilters()">Clear filters</button></div>'
-      :'<div class="empty"><div class="ico">📦</div><h3>Your vault is empty</h3><p>Add a product with <strong>+ Add</strong>, or use Smart Capture to scan a label.</p></div>';
+      :'<div class="empty"><div class="ico">📦</div><h3>Your vault is empty</h3><p>Add a product with <strong>+ Add</strong>, or use Smart Capture to attach a label photo and enter details.</p></div>';
     byId('vault-content').innerHTML=h;return;
   }
 
@@ -7138,10 +7138,10 @@ function renderCaptureTab(){
     <div class="card card-sm">
       <div class="card-title">How it works</div>
       <div class="flex ac gap8 mb8"><span style="font-size:18px">📷</span><div><div class="fw6 f13">Take or upload a photo</div><div class="f12 tx3">Front label, ingredient list, or Rx bottle</div></div></div>
-      <div class="flex ac gap8 mb8"><span style="font-size:18px">🤖</span><div><div class="fw6 f13">AI reads the label</div><div class="f12 tx3">Extracts name, brand, strength, ingredients</div></div></div>
+      <div class="flex ac gap8 mb8"><span style="font-size:18px">🤖</span><div><div class="fw6 f13">Add product details manually</div><div class="f12 tx3">Label reading is not connected. Enter the information yourself.</div></div></div>
       <div class="flex ac gap8"><span style="font-size:18px">✅</span><div><div class="fw6 f13">Review & save</div><div class="f12 tx3">Edit any field before adding to inventory</div></div></div>
     </div>
-    ${caps.length?`<div class="sec-title">Recent Captures</div>`+caps.map(c=>`<div class="entry" style="margin-bottom:8px"><div class="flex jb ac"><span class="fw6 f14">${c.name||'Unknown'}</span><span class="pill pm f11">${c.date}</span></div><div class="entry-m">${c.type||''} · ${c.brand||''}</div></div>`).join(''):''}
+    ${caps.length?`<div class="sec-title">Recent Captures</div>`+caps.map(c=>`<div class="entry" style="margin-bottom:8px"><div class="flex jb ac"><span class="fw6 f14">${luminaText(c.name||'Unknown')}</span><span class="pill pm f11">${luminaText(c.date)}</span></div><div class="entry-m">${luminaText(c.type||'')} · ${luminaText(c.brand||'')}</div></div>`).join(''):''}
   `;
 }
 
@@ -8201,7 +8201,7 @@ function toggleTheme(btn){
   // Update the toggle visual
   const tog=byId('light-tog');
   if(tog)tog.classList.toggle('on',isLight);
-  localStorage.setItem('lm_theme',isLight?'light':'dark');
+  if(!demoPreviewMode)localStorage.setItem('lm_theme',isLight?'light':'dark');
 }
 function applyTheme(){
   const t=localStorage.getItem('lm_theme');
@@ -8995,6 +8995,7 @@ function initLongPress(){
 function exportPDF(){
   const symp=readStore(KEYS.symp),conc=readStore(KEYS.conc),inv=readStore(KEYS.inv),supps=readStore(KEYS.supps);
   const w=window.open('','_blank');
+  if(!w){alert('Your browser blocked the printable summary. Please allow pop-ups to export.');return;}
   const today2=new Date().toLocaleDateString('en-CA',{dateStyle:'full'});
   let body=`<html><head><title>Lumina Health Summary</title>
   <style>body{font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#1e1826}
@@ -9006,7 +9007,7 @@ function exportPDF(){
 
   if(conc.filter(c=>!c.archived).length){
     body+='<h2>Active Concerns</h2><table><tr><th>Concern</th><th>Status</th><th>Area</th><th>Since</th></tr>';
-    conc.filter(c=>!c.archived).forEach(c2=>body+=`<tr><td>${c2.title}${c2.doc?' ⚕️':''}</td><td><span class="pill">${c2.status}</span></td><td>${c2.area||'–'}</td><td>${c2.started||'–'}</td></tr>`);
+    conc.filter(c=>!c.archived).forEach(c2=>body+=`<tr><td>${luminaText(c2.title)}${c2.doc?' ⚕️':''}</td><td><span class="pill">${luminaText(c2.status)}</span></td><td>${luminaText(c2.area||'–')}</td><td>${luminaText(c2.started||'–')}</td></tr>`);
     body+='</table>';
   }
 
@@ -9014,21 +9015,21 @@ function exportPDF(){
   const recentSymp=symp.filter(s=>new Date(s.date)>=cut);
   if(recentSymp.length){
     body+='<h2>Symptoms (Last 30 Days)</h2><table><tr><th>Symptom</th><th>Category</th><th>Severity</th><th>Date</th></tr>';
-    recentSymp.forEach(s=>body+=`<tr><td>${s.name}</td><td>${s.cat}</td><td>${s.sev}/10</td><td>${s.date}</td></tr>`);
+    recentSymp.forEach(s=>body+=`<tr><td>${luminaText(s.name)}</td><td>${luminaText(s.cat)}</td><td>${luminaText(s.sev)}/10</td><td>${luminaText(s.date)}</td></tr>`);
     body+='</table>';
   }
 
   const rxItems=inv.filter(i=>i.type==='Prescription'&&i.status==='Active');
   if(rxItems.length){
     body+='<h2>Current Prescriptions</h2><table><tr><th>Name</th><th>Strength</th><th>Prescriber</th><th>Directions</th></tr>';
-    rxItems.forEach(i=>body+=`<tr><td>${i.name}</td><td>${i.strength||'–'}</td><td>${i.prescriber||'–'}</td><td>${i.directions||'–'}</td></tr>`);
+    rxItems.forEach(i=>body+=`<tr><td>${luminaText(i.name)}</td><td>${luminaText(i.strength||'–')}</td><td>${luminaText(i.prescriber||'–')}</td><td>${luminaText(i.directions||'–')}</td></tr>`);
     body+='</table>';
   }
 
   const activeSupps=supps.filter(s=>s.status==='Active');
   if(activeSupps.length){
     body+='<h2>Supplements</h2><table><tr><th>Name</th><th>Dose</th><th>When</th></tr>';
-    activeSupps.forEach(s=>body+=`<tr><td>${s.name}</td><td>${s.dose||'–'}</td><td>${(s.timing||[]).join(', ')||'–'}</td></tr>`);
+    activeSupps.forEach(s=>body+=`<tr><td>${luminaText(s.name)}</td><td>${luminaText(s.dose||'–')}</td><td>${luminaText((s.timing||[]).join(', ')||'–')}</td></tr>`);
     body+='</table>';
   }
 
@@ -9056,12 +9057,15 @@ function closeLightbox(){
   if(!byId('product-page')?.classList.contains('open'))
     document.body.style.overflow='';
 }
-// ESC key support
+// Escape closes only the foremost overlay, never the product page behind an open sheet.
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    if(byId('lightbox')?.classList.contains('open')){closeLightbox();return}
-    if(byId('product-page')?.classList.contains('open')){closeProductPage();return}
-  }
+  if(e.key!=='Escape'||e.defaultPrevented)return;
+  if(byId('modal-confirm')?.classList.contains('open')){e.preventDefault();confirmCancel();return;}
+  if(byId('lightbox')?.classList.contains('open')){e.preventDefault();closeLightbox();return;}
+  const sheets=Array.from(document.querySelectorAll('.backdrop.open[id^="modal-"]'));
+  const top=sheets[sheets.length-1];
+  if(top){e.preventDefault();closeModal(top.id.slice('modal-'.length));return;}
+  if(byId('product-page')?.classList.contains('open')){e.preventDefault();closeProductPage();}
 });
 // Swipe-down on lightbox
 (function(){
@@ -11321,8 +11325,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.2';
-const APP_BUILD='2026.10.24.phase-b.1';
+const APP_VERSION='0.9.5-beta.3';
+const APP_BUILD='2026.10.24.phase-c.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11348,6 +11352,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {
+    version:'0.9.5-beta.3',
+    date:'October 24, 2026',
+    status:'Beta — preview only',
+    added:['Escape closes the topmost sheet or confirmation without closing the product page underneath','Printable Doctor Export escapes user-entered text'],
+    changed:['Smart Capture now describes manual label entry until OCR is connected','Sample Preview no longer persists theme, onboarding profile, update-seen or developer flags'],
+    fixed:['HTML event injection through the printable summary and recent capture history','Escape not closing ordinary bottom sheets','Print-window blocked error feedback'],
+    known:['Real iPhone Safari, cloud preview and photo restore across browser origins remain unverified','Full HTML sink and direct writer security review is still open', 'Beta is not merged into production']
+  },
   {
     version:'0.9.5-beta.2',
     date:'October 24, 2026',
@@ -11464,7 +11477,7 @@ function showWhatsNewBanner(){
       '</div>'+
     '</div>';
   el.style.display='block';
-  localStorage.setItem('lm_version_seen',LUMINA_VERSION);
+  if(!demoPreviewMode)localStorage.setItem('lm_version_seen',LUMINA_VERSION);
 }
 
 function dismissWhatsNewBanner(){
@@ -11519,7 +11532,7 @@ let _devModeEnabled=localStorage.getItem('lm_dev_mode')==='true';
 
 function toggleDevMode(){
   _devModeEnabled=!_devModeEnabled;
-  localStorage.setItem('lm_dev_mode',String(_devModeEnabled));
+  if(!demoPreviewMode)localStorage.setItem('lm_dev_mode',String(_devModeEnabled));
   renderDevMode();
 }
 

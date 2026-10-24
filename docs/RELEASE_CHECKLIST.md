@@ -25,3 +25,15 @@ Decision GO/NO-GO: __ | evidence: __
 - [ ] Full populated/empty and light/dark manual regression
 - [ ] Explicit production merge/deploy approval
 Current: NO GO for Cloudflare production. Rollback source main commit 2e02f304. Code rollback is not data recovery.
+
+
+## v0.9.5-beta.3 GO/NO-GO
+- [x] JS syntax validated, 16/16 isolated synthetic Chromium checks PASS, five viewport widths
+- [x] Versioned root index.html, ZIP and fictional preview
+- [ ] Real Cloudflare preview SHA / branch controls verified
+- [ ] Actual iPhone Safari and genuine indexedDB cross-origin backup/restore
+- [ ] Full escaped HTML sink and direct storage side-effect audit
+- [ ] Full populated/empty, dark/light and doctor/photo regressions
+- [ ] Overlay focus, outside tap and unsaved state recovery fully tested
+- [ ] Explicit user approval for main deployment
+NO-GO production; rollback code main 2e02f304 does not restore browser data.

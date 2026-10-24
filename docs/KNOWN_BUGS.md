@@ -45,3 +45,7 @@ LUM-BUG-014: prior arbitrary imported HTML executing event handler; targeted esc
 LUM-BUG-015: UTC date generation replaced with local calendar helpers in frequent paths. Legacy keys untouched; DST/historical/doctor ranges need testing.
 LUM-BUG-019: central save denied during preview, load shows fictional data, photo mutation primitives denied; more direct storage side effects require review.
 Other historical overlay and cross-view defects still open. Phase A photo migration/backup needs actual Safari and real origin QA.
+
+
+## 2026-10-24 beta.3
+BUG-017 (normal modal Escape) addressed in candidate, isolated Chromium PASS; focus restoration & unsaved prompt not verified. BUG-016 (Smart Capture AI misrepresentation) candidate copy correct, manual entry preserved. BUG-014 additional print/capture HTML sinks candidate escaped; broad app security issue remains OPEN. BUG-019 additional preview persistent flags blocked; all direct localStorage writes not audited. Phase A real photo IDB backup/restore remains BLOCKED. No bugs marked production Verified.

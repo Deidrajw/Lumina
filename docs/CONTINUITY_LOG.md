@@ -41,3 +41,7 @@ Affected requirements: LUM-012, LUM-013 (partial), LUM-014, LUM-015.
 QA evidence: 13/13 automated focused tests with fictional mocked storage, 17/17 simulated Phase A regressions and Node syntax PASS. Real origin IndexedDB, Safari and Cloudflare preview NOT TESTED.
 Data: no data migration; stored text unchanged; historical UTC keys not rewritten; no private data used. Known unresolved bugs: injection risks in untested renderers, modal Escape and old audit issues.
 Next exact step: PR beta review and genuine Cloudflare/Safari test with fictional photos before any production merge.
+
+
+## 2026-10-24 — Beta.3 release hardening handoff
+Working branch fix/lumina-release-hardening-v0.9.5-beta.3 based on Phase B c6ac809; main 2e02f304 unchanged. Updated index.html: Escape handler, renderCapture, exportPDF, toggleTheme, obSaveName/Goals, hideOnboarding, showWhatsNewBanner, toggleDevMode, version/changelog. 16/16 PASS automated isolated Chromium with fictional mock storage, Node JS check PASS; actual browser-origin IDB, iPhone Safari, Cloudflare preview NOT TESTED. No schema/migration or personal data. Bugs LUM-BUG-017 and 016 implemented beta, HTML print/recent captures hardening and sample guards partial. Remaining: full sink audit, true photo restore, accessibility focus and unsaved edit controls. Next exact step: inspect draft PR, real browser QA, user approval before deployment.
