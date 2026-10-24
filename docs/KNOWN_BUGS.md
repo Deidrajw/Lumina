@@ -49,3 +49,11 @@ Other historical overlay and cross-view defects still open. Phase A photo migrat
 
 ## 2026-10-24 beta.3
 BUG-017 (normal modal Escape) addressed in candidate, isolated Chromium PASS; focus restoration & unsaved prompt not verified. BUG-016 (Smart Capture AI misrepresentation) candidate copy correct, manual entry preserved. BUG-014 additional print/capture HTML sinks candidate escaped; broad app security issue remains OPEN. BUG-019 additional preview persistent flags blocked; all direct localStorage writes not audited. Phase A real photo IDB backup/restore remains BLOCKED. No bugs marked production Verified.
+
+
+## 2026-10-24 Phase D beta.4
+NEW LUM-BUG-025 P0: Vault JSON branch silently replaced stored keys using direct save, bypassing photo-aware validation and confirmation. Candidate fixed by routing to importData; actual FileReader confirmation PASS isolated, real IDB restore NOT TESTED. LUM-018.
+LUM-BUG-014 HTML injection risk: additional unsafe HTML paths in product details, journal, linked records, global-search renderer, CSV mapping/preview and custom Rx check-in chip hardened. Synthetic malicious fixture PASS on tested paths. Security remains OPEN until all HTML sinks audited. LUM-019.
+NEW LUM-BUG-026 P1: CSV import proceeded or showed success despite write failure/preview; candidate guard and failure feedback. Tested preview write denial; quota/permission real-browser failure NOT TESTED. LUM-020.
+NEW LUM-BUG-027 P2: Standalone build label hardcoded beta.2 and demo Developer Reset buttons could write personal flags. Corrected candidate; static inspection, manual Safari pending.
+Observation: runSearch renderer has no mounted search-results/search modal in current HTML; test fixture host only. Confirm intended navigation before changing UI, no newly added global search UI this release.

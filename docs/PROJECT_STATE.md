@@ -1,3 +1,11 @@
+# Latest status — 2026-10-24, v0.9.5-beta.4
+Production main remains v0.9.4 at 2e02f304 (NOT MODIFIED). Branch: fix/lumina-import-display-safety-v0.9.5-beta.4, based on beta.3 a32daac. Beta.3 preview was confirmed to open in iPhone Safari by user; this does NOT verify functionality/photo restore.
+**Implemented candidate:** Vault JSON import now uses the same validated photo-aware confirmed restoration as Settings; CSV error/read-only safety; DOM-safe global-search results, product details/journal/linked records, linked concern picker, CSV preview, Rx custom check-in chip; sample developer controls and Home Screen build label corrected.
+**QA:** Node syntax PASS; 22/22 focused isolated Chromium PASS with fake localStorage, fictional malicious text and actual FileReader confirmation test; viewport widths 320–430. Actual IDB clean-origin restore, full app injection audit, user Safari workflows and this branch Cloudflare deployment NOT TESTED.
+**Known risk:** Global search markup is not mounted in the current screen tree; isolated search renderer tests used a test host, not proof of visible in-app global search. This is a partial hardening effort, not complete security certification.
+**Next:** inspect Cloudflare beta.4 check and Safari preview; verify fictional JSON with photos on a separate origin, photo edit/cancel, and full regression; then obtain explicit approval before main release. See docs/PHASE_D_IMPORT_DISPLAY_SAFETY_2026-10-24.md.
+---
+
 # Latest beta state — 2026-10-24
 Production main: 2e02f304 v0.9.4 unchanged. Proposed v0.9.5-beta.3 branch fix/lumina-release-hardening-v0.9.5-beta.3, stacked on Phase B (PR #3), Phase A (PR #2), governance (PR #1). Built: Escape foremost overlay/confirm, honest manual Smart Capture copy, printable doctor report escaping, sample-preview settings flags write guard. Node syntax PASS; isolated Chromium 16/16 PASS; actual Safari, Cloudflare preview SHA, genuine IndexedDB backup and exhaustive security NOT TESTED. NO-GO production. Next: real origin and iPhone QA; review stacked PRs; approval before main merge.
 

@@ -30,3 +30,11 @@ Tests: 13/13 focused isolated Chromium + 17/17 Phase A simulated regression PASS
 
 ## v0.9.5-beta.3 — UNRELEASED (2026-10-24)
 Escape closes uppermost modal/confirmation before underlying product page, following existing Cancel cleanup. Smart Capture clarifies OCR not connected and manual label entry; recent capture data escaped. Printable Doctor Summary now escapes dynamic fields and provides blocked-popup feedback. Sample Preview doesn't persist theme/onboarding profile/goals/completion/version-seen/developer flags. No schema migration, no private records accessed. 16/16 PASS isolated Chromium/fictional mock storage + Node syntax; real IndexedDB, Safari and Cloudflare preview NOT TESTED. No merge to main.
+
+
+## v0.9.5-beta.4 — Unreleased candidate, 2026-10-24
+- Fixed Vault JSON import bypassing validated, photo-complete backup restore and explicit replace confirmation; Settings and Vault now call the same restore flow.
+- Safe DOM-based rendering for dormant global-search results and click handling; escaped product detail, journal, linked symptom/concern, CSV mapping/preview and Rx custom effects.
+- CSV import refuses read-only preview and does not announce success after failed save; Home Screen build label dynamically uses current version; developer reset controls respect Sample Preview; activity seed marker only saved after successful log save.
+- No data migration or schema change; raw stored user text untouched.
+- QA: 22/22 focused isolated Chromium PASS, JS syntax PASS. Real iPhone Safari photo/backup, actual Cloudflare beta.4 preview build, entire security/mutator audit, and full E2E NOT TESTED. Versioned deployable ZIP and fictional read-only preview available. Production main v0.9.4 unchanged.

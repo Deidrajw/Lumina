@@ -48,3 +48,10 @@ Do not mark Verified before actual browser, Safari, empty/populated and failure 
 
 ## 2026-10-24 Phase C beta.3
 LUM-016 / BUG-017 Escape foremost overlay implemented candidate (isolated PASS); complete focus/outside-tap/unsaved-state coverage NOT TESTED. LUM-017 / BUG-016 Smart Capture now honestly requests manual entry (isolated PASS). LUM-013 output safety expanded to printable Doctor Export and Recent Capture entries (malicious fixture PASS), full app injection audit OPEN. LUM-015 sample-preview flag persistence blocked in tested paths (PASS), full direct write review OPEN. Real iPhone/Cloudflare photo round-trip required before any feature Verified.
+
+
+### 2026-10-24 Phase D candidate requirements
+- **LUM-018 | P0 | Implemented beta** — Vault .json import must use Settings's validated photo-inclusive confirmed REPLACE flow and rollback attempt; test with fake file/real FileReader passed; actual IDB import NOT TESTED.
+- **LUM-019 | P1 | Partially Implemented beta** — Escape user-supplied text in product detail, linked conditions/journal, CSV mapping/preview, global-search renderer, Rx custom chips; malicious synthetic event fixture did not execute; comprehensive full-app sink audit OPEN.
+- **LUM-020 | P1 | Implemented beta** — CSV import guards Sample Preview and returns failure without false success; Home Screen build info reflects version, activity seeding flag writes only after success; simulated PASS.
+**Acceptance before Verified:** actual Cloudflare preview and iPhone Safari, valid photo-backed restore across origins, navigation and import failure recovery, all display/input paths/security regression.

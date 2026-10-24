@@ -27,3 +27,7 @@ Public repo: never store actual personal wellness data, photos, backups or secre
 
 ## Latest candidate
 [Beta.3 release hardening](docs/PHASE_C_HARDENING_2026-10-24.md) — stacked review branch, not production. Real Safari/IDB/security checks required before any main merge.
+
+
+## Latest development candidate
+[Phase D v0.9.5-beta.4](docs/PHASE_D_IMPORT_DISPLAY_SAFETY_2026-10-24.md): unified Vault/Settings backup restore, display safety, import save feedback; draft review branch only, no main deployment. Prior Beta 3 preview was confirmed to open in iPhone Safari by the user; photo backup and Safari workflow tests still required.

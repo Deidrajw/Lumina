@@ -37,3 +37,17 @@ Current: NO GO for Cloudflare production. Rollback source main commit 2e02f304. 
 - [ ] Overlay focus, outside tap and unsaved state recovery fully tested
 - [ ] Explicit user approval for main deployment
 NO-GO production; rollback code main 2e02f304 does not restore browser data.
+
+
+## v0.9.5-beta.4 release checklist (2026-10-24)
+- [x] Latest GitHub main/parent beta and continuity docs inspected
+- [x] Root index.html source SHA verified after build
+- [x] Standalone fictional-data preview, deployable ZIP, release notes, regression checklist
+- [x] Focused 22/22 isolated Chromium fake-storage checks PASS, 320/375/390/393/430 px
+- [x] JavaScript syntax PASS, no uncaught errors observed in focused QA
+- [ ] Cloudflare beta.4 preview URL/commit SHA confirmed
+- [ ] Actual Safari add/edit/cancel photo and clean origin backup restore including IndexedDB
+- [ ] All remaining HTML injection sinks and direct storage writers audited
+- [ ] Full app manual functional UI and accessibility regression, light/dark, empty/populated, doctor export, camera
+- [ ] Explicit production merge/deploy approval
+**NO-GO for main** until the above; code rollback does not restore browser data.

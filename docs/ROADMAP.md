@@ -18,3 +18,7 @@ Beta v0.9.5-beta.2 implements selected Cleanup, date, demo isolation and output 
 
 ## Beta.3 focus (2026-10-24)
 Escape stack, honest Smart Capture, doctor-print output safety and sample preview setting isolation implemented as candidate; real-browser/IDB/Safari QA and full security audit still gate shipping. Next design-only Phase C concepts after stable release: reduce Today and Insights density with user-approved previews, improve touch targets, colour contrast and focus states.
+
+
+## Phase D candidate 2026-10-24
+Beta.4 targets the Vault JSON import bypass, unsafe product/detail/search/CSV text display and false success states. Built and isolated-tested but not deployed to main. Next production gates: Cloudflare beta.4 preview SHA + user iPhone Safari photo cancel/save/refresh; complete photo-backed backup clean-origin restore; exhaustive HTML, inline handler and direct-write audit; regression across all sections. After baseline release and approval: Today/Insights grouped density redesign concepts.

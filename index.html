@@ -1049,7 +1049,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.3</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.4</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -7434,8 +7434,11 @@ function parseCSV(text){
 
 function handleImpFile(e){
   const file=e.target.files[0];if(!file)return;
-  if(file.name.endsWith('.json')){
-    const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);Object.entries(KEYS).forEach(([k,v])=>{if(d[k])save(v,d[k])});closeModal('import');renderVault();alert('Lumina backup imported!');}catch{alert('Invalid JSON backup.')}};r.readAsText(file);return;
+  if(file.name.toLowerCase().endsWith('.json')){
+    // One supported JSON restore path: confirmation + photo validation + rollback.
+    // Never silently replace records here or skip backed-up IndexedDB images.
+    importData(e);
+    return;
   }
   const r=new FileReader();r.onload=ev=>{
     const rows=parseCSV(ev.target.result);
@@ -7461,7 +7464,7 @@ function renderImpStep(){
     const detectedBadge=_impDetected?`<div class="banner bp mb12">✦ Auto-detected as <strong>${schema.label}</strong> from your column headers</div>`:'';
     byId('imp-map-fields').innerHTML=detectedBadge+schema.fields.map(f=>{
       const autoIdx=autoMapped[f.key]??'';
-      return`<div class="fg"><label class="flabel">${f.label}</label><select class="fsel" id="map-${f.key}"><option value="">— skip —</option>${_impHeaders.map((h,i)=>`<option value="${i}" ${autoIdx===i?'selected':''}>${h}</option>`).join('')}</select></div>`;
+      return`<div class="fg"><label class="flabel">${f.label}</label><select class="fsel" id="map-${f.key}"><option value="">— skip —</option>${_impHeaders.map((h,i)=>`<option value="${i}" ${autoIdx===i?'selected':''}>${luminaText(h)}</option>`).join('')}</select></div>`;
     }).join('');
   }
 
@@ -7476,13 +7479,13 @@ function renderImpStep(){
     });
     const mappedCount=Object.keys(mapped).length;
     byId('imp-preview-info').textContent=`${_impRows.length} rows · ${mappedCount} fields mapped. Preview:`;
-    byId('imp-preview-list').innerHTML=preview.map(p=>`<div class="entry" style="margin-bottom:8px">${Object.entries(p).filter(([,v])=>v).map(([k,v])=>`<div class="f13 mb4"><span class="fw6 tx2">${k}:</span> ${v}</div>`).join('')}</div>`).join('');
+    byId('imp-preview-list').innerHTML=preview.map(p=>`<div class="entry" style="margin-bottom:8px">${Object.entries(p).filter(([,v])=>v).map(([k,v])=>`<div class="f13 mb4"><span class="fw6 tx2">${luminaText(k)}:</span> ${luminaText(v)}</div>`).join('')}</div>`).join('');
   }
 }
 
 function impNext(){
   if(_impStep===2){_impStep=3;renderImpStep();byId('imp-next-btn').textContent='Import →'}
-  else if(_impStep===3){doImport();_impStep=4;renderImpStep();byId('imp-next-btn').style.display='none'}
+  else if(_impStep===3){if(doImport()===false)return;_impStep=4;renderImpStep();byId('imp-next-btn').style.display='none'}
 }
 
 function generateDocExport(){
@@ -8171,6 +8174,7 @@ function importData(e){
       'Restore backup','btn-p',async()=>{
         try{
           const result=await luminaRestoreBackup(data);
+          if(byId('modal-import')?.classList.contains('open'))closeModal('import');
           alert('Backup restored: '+result.records+' data sections and '+result.photos+' photos. Please review your records and pictures.');
         }catch(err){console.error('[Import] restore failed',err);alert('Restore failed. The app attempted to retain your previous data. Please verify records before proceeding.');}
       }
@@ -8294,7 +8298,13 @@ function clearAllData(){
 function confirmReset(){clearAllData()}
 
 // ── IMPORT: replace/merge/empty choice ──
+function luminaCsvSaveFailed(){
+  byId('imp-done-ico').textContent='⚠️';
+  byId('imp-done-txt').textContent='Import could not be saved. Your existing records were left unchanged. Please check browser storage and try again.';
+  return false;
+}
 function doImport(){
+  if(!canWrite())return false;
   const type=byId('imp-type').value;
   // Map type to storage key — hair and rx go into inv
   // All product types (supps, hair, rx) → KEYS.inv so they appear in Vault Inventory
@@ -8363,11 +8373,11 @@ function doImport(){
 
   if(existing.length){
     const choice=prompt('You have '+existing.length+' existing entries.\n\n1 = Replace all with import\n2 = Merge (add import + keep existing)\n3 = Cancel\n\nEnter 1, 2, or 3:');
-    if(choice==='1')save(key,imported);
-    else if(choice==='2')save(key,[...imported,...existing]);
-    else{byId('imp-done-ico').textContent='❌';byId('imp-done-txt').textContent='Import cancelled.';return}
+    if(choice==='1'){if(!save(key,imported))return luminaCsvSaveFailed();}
+    else if(choice==='2'){if(!save(key,[...imported,...existing]))return luminaCsvSaveFailed();}
+    else{byId('imp-done-ico').textContent='❌';byId('imp-done-txt').textContent='Import cancelled.';return false;}
   } else {
-    save(key,imported);
+    if(!save(key,imported))return luminaCsvSaveFailed();
   }
 
   const typeLabelMap={inv:'inventory items',supps:'supplement items (in Vault → Inventory)',symp:'symptoms',conc:'concerns',hair:'hair products',rx:'prescriptions'};
@@ -8643,9 +8653,9 @@ function openConcernPicker(){
   const picker=document.createElement('div');
   picker.id='inv-concern-picker';
   picker.style.cssText='background:var(--s2);border:1px solid var(--b2);border-radius:var(--rad-sm);margin-top:6px;max-height:180px;overflow-y:auto';
-  picker.innerHTML=concs.map(c=>`<div onclick="toggleLinkedConcern('${c.id}')" style="padding:10px 12px;border-bottom:1px solid var(--b1);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px">
-    <span>${c.title}</span>
-    <span id="conc-check-${c.id}">${_invLinkedConcernIds.includes(c.id)?'✓':''}</span>
+  picker.innerHTML=concs.map(c=>`<div onclick="toggleLinkedConcern(${luminaJsArg(c.id)})" style="padding:10px 12px;border-bottom:1px solid var(--b1);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px">
+    <span>${luminaText(c.title)}</span>
+    <span id="conc-check-${luminaText(c.id)}">${_invLinkedConcernIds.includes(c.id)?'✓':''}</span>
   </div>`).join('');
   el.appendChild(picker);
 }
@@ -8664,7 +8674,7 @@ function renderLinkedConcernTags(){
   const concs=readStore(KEYS.conc);
   const tags=_invLinkedConcernIds.map(id=>{
     const c=concs.find(x=>x.id===id);
-    return c?`<span class="pill pm" style="margin:2px">${c.title} <span onclick="toggleLinkedConcern('${id}')" style="cursor:pointer;margin-left:4px;opacity:.7">✕</span></span>`:'';
+    return c?`<span class="pill pm" style="margin:2px">${luminaText(c.title)} <span onclick="toggleLinkedConcern(${luminaJsArg(id)})" style="cursor:pointer;margin-left:4px;opacity:.7">✕</span></span>`:'';
   }).join('');
   // Keep the picker if open
   const picker=byId('inv-concern-picker');
@@ -8712,7 +8722,7 @@ function openProductPage(id){
   // Pills
   const qc=item.qty<=20?'pr':item.qty<=40?'pw':'pp';
   const decBadge=item.decision==='Would Repurchase'?'<span class="decision-badge decision-repurchase">✓ Repurchase</span>':item.decision==='Would Not Repurchase'?'<span class="decision-badge decision-avoid">✗ Won\'t repurchase</span>':item.decision==='Avoid'?'<span class="decision-badge decision-avoid">Avoid</span>':item.decision==='Maybe Repurchase'?'<span class="decision-badge decision-maybe">Maybe</span>':'';
-  byId('pp-pills').innerHTML=`<span class="pill ${qc}">${item.qty}% remaining</span><span class="pill pm">${item.status}</span>${item.type==='Prescription'?'<span class="rx-badge">Rx</span>':''}${decBadge}`;
+  byId('pp-pills').innerHTML=`<span class="pill ${qc}">${luminaText(item.qty)}% remaining</span><span class="pill pm">${luminaText(item.status)}</span>${item.type==='Prescription'?'<span class="rx-badge">Rx</span>':''}${decBadge}`;
 
   // Details rows
   const starRating=n=>n?'★'.repeat(+n)+'☆'.repeat(5-+n):'';
@@ -8736,7 +8746,7 @@ function openProductPage(id){
     ['Prescriber', item.prescriber],
     ['Directions', item.directions],
   ].filter(([,v])=>v);
-  byId('pp-details').innerHTML=details.map(([l,v])=>`<div class="pp-row"><span class="pp-label">${l}</span><span class="pp-val">${v}</span></div>`).join('')||'<p class="tx3 f13">No details added yet.</p>';
+  byId('pp-details').innerHTML=details.map(([l,v])=>`<div class="pp-row"><span class="pp-label">${luminaText(l)}</span><span class="pp-val">${luminaText(v)}</span></div>`).join('')||'<p class="tx3 f13">No details added yet.</p>';
 
   // Ingredients
   if(item.ingr){byId('pp-ingr').textContent=item.ingr;byId('pp-ingr-section').style.display='block'}
@@ -8776,17 +8786,26 @@ function openProductPage(id){
   };
 
   setRow('pp-routines-row','pp-routines-count',usingSteps.length,
-    usingSteps.map(s=>`<span class="pill pm" style="margin:2px">${CAT_ICONS[s.cat]||'⭐'} ${s.cat} (${s.timing.join('/')})</span>`).join(''));
+    usingSteps.map(s=>`<span class="pill pm" style="margin:2px">${CAT_ICONS[s.cat]||'⭐'} ${luminaText(s.cat)} (${luminaText(Array.isArray(s.timing)?s.timing.join('/'):'')})</span>`).join(''));
   // Reverse lookup: symptoms that have this product in their productLinks
   const linkedSymps=readStore(KEYS.symp).filter(s=>Array.isArray(s.productLinks)&&s.productLinks.some(l=>l.id===id));
   setRow('pp-symptoms-row','pp-symptoms-count',linkedSymps.length,
     linkedSymps.length
-      ?linkedSymps.map(s=>'<div class="f13 mt4 flex ac gap6"><span class="fw6">'+s.name+'</span><span class="tx3 f11">'+s.cat+' · Sev '+s.sev+'</span></div>').join('')
+      ?linkedSymps.map(s=>'<div class="f13 mt4 flex ac gap6"><span class="fw6">'+luminaText(s.name)+'</span><span class="tx3 f11">'+luminaText(s.cat)+' · Sev '+luminaText(s.sev)+'</span></div>').join('')
       :'<span class="tx3 f13">No symptoms linked</span>');
-  setRow('pp-photos-row','pp-photos-count',photoCount,
-    photoCount?'<div class="rev-photo-row">'+((item.photos||[]).map(p=>{const src=getProductPhotoSrc(p);return`<img src="${src}" class="pp-photo" onclick="openLightbox('${src}','')" style="cursor:pointer">`;}).join(''))+'</div>':'');
+  setRow('pp-photos-row','pp-photos-count',photoCount,photoCount?'<div class="rev-photo-row"></div>':'');
+  // Set photo URLs and handlers through DOM properties; never interpolate them into HTML attributes.
+  const gallery=byId('pp-photos')?.querySelector('.rev-photo-row');
+  if(gallery)(item.photos||[]).forEach(photo=>{
+    const src=getProductPhotoSrc(photo);
+    if(!src)return;
+    const image=document.createElement('img');
+    image.src=src;image.className='pp-photo';image.style.cursor='pointer';
+    image.alt='Product photo';image.addEventListener('click',()=>openLightbox(src,''));
+    gallery.appendChild(image);
+  });
   setRow('pp-concerns-row','pp-concerns-count',linkedConcsAll.length,
-    linkedConcsAll.length?linkedConcsAll.map(con=>`<div class="f13 mt4 flex ac gap6"><span class="fw6">${con.title}</span><span class="pill ${spill(con.status)} f11">${con.status}</span></div>`).join(''):'');
+    linkedConcsAll.length?linkedConcsAll.map(con=>`<div class="f13 mt4 flex ac gap6"><span class="fw6">${luminaText(con.title)}</span><span class="pill ${spill(con.status)} f11">${luminaText(con.status)}</span></div>`).join(''):'');
 
   // Update More summary
   const moreSum=byId('pp-more-summary');
@@ -8888,38 +8907,40 @@ function delCurrentProduct(){
 // ══ GLOBAL SEARCH ══
 function runSearch(q){
   const el=byId('search-results');
-  if(!q||q.length<2){el.innerHTML='<p class="tx3 f13" style="text-align:center;padding:16px 0">Type to search…</p>';return}
-  const ql=q.toLowerCase();
+  if(!el)return;
+  if(!q||q.length<2){el.innerHTML='<p class="tx3 f13" style="text-align:center;padding:16px 0">Type to search…</p>';return;}
+  const ql=q.toLocaleLowerCase();
   const results=[];
-
+  const contains=values=>values.some(v=>String(v??'').toLocaleLowerCase().includes(ql));
   readStore(KEYS.inv).forEach(i=>{
-    if([i.name,i.brand,i.cat,i.ingr,i.notes].some(f=>f?.toLowerCase().includes(ql)))
-      results.push({type:'Product',name:i.name,sub:i.brand||i.cat||'',action:`openProductPage('${i.id}')`});
+    if(contains([i.name,i.brand,i.cat,i.ingr,i.notes]))results.push({type:'Product',name:i.name,sub:i.brand||i.cat||'',open:()=>openProductPage(i.id)});
   });
   readStore(KEYS.symp).forEach(s=>{
-    if([s.name,s.cat,s.trig,s.notes].some(f=>f?.toLowerCase().includes(ql)))
-      results.push({type:'Symptom',name:s.name,sub:s.cat+' · Sev '+s.sev,action:`editSymp('${s.id}')`});
+    if(contains([s.name,s.cat,s.trig,s.notes]))results.push({type:'Symptom',name:s.name,sub:(s.cat||'')+' · Sev '+(s.sev||''),open:()=>editSymp(s.id)});
   });
-  readStore(KEYS.conc).forEach(c2=>{
-    if([c2.title,c2.area,c2.notes].some(f=>f?.toLowerCase().includes(ql)))
-      results.push({type:'Concern',name:c2.title,sub:c2.status+' · '+c2.area,action:`editConc('${c2.id}')`});
+  readStore(KEYS.conc).forEach(c=>{
+    if(contains([c.title,c.area,c.notes]))results.push({type:'Concern',name:c.title,sub:(c.status||'')+' · '+(c.area||''),open:()=>editConc(c.id)});
   });
   readStore(KEYS.supps).forEach(s=>{
-    if([s.name,s.notes,s.dose].some(f=>f?.toLowerCase().includes(ql)))
-      results.push({type:'Supplement',name:s.name,sub:s.dose||'',action:`editSupp('${s.id}')`});
+    if(contains([s.name,s.notes,s.dose]))results.push({type:'Supplement',name:s.name,sub:s.dose||'',open:()=>editSupp(s.id)});
   });
   readStore(KEYS.steps).forEach(s=>{
-    if(s.cat.toLowerCase().includes(ql)||s.notes?.toLowerCase().includes(ql))
-      results.push({type:'Routine',name:s.cat,sub:s.timing.join('/')+' · '+(s.days?.length===7?'Daily':s.days?.join(','))||'',action:`editStep('${s.id}')`});
+    if(contains([s.cat,s.notes]))results.push({type:'Routine',name:s.cat,sub:(Array.isArray(s.timing)?s.timing.join('/'):'')+' · '+(s.days?.length===7?'Daily':(s.days||[]).join(',')),open:()=>editStep(s.id)});
   });
-
-  if(!results.length){el.innerHTML='<p class="tx3 f13" style="text-align:center;padding:20px 0">No results found</p>';return}
-
+  if(!results.length){el.innerHTML='<p class="tx3 f13" style="text-align:center;padding:20px 0">No results found</p>';return;}
   const typeColor={Product:'pp',Symptom:'pr',Concern:'pw',Supplement:'plv',Routine:'pm'};
-  el.innerHTML=results.map(r=>`<div class="sr-item" onclick="closeModal('search');${r.action}">
-    <div style="flex:1"><div class="sr-name">${r.name}</div>${r.sub?`<div class="sr-sub">${r.sub}</div>`:''}</div>
-    <span class="pill ${typeColor[r.type]||'pm'} sr-type">${r.type}</span>
-  </div>`).join('');
+  const fragment=document.createDocumentFragment();
+  results.forEach(r=>{
+    const row=document.createElement('div');row.className='sr-item';
+    const main=document.createElement('div');main.style.flex='1';
+    const name=document.createElement('div');name.className='sr-name';name.textContent=String(r.name??'');main.appendChild(name);
+    if(r.sub){const sub=document.createElement('div');sub.className='sr-sub';sub.textContent=String(r.sub);main.appendChild(sub);}
+    const badge=document.createElement('span');badge.className='pill '+(typeColor[r.type]||'pm')+' sr-type';badge.textContent=r.type;
+    row.append(main,badge);
+    row.addEventListener('click',()=>{closeModal('search');r.open();});
+    fragment.appendChild(row);
+  });
+  el.replaceChildren(fragment);
 }
 
 // ══ DRAG-TO-REORDER ROUTINES ══
@@ -9343,8 +9364,8 @@ function seedActivityFromExistingData(){
   readStore(KEYS.skin).forEach(l=>events.push({id:uid(),type:'skin_logged',title:'Skin check-in',sub:l.conds.join(', '),icon:'✨',date:l.date,time:'',linkedId:l.id,linkedType:'skin',meta:{}}));
   readStore(KEYS.photos).forEach(p=>events.push({id:uid(),type:'photo_added',title:'Progress photo',sub:p.area||'',icon:'📸',date:p.date,time:'',linkedId:p.id,linkedType:'photo',meta:{}}));
   events.sort((a,b)=>b.date.localeCompare(a.date));
-  save(KEYS.activity,events.slice(0,500));
-  localStorage.setItem('lm_activity_seeded','1');
+  // A failed activity save must not be marked as successfully seeded.
+  if(save(KEYS.activity,events.slice(0,500)))localStorage.setItem('lm_activity_seeded','1');
 }
 
 
@@ -9988,8 +10009,8 @@ function renderProductJournal(item){
     <div class="pp-journal-entry">
       <div class="pp-journal-dot" style="background:${e.dot}"></div>
       <div class="pp-journal-body">
-        <div class="pp-journal-title">${e.text}</div>
-        <div class="pp-journal-date">${e.date}</div>
+        <div class="pp-journal-title">${luminaText(e.text)}</div>
+        <div class="pp-journal-date">${luminaText(e.date)}</div>
       </div>
     </div>`).join('');
 }
@@ -10308,7 +10329,10 @@ function rxAddCustomFxValue(val){
   chip.className='rx-fx-chip on rx-custom-chip';
   chip.dataset.fx=val;
   chip.type='button';
-  chip.innerHTML=val+' <span style="opacity:.6;margin-left:2px">×</span>';
+  chip.textContent=val;
+  const close=document.createElement('span');
+  close.style.cssText='opacity:.6;margin-left:2px';close.textContent='×';
+  chip.appendChild(close);
   chip.onclick=()=>chip.remove();
   container.appendChild(chip);
   // Clear None
@@ -11325,8 +11349,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.3';
-const APP_BUILD='2026.10.24.phase-c.1';
+const APP_VERSION='0.9.5-beta.4';
+const APP_BUILD='2026.10.24.phase-d.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11353,13 +11377,22 @@ const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
   {
+    version:'0.9.5-beta.4',
+    date:'October 24, 2026',
+    status:'Beta — preview only',
+    added:['Single validated JSON backup restore path shared by Vault and Settings'],
+    changed:['Global search results now use safe text and click handlers','Product detail fields and journal display stored values as text','CSV import preview escapes uploaded columns and values'],
+    fixed:['Vault JSON import bypassing photo restoration and replace confirmation','HTML injection through tested product detail, linked concerns, search and CSV views','CSV import incorrectly reporting success when storage fails or Sample Preview is read-only','Prescription check-in custom tags treated as executable HTML'],
+    known:['Real iPhone Safari photo restoration across origins still requires specific QA','Unexamined HTML paths and storage writers may remain; full security signoff pending','This is a preview; production main is unchanged']
+  },
+  {
     version:'0.9.5-beta.3',
     date:'October 24, 2026',
     status:'Beta — preview only',
     added:['Escape closes the topmost sheet or confirmation without closing the product page underneath','Printable Doctor Export escapes user-entered text'],
     changed:['Smart Capture now describes manual label entry until OCR is connected','Sample Preview no longer persists theme, onboarding profile, update-seen or developer flags'],
     fixed:['HTML event injection through the printable summary and recent capture history','Escape not closing ordinary bottom sheets','Print-window blocked error feedback'],
-    known:['Real iPhone Safari, cloud preview and photo restore across browser origins remain unverified','Full HTML sink and direct writer security review is still open', 'Beta is not merged into production']
+    known:['Real photo restore across browser origins remains unverified','Full HTML sink and direct writer security review is still open','Beta was not merged into production']
   },
   {
     version:'0.9.5-beta.2',
@@ -11563,8 +11596,8 @@ function renderDevMode(){
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">'+
       '<button class="btn btn-g btn-sm" onclick="exportData()">Export JSON</button>'+
       '<button class="btn btn-g btn-sm" onclick="copyDiagnostics()">Copy Diagnostics</button>'+
-      '<button class="btn btn-g btn-sm" onclick="localStorage.removeItem(\x27lm_version_seen\x27);showWhatsNewBanner()">Show What\x27s New</button>'+
-      '<button class="btn btn-g btn-sm" onclick="localStorage.removeItem(\x27lm_launched\x27);localStorage.removeItem(\x27lumina_onboarding_completed\x27);location.reload()">Reset Onboarding</button>'+
+      '<button class="btn btn-g btn-sm" onclick="if(!canWrite())return;localStorage.removeItem(\x27lm_version_seen\x27);showWhatsNewBanner()">Show What\x27s New</button>'+
+      '<button class="btn btn-g btn-sm" onclick="if(!canWrite())return;localStorage.removeItem(\x27lm_launched\x27);localStorage.removeItem(\x27lumina_onboarding_completed\x27);location.reload()">Reset Onboarding</button>'+
     '</div>';
 }
 
@@ -11609,7 +11642,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initSwipe();
   initLongPress();
   checkShowWhatsNew();
-  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v0.9.5-beta.2 · Build 2026.10.24.phase-b.1 · Preview';
+  const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v'+LUMINA_VERSION+' · Build '+LUMINA_BUILD+' · Preview';
 
 });
 

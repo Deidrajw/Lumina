@@ -43,3 +43,10 @@ Status: beta candidate / NO GO production until real testing and approval.
 
 ## 2026-10-24 beta.3 isolated test results
 PASS automated Chromium with fictional data and mocked localStorage (16/16): Escape symptom sheet, confirmation Cancel, product behind sheet, photo sheet, Smart Capture no OCR overpromise, hostile text in recent captures, PDF export escaping concern/symptom/prescription/supplement, demo theme/onboarding/profile/version/dev flags non-persistence, demo central save denied, no horizontal overflow on five tabs at 320/375/390/393/430px. PASS Node JS syntax. No page errors in isolated run. BLOCKED local HTTP/HTTPS browser origin (`ERR_BLOCKED_BY_ADMINISTRATOR`), so true IndexedDB cross-origin restore not tested. NOT TESTED real iPhone Safari, full doctor/share, all HTML sinks, all direct storage writers, keyboard focus and full regression. Current release decision NO-GO.
+
+
+## Phase D v0.9.5-beta.4 — 2026-10-24
+PASS (automated isolated Chromium, fictional/malicious fixtures and mocked localStorage): 22/22 checks. Global-search renderer (test host) safe text + product click; product detail values, journal, linked symptoms/concerns and picker safe; Rx custom effects safe; no HTML event execution; Vault JSON file uses actual FileReader and raises shared Restore confirmation without overwriting; CSV header and preview displays escaped strings; preview mode blocks CSV write; UI version current; 320, 375, 390, 393 and 430px no horizontal overflow. PASS node --check; no uncaught page errors in focused tests.
+NOT TESTED: live Cloudflare beta.4 preview, actual Safari photo save/cancel/refresh and complete JSON restore on clean browser origin; all product/search screens/handlers and direct-write paths; all theme/device combinations and full app regression.
+BLOCKED local origin: Chrome automation disallows localhost navigation (ERR_BLOCKED_BY_ADMINISTRATOR), so IndexedDB real-origin testing unavailable here. User independently confirmed prior beta.3 preview opens in iPhone Safari, not a full pass for this beta.
+No production validation. See docs/PHASE_D_IMPORT_DISPLAY_SAFETY_2026-10-24.md and artifacts QA_CHECKLIST.md.
