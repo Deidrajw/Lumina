@@ -120,3 +120,19 @@ NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback
 - [ ] All CRUD, Doctor Summary, overlays, settings, privacy and security regression
 - [ ] Separate explicit approval to merge or deploy production main
 **NO GO** until release blockers pass. Source fallback Beta8 1ee253d; production main 2e02f304. Code rollback cannot restore browser records.
+
+
+## Beta10 verification release gates — 2026-10-24
+- [x] Latest GitHub main and Beta9 HEAD + project continuity inspected
+- [x] Complete root index.html, versioned deployable ZIP, fictional preview, screenshot, release notes and QA
+- [x] Source byte SHA/git blob verified against final ZIP and GitHub blob
+- [x] PASS Node syntax and 77/77 isolated mock-storage Chromium checks, five widths both themes
+- [x] Read-only original JSON vs local sections/photo byte comparator guards zero-photo and partial backups
+- [ ] Cloudflare branch preview URL/check SHA confirmed
+- [ ] User iPhone Safari source imaginary/fictional images export to downloaded JSON
+- [ ] Separate clean HTTPS origin import, full refresh, verifier confirms 13/13 and N/N image byte equivalence with N>0
+- [ ] Real camera/attachment save/cancel/delete/refresh and quota/rollback/permissions
+- [ ] Full empty/populated/demo, doc reports, protocol, vault, insights and cross-link regression
+- [ ] VoiceOver, accessibility, search/filter and HTML/data mutator safety audit
+- [ ] User explicit authorization to merge production
+**NO GO production.** Rollback source Beta9 3a2c88e / production main 2e02f304; code rollback cannot restore lost browser data.

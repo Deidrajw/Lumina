@@ -1097,6 +1097,9 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
     <div class="tog-row"><div class="tog-info"><h4>Export JSON</h4><p>Includes photos; export stops if an image cannot be backed up</p></div><button class="btn btn-g btn-sm" onclick="exportData()">Export</button></div>
     <div class="tog-row"><div class="tog-info"><h4>Check saved photos</h4><p>Check that this browser can read every photo linked to your records, without changing any data</p></div><button class="btn btn-g btn-sm" onclick="luminaCheckPhotoBackup()">Check</button></div>
     <div id="backup-photo-check-result" role="status" aria-live="polite" class="f12 tx2" style="line-height:1.5;margin:8px 0 10px"></div>
+    <div class="tog-row"><div class="tog-info"><h4>Verify restored backup</h4><p>After importing on a different address, compare the original JSON to this browser’s records and image bytes. Read-only.</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('backup-verify-file').click()">Verify</button></div>
+    <input type="file" id="backup-verify-file" accept=".json,application/json" style="display:none" aria-label="Select original Lumina JSON backup to verify" onchange="luminaVerifyBackupFile(event)">
+    <div id="backup-verify-result" role="status" aria-live="polite" class="f12 tx2" style="line-height:1.55;margin:8px 0 10px"></div>
     <div class="tog-row"><div class="tog-info"><h4>Import JSON</h4><p>Review before replacing data on this device</p></div><button class="btn btn-g btn-sm" onclick="document.getElementById('imp-file').click()">Import</button></div>
     <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
     <p class="f11 tx3" style="margin-top:12px;line-height:1.6">Backups include photos when available. A restore replaces records after your confirmation; it does not merge them.</p>
@@ -8271,6 +8274,77 @@ async function luminaCheckPhotoBackup(){
   else luminaBackupStatus('On-device check passed: '+verified+' linked photos readable ('+(totalBytes/1048576).toFixed(1)+' MB). A separate clean-origin restore is still required before calling this backup portable.');
   return result;
 }
+// Read-only post-restore fidelity check: user selects the ORIGINAL JSON after
+// importing it to a DIFFERENT HTTPS origin. No data is written or uploaded.
+function luminaStableJSON(value){
+  return JSON.stringify(value,(key,v)=>v&&typeof v==='object'&&!Array.isArray(v)?
+    Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);
+}
+function luminaVerifyStatus(message,isError=false){
+  const el=byId('backup-verify-result');
+  if(el){el.textContent=message;el.style.color=isError?'var(--r)':'var(--tx2)';}
+}
+async function luminaVerifyRestoredBackup(data){
+  if(demoPreviewMode)throw new Error('Exit Sample Preview before comparing saved browser records');
+  const keys=luminaValidateBackup(data);
+  const required=Object.keys(KEYS);
+  const incomplete=keys.length!==required.length;
+  const recordDifferences=[];
+  for(const key of keys){
+    const current=load(KEYS[key],key==='checks'?{}:[]);
+    if(luminaStableJSON(current)!==luminaStableJSON(data[key]))recordDifferences.push(key);
+  }
+  let photoMatches=0,photoMissing=0,photoDifferent=0;
+  const refs=[...luminaBackupPhotoRefs(data)];
+  for(const id of refs){
+    try{
+      const [expected,actual]=await Promise.all([luminaDataUrlBlob(data._photoBlobs[id]),luminaGetPhoto(id)]);
+      if(!actual||!actual.size||!String(actual.type||'').startsWith('image/')){photoMissing++;continue;}
+      if(expected.size!==actual.size||expected.type!==actual.type){photoDifferent++;continue;}
+      const [a,b]=await Promise.all([expected.arrayBuffer(),actual.arrayBuffer()]);
+      const left=new Uint8Array(a),right=new Uint8Array(b);
+      let same=left.length===right.length;
+      for(let i=0;same&&i<left.length;i++)if(left[i]!==right[i])same=false;
+      if(same)photoMatches++;else photoDifferent++;
+    }catch(err){photoMissing++;}
+  }
+  const allRecords=recordDifferences.length===0&&!incomplete;
+  const allPhotos=photoMatches===refs.length;
+  const passed=allRecords&&allPhotos&&refs.length>0;
+  return {passed,sections:keys.length,requiredSections:required.length,recordDifferences,
+    photoTotal:refs.length,photoMatches,photoMissing,photoDifferent,incomplete,
+    noPhotos:refs.length===0};
+}
+function luminaVerifyBackupFile(event){
+  const input=event?.target, file=input?.files?.[0];
+  if(input)input.value='';
+  if(!file)return;
+  if(demoPreviewMode){luminaVerifyStatus('Exit Sample Preview before verifying this browser’s saved records.',true);return;}
+  luminaVerifyStatus('Comparing this backup with records and photo bytes saved on this browser…');
+  const reader=new FileReader();
+  reader.onerror=()=>luminaVerifyStatus('File could not be read. No records were changed.',true);
+  reader.onload=async()=>{
+    try{
+      const result=await luminaVerifyRestoredBackup(JSON.parse(reader.result));
+      const head=result.passed?'PASS — ':'NOT VERIFIED — ';
+      const summary=result.sections+'/'+result.requiredSections+' data sections checked; '
+        +(result.sections-result.recordDifferences.length)+' match; '
+        +result.photoMatches+'/'+result.photoTotal+' linked photo bytes match.';
+      const problems=[];
+      if(result.incomplete)problems.push('This is a partial legacy backup, so a full restore cannot be certified.');
+      if(result.recordDifferences.length)problems.push('Different sections: '+result.recordDifferences.join(', ')+'.');
+      if(result.photoMissing)problems.push(result.photoMissing+' linked photo(s) missing or unreadable.');
+      if(result.photoDifferent)problems.push(result.photoDifferent+' linked photo(s) differ from the original file.');
+      if(result.noPhotos)problems.push('This backup has no IndexedDB-linked photos; photo portability was not tested.');
+      const ending=result.passed?'Verified against the selected file in this browser only.':'Do not assume this restore is complete.';
+      luminaVerifyStatus(head+summary+' '+problems.join(' ')+' '+ending,!result.passed);
+    }catch(err){
+      luminaVerifyStatus('Verification could not run: '+String(err?.message||'invalid file')+'. No records were changed.',true);
+    }
+  };
+  reader.readAsText(file);
+}
+
 async function exportData(){
   if(demoPreviewMode){canWrite();return;}
   try{
@@ -11597,8 +11671,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.9';
-const APP_BUILD='2026.10.24.vault-filters-cleanup.1';
+const APP_VERSION='0.9.5-beta.10';
+const APP_BUILD='2026.10.24.restore-verify.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11624,6 +11698,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {version:'0.9.5-beta.10',date:'October 24, 2026',title:'Read-only Backup Restore Verification',
+    added:['Verify an imported JSON backup against this browser’s actual saved record sections and linked image bytes','Clear results for missing, mismatched and not-yet-tested photos'],
+    changed:['Backup verification compares the selected file without importing or modifying records','Photo restore is only marked matched if at least one linked image exists and all bytes agree'],
+    fixed:['No direct way to confirm photo and record fidelity after importing a backup on a new website'],
+    known:['Actual clean-origin Safari restore still needs a real device test','Session-only Cleanup Undo and earlier Beta9 features remain unchanged','Production main remains unchanged']},
   {version:'0.9.5-beta.9',date:'October 24, 2026',title:'Vault Filters & Safer Cleanup',
     added:['Separate Category and Form filters for supplements and prescriptions','Preview counts and product names before Data Cleanup bulk changes','Undo the most recent confirmed cleanup bulk operation in the current session'],
     changed:['Form filters no longer replace Category selections','Bulk Cleanup waits for explicit confirmation and checks whether records changed after preview'],

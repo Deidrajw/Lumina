@@ -45,3 +45,8 @@
 - DEC-032 (2026-10-24): Treat Category and Form as separate, ephemeral Vault filters; combine with type, search and status without changing inventory records or inventing new categories.
 - DEC-033: Cleanup suggestions are preflight only. Plain-text product name/count preview and explicit approval precede any mutation; failed saves must not report success.
 - DEC-034: Provide one-action session Undo storing only affected field before/after IDs and rejecting reversal when field changed; avoid storing a mutable full-inventory snapshot which could overwrite unrelated edits. Undo is not a durable backup. On every new confirmed batch, previous Undo is replaced and the preview warns.
+
+
+- DEC-035 (2026-10-24): A successful photo export, or a check that this origin can read images, is NOT evidence of portable restoration. Add a read-only original-file-vs-current-origin verifier that reports full-section matches and exact photo bytes and requires >=1 linked photo for a photo-backed PASS.
+- DEC-036: Verification may read existing data and user-selected backup locally but may not store, upload, overwrite, restore or delete records. Use standard browser FileReader/Blob APIs (Safari-compatible); do not add backend, external AI, or cloud service.
+- DEC-037: Retain P0 real iPhone Safari cross-origin end-to-end QA despite passing simulated tests; do not move main production until both QA and explicit user approval.
