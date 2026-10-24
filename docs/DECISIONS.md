@@ -10,3 +10,8 @@
 - DEC-011 (2026-10-24, beta proposal): Protect stored user strings at display/output boundaries rather than altering saved text; preserving search, edit and export. Existing inline HTML composition needs broader hardening and future refactor.
 - DEC-012 (2026-10-24, beta proposal): New daily/calendar calculations use browser-local date keys without rewriting existing historical UTC-derived data. Migration deferred until tested and approved.
 - DEC-013 (2026-10-24, beta proposal): Enforce Sample Preview read-only boundary in central save and image persistence primitives, not only individual forms.
+
+
+- DEC-014 (2026-10-24, proposed on beta.4): Vault and Settings JSON backups use a single validated REPLACE flow with photo completeness and user confirmation; remove competing legacy import shortcut. CSV imports retain explicit merge/replace choice.
+- DEC-015: Where practical, use DOM textContent and event listeners instead of constructing user data inside innerHTML and onclick. Escape displayed values; do not alter persisted raw strings. Review all remaining HTML sinks in future work.
+- DEC-016: Keep beta previews on feature branches and use fictional isolated sample data; user's ability to open beta.3 in Safari is a preview deployment confirmation, not a photo restore test.

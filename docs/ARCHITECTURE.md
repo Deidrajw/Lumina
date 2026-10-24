@@ -11,3 +11,7 @@ LocalISODate helper aligns daily keys and calendar cells with browser calendar d
 
 ### Beta.3 technical note (unmerged)
 Escape now prioritizes confirmation, lightbox, open modal/sheet, then underlying product detail. Uses existing closeModal cleanup; no new store fields or migrations. Smart Capture remains manual without OCR integration. Printed summary and recent capture cards use display-only luminaText escaping; data at rest remains raw/editable. Preview avoids persisting theme/onboarding/profile/version/dev flags. Other dynamic HTML sinks and direct writers need review.
+
+
+## Phase D beta.4 unmerged improvements
+Existing record schema/localStorage KEYS and photo blob database unchanged. Vault JSON importer now delegates to the same validated Settings importData and luminaRestoreBackup pipeline; no unconfirmed direct JSON restores. CSV remains a separate, user-selected replace/merge flow and now checks saves. Dynamic global search renderer is built using DOM textContent/event listeners instead of interpolating imported text/action strings into innerHTML, but a search-results host is not currently mounted in the UI. Product page text rows, journal, linked conditions and picker rendered with luminaText; gallery uses DOM src/event listeners. CSV mapping/preview escapes imported values; Rx custom effect chips use textContent. Stored values stay raw/editable. Broader security review and genuine origin photo restore remain pending.
