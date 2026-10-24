@@ -53,3 +53,13 @@ Base main 2e02f304 v0.9.4 unchanged; new branch fix/lumina-import-display-safety
 **Tests:** 22/22 PASS isolated Chromium fake storage (injection fixtures, JSON FileReader confirmation, CSV preview/read-only, product detail, responsive widths); node --check PASS; page errors none. Actual HTTP navigation blocked by testing environment: real IDB cross-origin clean restore NOT TESTED; user Safari scenario testing requested.
 **Security honesty:** hardening targeted; app's remaining HTML sinks/direct writes require audit; global search renderer function has no current mounted search-results element (tests added a fixture host).
 **Next exact step:** Check Cloudflare preview SHA, test synthetic photo-backed export/restore on valid origin in iPhone Safari, then broaden security and UX regression. No main merge/deploy without approval.
+
+
+## 2026-10-24 — Complete UI/UX heuristic audit + accessibility beta.5
+**Production main:** 2e02f304 unchanged. **Base:** beta.4 d33e0ce. **Branch:** design/lumina-uiux-foundation-v0.9.5-beta.5.
+**Inputs:** current GitHub beta4 exact root index.html source + governance docs, the uploaded 81-page UI/UX Design Study Guide, historical audit screenshots; no private records.
+**Audit artifact:** docs/AUDIT_UIUX_FULL_2026-10-24.md with detailed screen-by-screen findings/priority/acceptance and guide page references.
+**Implemented:** root index.html CSS variables #948ba9 dark tertiary, #6b6178 light tertiary, nav labels >=11px, section/form labels 12px, Settings icon 44px, key chips/buttons larger, 16px input, mobile zoom allowed, visible focus ring, reduced motion. Nav aria-current updates and Settings button aria-label. Beta version/changelog appended without altering beta.4 history.
+**Proposed (not coded):** six-screen fictional prototype docs/prototypes/UIUX_Concept_Studio.html, Today hierarchy, Vault grouping, Insights evidence-first and Body/Protocol simplifications; user approval needed before changing actual IA.
+**QA:** PASS 60/60 isolated Chromium across 320/375/390/393/430 in dark/light with simulated sample storage; Node syntax PASS; no uncaught page errors or horizontal overflow. Prototype navigation/search/theme PASS. **NOT TESTED:** real Safari/VoiceOver, photo restore on new origin, full UI/workflows/security and Core Web Vitals. No schema/data changes, no production deployment.
+**Next:** confirm Cloudflare branch preview, user review/approval of concepts, real photo/backup and Safari checks, then implement approved changes on separate branch with full regression.

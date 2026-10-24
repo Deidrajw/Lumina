@@ -38,3 +38,12 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - CSV import refuses read-only preview and does not announce success after failed save; Home Screen build label dynamically uses current version; developer reset controls respect Sample Preview; activity seed marker only saved after successful log save.
 - No data migration or schema change; raw stored user text untouched.
 - QA: 22/22 focused isolated Chromium PASS, JS syntax PASS. Real iPhone Safari photo/backup, actual Cloudflare beta.4 preview build, entire security/mutator audit, and full E2E NOT TESTED. Versioned deployable ZIP and fictional read-only preview available. Production main v0.9.4 unchanged.
+
+
+## v0.9.5-beta.5 — UI/UX foundation, UNRELEASED (2026-10-24)
+- Dark/light tertiary and dark secondary text contrast improved; readable navigation and section/form headings.
+- Settings icon, selected tabs and small actions have larger tap targets; iPhone form text 16px; user zoom permitted.
+- Keyboard focus-visible and reduced-motion support; nav and Settings accessibility names and aria-current active page.
+- No migration, new features, removed screens or IA changes. Beta.4 changelog history preserved.
+- Separate fictional six-screen interactive proposed design studio available for user review, not integrated.
+- QA 60/60 isolated Chromium screen/theme/width checks PASS, JS syntax PASS. Actual Safari/VoiceOver/photo restore/full regression NOT TESTED. Production main remains v0.9.4.

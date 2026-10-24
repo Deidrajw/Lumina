@@ -57,3 +57,11 @@ LUM-BUG-014 HTML injection risk: additional unsafe HTML paths in product details
 NEW LUM-BUG-026 P1: CSV import proceeded or showed success despite write failure/preview; candidate guard and failure feedback. Tested preview write denial; quota/permission real-browser failure NOT TESTED. LUM-020.
 NEW LUM-BUG-027 P2: Standalone build label hardcoded beta.2 and demo Developer Reset buttons could write personal flags. Corrected candidate; static inspection, manual Safari pending.
 Observation: runSearch renderer has no mounted search-results/search modal in current HTML; test fixture host only. Confirm intended navigation before changing UI, no newly added global search UI this release.
+
+
+## 2026-10-24 UI/UX audit findings
+LUM-BUG-028 P1 (code-confirmed UX): tertiary text tokens low contrast on both themes (dark card ~2.75:1; light white ~2.93:1), bottom navigation 9.5px, Settings control 36px, 14px form inputs and maximum-scale=1. Candidate beta.5 improves contrast/tap/zoom/focus; isolated tests PASS; real Safari/VoiceOver not tested.
+LUM-BUG-029 P1 (UX review): populated Today excessive similar alerts/cards and equally weighted four metrics; progress rings have ambiguous zero when none scheduled. Proposed grouped summaries and denominator clarity, not yet implemented.
+LUM-BUG-030 P1 (UX review): Vault dense rows with repeated statuses, Insights stacked multiple timeframes, Body/Protocols overflow and alternate reorder path. Proposed designs only.
+LUM-BUG-031 P2 (a11y outstanding): 39 static backdrop elements and 268 inline onclick attributes; complete focus, keyboard, accessible names, safe HTML and direct-write audit NOT TESTED. Counts are maintenance scope, not evidence all overlays fail.
+Previous data portability, security and preview isolation issues await real Safari/IDB QA. See docs/AUDIT_UIUX_FULL_2026-10-24.md.

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lumina</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#13111a;--s1:#1c1925;--s2:#242130;--s3:#2d2a3d;
   --b1:rgba(180,150,200,.08);--b2:rgba(180,150,200,.15);
-  --tx:#ede8f4;--tx2:#9b94ae;--tx3:#635d72;
+  --tx:#ede8f4;--tx2:#b4acc5;--tx3:#948ba9;
   --p:#b07eb8;--pd:rgba(176,126,184,.15);
   --w:#c4957a;--wd:rgba(196,149,122,.15);
   --r:#a8727e;--rd:rgba(168,114,126,.15);
@@ -39,7 +39,7 @@
 body.light{
   --bg:#f7f4f0;--s1:#ffffff;--s2:#f0ecf7;--s3:#e4dff0;
   --b1:rgba(120,80,160,.08);--b2:rgba(120,80,160,.16);
-  --tx:#1e1826;--tx2:#5a5268;--tx3:#9b93ac;
+  --tx:#1e1826;--tx2:#5a5268;--tx3:#6b6178;
   --p:#8a5fa0;--pd:rgba(138,95,160,.12);
   --w:#a06030;--wd:rgba(160,96,48,.12);
   --r:#8a3a4a;--rd:rgba(138,58,74,.1);
@@ -812,6 +812,24 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .supp-result-section-hdr{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--tx3);padding:10px 12px 4px;background:var(--s1);position:sticky;top:0}
 
 .ins-conf-hdr{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--tx3);padding:12px 0 4px;margin-top:4px}
+
+/* LUM-021 — audit-led accessibility refinements; nonstructural CSS only.
+   WCAG text contrast, mobile Safari zoom, visible keyboard focus, touch-target affordances. */
+.nb span{font-size:11px;letter-spacing:.15px}
+.sec-title{font-size:12px;letter-spacing:.55px}
+.flabel{font-size:12px}
+.stab{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.icon-btn{min-width:44px;min-height:44px;width:44px;height:44px}
+.symp-more-btn{min-width:44px;min-height:40px}
+.btn-sm{min-height:40px}
+.fi,.fsel,.fta{font-size:16px}
+button,[role="button"],a,select{touch-action:manipulation}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[role="button"]:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--p);outline-offset:3px;
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
 </style>
 </head>
 <body>
@@ -819,7 +837,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 
 <!-- TODAY -->
 <div class="panel active" id="tab-today">
-  <div class="hdr"><div class="hdr-row"><div><h1 id="greet">Good morning ✦</h1><p id="tdate"></p></div><button class="icon-btn" onclick="switchTab('settings',null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div></div>
+  <div class="hdr"><div class="hdr-row"><div><h1 id="greet">Good morning ✦</h1><p id="tdate"></p></div><button class="icon-btn" aria-label="Open Settings" title="Settings" onclick="switchTab('settings',null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div></div>
   <div class="ring-card">
     <div class="flex jb ac" style="margin-bottom:14px"><span class="serif" style="font-size:18px">Today</span><span id="ring-total" class="tx2 f12"></span></div>
     <div class="rings">
@@ -1049,14 +1067,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.4</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.5</span>
   </div>
   <div style="height:20px"></div>
 </div>
 
 <!-- NAV -->
-<nav id="nav">
-  <button class="nb on" data-tab="today" onclick="switchTab('today',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Today</span></button>
+<nav id="nav" aria-label="Primary navigation">
+  <button class="nb on" aria-current="page" data-tab="today" onclick="switchTab('today',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Today</span></button>
   <button class="nb" data-tab="body" onclick="switchTab('body',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/></svg><span>Body</span><div class="badge" id="bdg-body" style="display:none">0</div></button>
   <button class="nb" data-tab="protocols" onclick="switchTab('protocols',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Protocols</span></button>
   <button class="nb" data-tab="vault" onclick="switchTab('vault',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>Vault</span><div class="badge" id="bdg-vault" style="display:none">0</div></button>
@@ -2678,10 +2696,10 @@ function switchTab(name,btn){
   if(pp&&pp.classList.contains('open')){pp.classList.remove('open');document.body.style.overflow='';_currentProductId=null;}
   const lb=byId('lightbox');if(lb&&lb.classList.contains('open'))lb.classList.remove('open');
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>{b.classList.remove('on');b.removeAttribute('aria-current')});
   byId('tab-'+name).classList.add('active');
-  if(btn)btn.classList.add('on');
-  else{const b=document.querySelector(`.nb[data-tab="${name}"]`);if(b)b.classList.add('on')}
+  if(btn){btn.classList.add('on');btn.setAttribute('aria-current','page');}
+  else{const b=document.querySelector(`.nb[data-tab="${name}"]`);if(b){b.classList.add('on');b.setAttribute('aria-current','page');}}
   activeTab=name;
   ({today:renderToday,body:renderBody,protocols:renderProtocols,vault:renderVault,insights:renderInsights,settings:()=>{}})[name]?.();
 }
@@ -11349,8 +11367,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.4';
-const APP_BUILD='2026.10.24.phase-d.1';
+const APP_VERSION='0.9.5-beta.5';
+const APP_BUILD='2026.10.24.ux-audit.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11376,6 +11394,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {
+    version:'0.9.5-beta.5',
+    date:'October 24, 2026',
+    status:'Beta — UI/UX audit improvements',
+    added:['Primary navigation exposes the active destination to assistive technology','Visible keyboard focus and reduced-motion preference support'],
+    changed:['Improved secondary text contrast in both themes','More readable navigation labels and section headings','Larger Settings icon and filter tab tap areas','Form text input sizing improved for iPhone Safari, browser zoom permitted'],
+    fixed:['Low contrast metadata tokens in dark and light themes','Small touch targets and missing Settings accessible name'],
+    known:['Larger information architecture and card-density redesigns require user review','Full screen-reader, iPhone Safari, photo restore and security regression remains outstanding','Preview only; production main remains unchanged']
+  },
   {
     version:'0.9.5-beta.4',
     date:'October 24, 2026',

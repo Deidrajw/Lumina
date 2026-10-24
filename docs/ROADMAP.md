@@ -22,3 +22,9 @@ Escape stack, honest Smart Capture, doctor-print output safety and sample previe
 
 ## Phase D candidate 2026-10-24
 Beta.4 targets the Vault JSON import bypass, unsafe product/detail/search/CSV text display and false success states. Built and isolated-tested but not deployed to main. Next production gates: Cloudflare beta.4 preview SHA + user iPhone Safari photo cancel/save/refresh; complete photo-backed backup clean-origin restore; exhaustive HTML, inline handler and direct-write audit; regression across all sections. After baseline release and approval: Today/Insights grouped density redesign concepts.
+
+
+## Phase E UI/UX audit, beta.5, 2026-10-24
+**Implemented candidate:** nonstructural accessibility/contrast/touch/focus/zoom improvements LUM-021 on separate PR and Cloudflare preview when confirmed.
+**Design proposed only:** interactive six-screen concept studio (docs/prototypes/UIUX_Concept_Studio.html) for LUM-022–025 Today, Body, Protocols, Vault, Insights, Settings. Preserve original data/functionality; substantial redesign requires user approval after comparison.
+**Next:** actual iPhone Safari, VoiceOver/200% zoom and synthetic photo restore/rollback. Full security and UX regression and documented approval before production release; add meaningful performance baseline LCP/INP/CLS, not inferred values.

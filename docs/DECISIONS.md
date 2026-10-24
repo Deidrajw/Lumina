@@ -15,3 +15,9 @@
 - DEC-014 (2026-10-24, proposed on beta.4): Vault and Settings JSON backups use a single validated REPLACE flow with photo completeness and user confirmation; remove competing legacy import shortcut. CSV imports retain explicit merge/replace choice.
 - DEC-015: Where practical, use DOM textContent and event listeners instead of constructing user data inside innerHTML and onclick. Escape displayed values; do not alter persisted raw strings. Review all remaining HTML sinks in future work.
 - DEC-016: Keep beta previews on feature branches and use fictional isolated sample data; user's ability to open beta.3 in Safari is a preview deployment confirmation, not a photo restore test.
+
+
+- DEC-017 (2026-10-24, beta proposal): Preserve Lumina's Instrument Serif/Manrope, plum/mauve visual identity; solve information density through hierarchy and progressive disclosure, not a new brand design.
+- DEC-018 (candidate implemented): Improve text contrast, visible focus, touch sizes and semantic current-page selection without changing data schema, functional layout or existing primary navigation.
+- DEC-019 (proposal, awaiting user approval): Group Today alert detail, Vault product status, and Insights supporting metrics/evidence. Never hide critical status or claim observed association caused a symptom.
+- DEC-020: Match UX proposals to the supplied 81-page UI/UX study guide; measure real task success and performance instead of equating aesthetic appearance with functional verification.
