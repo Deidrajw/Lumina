@@ -88,3 +88,9 @@ Original unverified photo portability, quota, iPhone Safari, weekly reorder rema
 LUM-BUG-032 / LUM-029: Doctor Summary escaped names/strength/timing/route/prescriber/instructions across 3 renderers, malicious synthetic fixture PASS automated. User-supplied IDs no longer interpolated into event attributes. **Implemented beta, not production Verified.**
 LUM-BUG-001 / LUM-009: Photo-aware export/import reinforced with current-origin integrity checker, strict new-format snapshots, invalid/missing image rejection, sections/photo counts and missing-checks fallback; 27 simulated focused tests PASS. **Actual Safari clean-origin restore P0 remains BLOCKED/NOT TESTED; do not close.**
 Other imported-text sinks, Vault form/category bug LUM-BUG-033, bulk cleanup LUM-BUG-034, quota failure/rollback and sample side effects remain open for future prioritized work. No production data modified.
+
+
+## 2026-10-24 Beta9 Vault and Cleanup
+LUM-BUG-033 Category/Form filter collision: separate _vaultFilterForm from _vaultFilterCat, combined selectors, reset/type/preset and active count; isolated PASS, real iPhone Safari and large fixtures NOT VERIFIED. Status IMPLEMENTED BETA.
+LUM-BUG-034 Data Cleanup previously executed auto category assignments before asking and lacked reversal. Candidate now previews count/names and waits for confirm, checks stale fields and save() error, one-session Undo only touches selected fields and refuses to overwrite later edits. Status IMPLEMENTED BETA, actual Safari/real quota NOT TESTED. NOTE Undo lost after refresh and when a newer batch is confirmed; this is communicated.
+P0 photo export/import with real IndexedDB on clean origin, all HTML injection sinks/direct writers and full QA remain OPEN. No bugs marked production Verified.

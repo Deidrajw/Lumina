@@ -75,3 +75,9 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Settings Backup & Restore now offers Check saved photos: checks existence, nonzero size and MIME type for each linked symptom/concern/product/progress IDB photo on THIS ORIGIN; missing photos get warning. This does NOT verify a cross-origin restore.
 - JSON export validates assembled full v2 file and refuses incomplete images; fresh install without checks data exports checks as {}; v2 import requires complete sections and nonempty image photo blobs before writes; legacy partial backup compatibility retained. Import confirmation displays section/photo counts.
 - No changes to record schema/IDs, existing photo blobs, migrations or production main. PASS JS syntax, 27/27 isolated Chromium fake-storage tests. Physical Safari, real IDB clean-origin photo restore, quota and complete app QA NOT TESTED. NO GO production.
+
+
+## v0.9.5-beta.9 — Vault filtering and safer cleanup (2026-10-24) — unreleased
+- Vault: Category and Form independently filter Supplements and Rx; combined selections work; reset/type/preset clears stale form; filter counts accurate and filter options safely rendered.
+- Data Cleanup: category suggestions and Mark Finished now show affected product count and names BEFORE any save, require approval; Save failures/stale records safely stop action; one in-session scoped Undo if affected fields not edited afterward; archived, Finished and Empty zero-qty products excluded. Suggestions use existing category taxonomy.
+- No schema, ID, photo, backend or migration changes; no production deployment. 105/105 isolated automated Chromium tests PASS, JS syntax PASS. Real iPhone Safari, complete IndexedDB photo restore, VoiceOver and full security/CRUD NOT TESTED. NO-GO main.

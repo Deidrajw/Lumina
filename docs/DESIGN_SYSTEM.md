@@ -15,3 +15,7 @@ Preserve Instrument Serif/Manrope and existing plum/mauve tokens. Today: primary
 
 ## 2026-10-24 Beta7 Body/Protocols/Settings implementation
 Preserve Instrument Serif/Manrope and dark/light Lumina tokens. Body primary log actions min 44px and advanced filters via native details; Protocols contextual count, visible Show all/Reorder touch actions with aria-pressed and unsupported supp mode disabled; Settings doctor vs backup separation and independent setup/destructive disclosures. No data model/renderer feature removed. True Safari/VoiceOver/focus state pending verification.
+
+
+## Beta9 Vault action principles (2026-10-24)
+Category and Form remain separate labeled combobox controls inside the current bottom sheet, with active filter counts, safe escaped dynamic labels and discoverable Reset. Bulk Data Cleanup actions are phrased as Preview/Review rather than premature success, display counts and a short sample of affected fictional product names before the explicit Save action, and expose reversible Undo when safe. In preview modal preserve newlines and Cancel; native confirmation uses textContent, not innerHTML for names. Existing plum/mauve, Instrument Serif and Manrope tokens preserved. iPhone Safari/VoiceOver tap/contrast still requires real-device checks.

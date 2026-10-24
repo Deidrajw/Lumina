@@ -46,3 +46,7 @@ Beta6 candidate implemented Today/Vault/Insights; Beta7 candidate now implemente
 
 ## 2026-10-24 Beta8 repair progress
 Doctor Summary text safety + current-origin photo readiness check and stricter backup validation implemented Beta8 candidate. Next gating task: real iPhone Safari fresh HTTPS-origin export/import/refresh of four photo categories with recovery, then full regressions. After real data protection verification address LUM-030 Vault Form/Category filter, LUM-031 bulk cleanup confirmation and test Doctor Summary copy/share accessibility. Continue page grading with measured tests, not cosmetic inflation. No production release without approval.
+
+
+## 2026-10-24 Beta9 and next release gate
+LUM-030 filter collision and LUM-031 Data Cleanup bulk safety are IMPLEMENTED Beta9 candidates, tested in isolated Chromium. Current P0 highest priority remains full real HTTPS iPhone Safari export/restore of photos with IndexedDB after refresh. Then verify Vault search/edit, form/category/reset, cleanup preview/cancel/undo/failed writes on device, VoiceOver and full app security regression before production release. Continue to regrade affected surfaces only after verified user tasks. Main remains v0.9.4.

@@ -51,3 +51,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## v0.9.5-beta.8 current candidate
 [Photo backup self-check + Doctor Summary safety](docs/BETA8_BACKUP_DOCTOR_SAFETY_2026-10-24.md) improves Doctor Summary rendering and checks linked current-origin photo blobs while preserving all app data contracts. Mocked storage QA 27/27 PASS; real iPhone Safari/photo backup restore and comprehensive security/regression pending. Production main still v0.9.4. NO GO for production until separate approval.
+
+
+## Beta9 — Vault filter and safe Cleanup candidate
+[Beta9 audit-driven Vault implementation](docs/BETA9_VAULT_FILTERS_CLEANUP_2026-10-24.md) fixes Category/Form filter collision and adds confirmed Cleanup preflight plus in-session scoped Undo. Test artifact ZIP and standalone fictional preview were delivered in chat. This is an unmerged beta branch; main remains v0.9.4. Physical Safari photo backup and full regression still block release.
