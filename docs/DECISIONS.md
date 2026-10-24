@@ -40,3 +40,8 @@
 
 - DEC-030 (2026-10-24): Doctor Summary untrusted text must be escaped on display; preserve original strings for user editing and clipboard/share. Checkbox action binding uses state indices rather than imported item IDs in inline handlers.
 - DEC-031: Add read-only current-origin photo readiness check as preflight; never label it portable backup verification. Complete v2 JSON snapshots required; legacy partial format remains supported. Actual cross-origin Safari restoration is release gate.
+
+
+- DEC-032 (2026-10-24): Treat Category and Form as separate, ephemeral Vault filters; combine with type, search and status without changing inventory records or inventing new categories.
+- DEC-033: Cleanup suggestions are preflight only. Plain-text product name/count preview and explicit approval precede any mutation; failed saves must not report success.
+- DEC-034: Provide one-action session Undo storing only affected field before/after IDs and rejecting reversal when field changed; avoid storing a mutable full-inventory snapshot which could overwrite unrelated edits. Undo is not a durable backup. On every new confirmed batch, previous Undo is replaced and the preview warns.

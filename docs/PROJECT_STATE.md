@@ -1,3 +1,7 @@
+# CURRENT — 2026-10-24 v0.9.5-beta.9 Vault safety
+Production main 2e02f304/v0.9.4 UNCHANGED. Branch fix/vault-form-filter-cleanup-beta9 from beta8 1ee253d. Implemented LUM-030 separate Vault Category and Form filters (independent combined selection, reset, presets, type switching), LUM-031 Data Cleanup preflight/confirmation, stale-preview protection, save-failure feedback and single-session scoped Undo. No schema, ID, IndexedDB photos, migration or backend changes. PASS 105/105 isolated Chromium fictional data checks and Node syntax; physical Safari, clean-origin actual IndexedDB photo restore, complete app/VoiceOver/security NOT TESTED. No main merge authorization. Next: Cloudflare preview SHA and iPhone fictional QA, then P0 cross-origin photo restore and full release regression. See docs/BETA9_VAULT_FILTERS_CLEANUP_2026-10-24.md.
+
+---
 # LATEST — 2026-10-24, Beta 8 data-safety candidate
 Production main 2e02f304 / v0.9.4 UNCHANGED. Work branch fix/photo-backup-doctor-summary-beta8 from audit docs PR #9 head bbb1377 (the app base is exact Beta7 blob 1c2fa20d). Implemented LUM-029 Doctor Summary selection/results/presentation display escaping and safe checkbox handlers; added Settings photo readiness self-check, full-v2-backup completeness, pre-import image validation and section/photo counts; empty checks object on new installs. No data migration, IDs or photo deletions. 27/27 PASS automated isolated Chromium fake storage, Node JS syntax PASS. **Real iPhone Safari IndexedDB clean-origin restoration NOT TESTED** and still P0 release gate. No main deployment approval. See docs/BETA8_BACKUP_DOCTOR_SAFETY_2026-10-24.md. Next: confirm Cloudflare preview SHA; user Safari fictional image-backed backup clean-origin roundtrip; then full QA/security and release decision.
 
@@ -82,3 +86,5 @@ Photo JSON export includes `_photoBlobs`, but current `importData()` does not re
 4. Address data portability and critical bugs on approved feature branches.
 
 At each session end append verified HEAD/branch, PR, outcomes, blockers and next step.
+
+**Final Beta9 references (2026-10-24):** Code commit c7189112fe95bf92183d15c8a15c4aa11e4c559a, draft PR #11 https://github.com/Deidrajw/Lumina/pull/11, Cloudflare successful preview https://d52a504d.lumina-9w6.pages.dev. Source blob f9666c4c1af71b6b8660db0cfdbc0502cfef6711 verified. Production main remains 2e02f304. Real iPhone Safari and clean-origin IDB photo restore remain NOT TESTED.

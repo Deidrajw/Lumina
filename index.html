@@ -383,7 +383,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .rs.done .rs-check::after{content:'\2713';color:#fff;font-size:12px;font-weight:700}
 /* Custom confirm */
 #modal-confirm{z-index:800}
-.confirm-msg{font-size:15px;color:var(--tx2);line-height:1.5;margin-bottom:20px}
+.confirm-msg{font-size:15px;color:var(--tx2);line-height:1.5;margin-bottom:20px;white-space:pre-line}
 .confirm-warn{font-size:12px;color:var(--tx3);margin-top:8px}
 .rs-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 0 8px;cursor:pointer;border-bottom:1px solid var(--b1);margin-bottom:8px;transition:opacity var(--dur-fast) var(--ease)}
 .rs-group-lbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3)}
@@ -6475,7 +6475,7 @@ function renderInventory(){
   if(alerts.length)h+=`<details class="lum-disclosure lum-vault-reviews"><summary>Product details to review (${alerts.length}) <span class="lum-summary-arrow" aria-hidden="true">⌄</span></summary><div class="lum-alert-list">${alerts.slice(0,3).map(a=>`<div class="banner ${a.t==='low'?'bw':'br'}" style="cursor:pointer" onclick="editInv(${luminaJsArg(a.id)})">${a.t==='low'?'⚠️':'📅'} ${luminaText(a.name)}: ${luminaText(a.msg)}</div>`).join('')}</div></details>`;
 
   if(!pool.length){
-    const _hasFilter=_vaultFilterStatus||_vaultFilterCat||_vaultFilterExpiry||q;
+    const _hasFilter=_vaultFilterStatus||_vaultFilterCat||_vaultFilterForm||_vaultFilterExpiry||_vaultFilterAdded||q;
     h+=_hasFilter
       ?'<div class="empty"><div class="ico">🔍</div><h3>No results</h3><p>Try clearing some filters.</p><button class="btn btn-g btn-sm mt8" onclick="resetVaultFilters()">Clear filters</button></div>'
       :'<div class="empty"><div class="ico">📦</div><h3>Your vault is empty</h3><p>Add a product with <strong>+ Add</strong>, or use Smart Capture to attach a label photo and enter details.</p></div>';
@@ -6618,11 +6618,12 @@ function openVaultTypeMore(btn){
 
 function selectVaultTypeOverflow(type){
   activeIT=type;
+  _vaultFilterCat='';_vaultFilterForm='';
   closeModal('vault-type-menu');
   renderInventory();
 }
 
-function setIT(t){activeIT=t;_invSearchQ='';_vaultFilterCat='';_vaultFilterExpiry='';renderInventory();}
+function setIT(t){activeIT=t;_invSearchQ='';_vaultFilterCat='';_vaultFilterForm='';_vaultFilterExpiry='';renderInventory();}
 
 // ── Vault row tap delegation ──
 // Event delegation is more reliable than inline onclick for dynamically rendered rows.
@@ -9753,6 +9754,7 @@ function migrateCat(rawCat, type){
 // ── VAULT SORT & FILTER STATE ──
 let _vaultSort='name'; // name | name_desc | added | added_asc | updated | expiry | qty | brand | rating
 let _vaultFilterCat='';
+let _vaultFilterForm='';
 let _vaultFilterStatus='';
 let _vaultFilterExpiry='';
 let _vaultFilterAdded=''; // '' | today | week | month | custom
@@ -9761,7 +9763,7 @@ let _vaultFilterAddedTo='';   // YYYY-MM-DD
 
 // ── Canonical vault filter state object ──
 const vaultFilters={
-  type:'all', category:'', status:'', sort:'name', search:'', expiry:'', added:''
+  type:'all', category:'', form:'', status:'', sort:'name', search:'', expiry:'', added:''
 };
 
 // Shared comparator for every "Recently Added" style sort — used both for the
@@ -9808,9 +9810,10 @@ const _debouncedRenderInventory=debounce(()=>renderInventory(),180);
 
 function setVaultFilter(key,val){
   vaultFilters[key]=val;
-  if(key==='type'){activeIT=val===undefined?'all':val;_invSearchQ='';vaultFilters.search='';}
+  if(key==='type'){activeIT=val===undefined?'all':val;_invSearchQ='';_vaultFilterCat='';_vaultFilterForm='';vaultFilters.search='';}
   if(key==='sort')_vaultSort=val;
   if(key==='category')_vaultFilterCat=val;
+  if(key==='form')_vaultFilterForm=val;
   if(key==='status')_vaultFilterStatus=val;
   if(key==='expiry')_vaultFilterExpiry=val;
   if(key==='search')_invSearchQ=val;
@@ -9829,6 +9832,8 @@ function applyVaultFilters(items){
 
   // Category filter
   if(_vaultFilterCat)pool=pool.filter(i=>i.cat===_vaultFilterCat);
+  // Form is an independent supplement/prescription attribute, never a category.
+  if(_vaultFilterForm&&(activeIT==='Supplement'||activeIT==='Prescription'))pool=pool.filter(i=>i.form===_vaultFilterForm);
 
   // Status filter
   if(_vaultFilterStatus==='low')pool=pool.filter(i=>i.qty<=20);
@@ -9873,8 +9878,8 @@ function applyVaultFilters(items){
 }
 
 function resetVaultFilters(){
-  Object.assign(vaultFilters,{type:'all',category:'',status:'',sort:'name',search:'',expiry:'',added:''});
-  _vaultSort='name';_vaultFilterCat='';_vaultFilterStatus='';_vaultFilterExpiry='';
+  Object.assign(vaultFilters,{type:'all',category:'',form:'',status:'',sort:'name',search:'',expiry:'',added:''});
+  _vaultSort='name';_vaultFilterCat='';_vaultFilterForm='';_vaultFilterStatus='';_vaultFilterExpiry='';
   _vaultFilterAdded='';_vaultFilterAddedFrom='';_vaultFilterAddedTo='';
   activeIT='all';_invSearchQ='';
   renderVault();
@@ -9918,8 +9923,8 @@ function openFilterSheet(){
       '<input type="date" class="fi f13" id="fs-added-from" style="flex:1" value="'+(_vaultFilterAddedFrom||'')+'">'+
       '<input type="date" class="fi f13" id="fs-added-to" style="flex:1" value="'+(_vaultFilterAddedTo||'')+'">'+
     '</div></div>'+
-    (cats.length?'<div class="fg mb8"><label class="flabel">Category</label><select class="fsel" id="fs-cat"><option value="">All categories</option>'+cats.map(c=>'<option value="'+c+'"'+(c===_vaultFilterCat?' selected':'')+'>'+c+'</option>').join('')+'</select></div>':'')+
-    (showForm&&forms.length?'<div class="fg mb8"><label class="flabel">Form</label><select class="fsel" id="fs-form"><option value="">All forms</option>'+forms.map(f=>'<option value="'+f+'"'+(f===_vaultFilterCat?' selected':'')+'>'+f+'</option>').join('')+'</select></div>':'');
+    (cats.length?'<div class="fg mb8"><label class="flabel">Category</label><select class="fsel" id="fs-cat"><option value="">All categories</option>'+cats.map(c=>'<option value="'+luminaText(c)+'"'+(c===_vaultFilterCat?' selected':'')+'>'+luminaText(c)+'</option>').join('')+'</select></div>':'')+
+    (showForm&&forms.length?'<div class="fg mb8"><label class="flabel">Form</label><select class="fsel" id="fs-form"><option value="">All forms</option>'+forms.map(f=>'<option value="'+luminaText(f)+'"'+(f===_vaultFilterForm?' selected':'')+'>'+luminaText(f)+'</option>').join('')+'</select></div>':'');
 }
 
 function applyFilterSheet(){
@@ -9928,8 +9933,8 @@ function applyFilterSheet(){
   if(s)_vaultSort=s.value||'name';
   if(st)_vaultFilterStatus=st.value;
   if(ex)_vaultFilterExpiry=ex.value;
-  if(cat)_vaultFilterCat=cat.value;
-  if(frm&&!cat?.value)_vaultFilterCat=frm.value;
+  _vaultFilterCat=cat?.value||'';
+  _vaultFilterForm=frm?.value||'';
   if(added)_vaultFilterAdded=added.value;
   _vaultFilterAddedFrom=_vaultFilterAdded==='custom'?(addedFrom?.value||''):'';
   _vaultFilterAddedTo=_vaultFilterAdded==='custom'?(addedTo?.value||''):'';
@@ -9938,8 +9943,8 @@ function applyFilterSheet(){
 }
 
 function renderVaultFilterBar(inv){
-  const hasActiveFilter=_vaultSort!=='name'||_vaultFilterCat||_vaultFilterStatus||_vaultFilterExpiry||_vaultFilterAdded;
-  const activeCount=[_vaultSort!=='name',!!_vaultFilterCat,!!_vaultFilterStatus,!!_vaultFilterExpiry,!!_vaultFilterAdded].filter(Boolean).length;
+  const hasActiveFilter=_vaultSort!=='name'||_vaultFilterCat||_vaultFilterForm||_vaultFilterStatus||_vaultFilterExpiry||_vaultFilterAdded;
+  const activeCount=[_vaultSort!=='name',!!_vaultFilterCat,!!_vaultFilterForm,!!_vaultFilterStatus,!!_vaultFilterExpiry,!!_vaultFilterAdded].filter(Boolean).length;
   return '<div class="flex gap8 mb12" style="align-items:center">'+
     '<button class="filter-sheet-btn'+(hasActiveFilter?' active':'')+'" onclick="openFilterSheet()">'+
     '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>'+
@@ -10007,11 +10012,11 @@ function bulkDelete(){
 
 // ══ PRESET FILTER VIEWS ══
 const PRESET_FILTERS=[
-  {id:'expired',    label:'🕰 Expired',     filter:()=>{_vaultFilterExpiry='expired';_vaultFilterStatus='';_vaultFilterCat='';_invSearchQ=''}},
-  {id:'lowstock',   label:'⚠️ Low stock',   filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='low';_vaultFilterCat='';_invSearchQ=''}},
+  {id:'expired',    label:'🕰 Expired',     filter:()=>{_vaultFilterExpiry='expired';_vaultFilterStatus='';_vaultFilterCat='';_vaultFilterForm='';_invSearchQ=''}},
+  {id:'lowstock',   label:'⚠️ Low stock',   filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='low';_vaultFilterCat='';_vaultFilterForm='';_invSearchQ=''}},
 
-  {id:'rx',         label:'💉 Active Rx',   filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='In Use';_vaultFilterCat='';activeIT='Prescription';_invSearchQ=''}},
-  {id:'unopened',   label:'📦 Unopened',    filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='';_vaultFilterCat='';_invSearchQ='unopened'}},
+  {id:'rx',         label:'💉 Active Rx',   filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='In Use';_vaultFilterCat='';_vaultFilterForm='';activeIT='Prescription';_invSearchQ=''}},
+  {id:'unopened',   label:'📦 Unopened',    filter:()=>{_vaultFilterExpiry='';_vaultFilterStatus='';_vaultFilterCat='';_vaultFilterForm='';_invSearchQ='unopened'}},
 ];
 let _activePreset='';
 let _applyRepurchase=false;
@@ -10314,17 +10319,20 @@ function getStepStreak(stepId){
 // ══ DATA CLEANUP TOOLS ══
 
 let _cleanupExpanded={};
+// Single-session, one-step undo of the most recent confirmed Cleanup bulk action.
+let _cleanupUndo=null;
 function expandCleanupSection(key){_cleanupExpanded[key]=true;renderDataCleanup();}
 function renderDataCleanup(){
   const inv=readStore(KEYS.inv);
   const needsCat=inv.filter(i=>!i.archived&&!i.cat);
   const needsExpiry=inv.filter(i=>!i.archived&&!i.expiry&&(i.type==='Skincare'||i.type==='Prescription'));
   const needsStatus=inv.filter(i=>!i.archived&&!i.status);
-  const zeroQty=inv.filter(i=>!i.archived&&(i.qty===0||i.qty===undefined));
+  const zeroQty=inv.filter(i=>!i.archived&&(i.qty===0||i.qty===undefined)&&i.status!=='Finished'&&i.status!=='Empty');
 
   const el=byId('vault-content');if(!el)return;
 
   let h=`<div class="sec-title">Data Cleanup</div>`;
+  if(_cleanupUndo)h+='<div class="card card-sm"><div class="fw6 f13 mb8">Last bulk change: '+_cleanupUndo.count+' items</div><p class="f12 tx2 mb8">You can undo this change while its affected fields remain unchanged. Undo will not change other product details.</p><button type="button" class="btn btn-g btn-sm" onclick="undoCleanupBatch()">Undo last bulk change</button></div>';
 
   if(!needsCat.length&&!needsExpiry.length&&!needsStatus.length&&!zeroQty.length){
     h+='<div class="empty"><div class="ico">✅</div><h3>All clean!</h3><p>No missing fields detected.</p></div>';
@@ -10346,7 +10354,7 @@ function renderDataCleanup(){
         </div>`;
       }).join('')}
       ${needsCat.length>8&&!_cleanupExpanded.cat?`<button class="btn btn-g btn-sm mt8" onclick="expandCleanupSection('cat')" style="font-size:12px">+ ${needsCat.length-8} more</button>`:''}
-      <button class="btn btn-p btn-sm btn-full mt12" onclick="autoAssignCategories()">Auto-assign all suggestions</button>
+      <button class="btn btn-p btn-sm btn-full mt12" onclick="autoAssignCategories()">Preview suggested changes</button>
     </div>`;
   }
 
@@ -10369,7 +10377,7 @@ function renderDataCleanup(){
     h+=`<div class="card card-sm">
       <div class="card-title">Zero quantity active items (${zeroQty.length})</div>
       <p class="f13 tx2 mb12">These items are active but have 0% quantity. Mark as Finished or update the quantity.</p>
-      <button class="btn btn-g btn-sm btn-full" onclick="bulkMarkFinishedZeroQty()">Mark all as Finished</button>
+      <button class="btn btn-g btn-sm btn-full" onclick="bulkMarkFinishedZeroQty()">Review changes before marking Finished</button>
     </div>`;
   }
 
@@ -10400,25 +10408,64 @@ function quickSetCat(id,cat){
   renderDataCleanup();
 }
 
-function autoAssignCategories(){
-  const inv=readStore(KEYS.inv);
-  let count=0;
-  inv.forEach(i=>{
-    if(!i.cat&&!i.archived){
-      const suggested=guessCategoryFromName(i.name,i.type);
-      if(suggested){i.cat=suggested;count++;}
-    }
-  });
-  save(KEYS.inv,inv);
-  showConfirm('Auto-assign complete','Assigned categories to '+count+' products.','','OK','btn-p',()=>renderDataCleanup());
+// Batch changes touch a single product field and can be undone without overwriting
+// other edits. The confirmation is a plain-text preview, not a success message.
+function applyCleanupBatch(field,changes){
+  if(!canWrite())return false;
+  if(!['cat','status'].includes(field)||!changes.length)return false;
+  const inv=readStore(KEYS.inv,[]);
+  const items=new Map(inv.map(i=>[i.id,i]));
+  // Abort the whole operation if any record changed after preview was opened.
+  if(changes.some(c=>!items.has(c.id)||items.get(c.id)[field]!==c.before)){
+    showConfirm('Inventory changed','One or more products changed after you opened the preview. Review the current list and try again.','','OK','btn-g',()=>renderDataCleanup());
+    return false;
+  }
+  changes.forEach(c=>{items.get(c.id)[field]=c.after;});
+  if(!save(KEYS.inv,inv)){
+    showConfirm('Changes not saved','Storage could not save the bulk changes. Your previous inventory remains unchanged.','','OK','btn-g',()=>renderDataCleanup());
+    return false;
+  }
+  _cleanupUndo={field,changes:changes.map(c=>({...c})),count:changes.length};
+  renderDataCleanup();
+  return true;
 }
-
+function undoCleanupBatch(){
+  if(!_cleanupUndo)return;
+  if(!canWrite())return;
+  const {field,changes}=_cleanupUndo;
+  const inv=readStore(KEYS.inv,[]);
+  const items=new Map(inv.map(i=>[i.id,i]));
+  if(changes.some(c=>!items.has(c.id)||items.get(c.id)[field]!==c.after)){
+    _cleanupUndo=null;
+    showConfirm('Unable to undo safely','At least one affected product has since changed. Nothing was overwritten. Edit any affected item individually if needed.','','OK','btn-g',()=>renderDataCleanup());
+    return;
+  }
+  changes.forEach(c=>{items.get(c.id)[field]=c.before;});
+  if(!save(KEYS.inv,inv)){
+    showConfirm('Undo not saved','Storage could not save the reversal. The current product records are unchanged.','','OK','btn-g',()=>renderDataCleanup());
+    return;
+  }
+  _cleanupUndo=null;
+  renderDataCleanup();
+}
+function autoAssignCategories(){
+  const changes=readStore(KEYS.inv,[]).filter(i=>!i.archived&&!i.cat).map(i=>({
+    id:i.id,name:i.name,before:i.cat,after:migrateCat(guessCategoryFromName(i.name,i.type),i.type)
+  })).filter(c=>c.after);
+  if(!changes.length){showConfirm('No suggestions','There are no products with recognizable missing categories.','','OK','btn-g',()=>{});return;}
+  const sample=changes.slice(0,5).map(c=>`${c.name}: ${c.after}`).join('\n');
+  showConfirm('Preview category assignments',`${changes.length} product${changes.length===1?'':'s'} will be updated:\n${sample}${changes.length>5?'\n… and '+(changes.length-5)+' more':''}`,
+    'Suggestions are based only on product names. Review the changes after applying.'+(_cleanupUndo?' This replaces the previous Undo option.':''),
+    'Apply '+changes.length+' changes','btn-p',()=>applyCleanupBatch('cat',changes));
+}
 function bulkMarkFinishedZeroQty(){
-  showConfirm('Mark zero-qty items as Finished?','Items with 0% quantity will be marked as Finished.','','Mark Finished','btn-g',()=>{
-    const inv=readStore(KEYS.inv);
-    inv.forEach(i=>{if(!i.archived&&(i.qty===0||i.qty===undefined))i.status='Finished';});
-    save(KEYS.inv,inv);renderDataCleanup();
-  });
+  const changes=readStore(KEYS.inv,[]).filter(i=>!i.archived&&(i.qty===0||i.qty===undefined)&&i.status!=='Finished'&&i.status!=='Empty')
+    .map(i=>({id:i.id,name:i.name,before:i.status,after:'Finished'}));
+  if(!changes.length){showConfirm('Nothing to change','No active products with zero quantity were found.','','OK','btn-g',()=>{});return;}
+  const sample=changes.slice(0,5).map(c=>c.name).join('\n');
+  showConfirm('Preview status changes',`${changes.length} product${changes.length===1?'':'s'} will be marked Finished:\n${sample}${changes.length>5?'\n… and '+(changes.length-5)+' more':''}`,
+    'Only the status field will change; quantity and other details stay as they are.'+(_cleanupUndo?' This replaces the previous Undo option.':''),
+    'Mark '+changes.length+' Finished','btn-p',()=>applyCleanupBatch('status',changes));
 }
 
 
@@ -11550,8 +11597,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.8';
-const APP_BUILD='2026.10.24.data-safety.1';
+const APP_VERSION='0.9.5-beta.9';
+const APP_BUILD='2026.10.24.vault-filters-cleanup.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11577,6 +11624,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {version:'0.9.5-beta.9',date:'October 24, 2026',title:'Vault Filters & Safer Cleanup',
+    added:['Separate Category and Form filters for supplements and prescriptions','Preview counts and product names before Data Cleanup bulk changes','Undo the most recent confirmed cleanup bulk operation in the current session'],
+    changed:['Form filters no longer replace Category selections','Bulk Cleanup waits for explicit confirmation and checks whether records changed after preview'],
+    fixed:['Vault Category/Form filter collision','Auto-assign action previously saved changes before asking for confirmation'],
+    known:['Undo applies only while affected fields stay unchanged, and is lost on refresh','Full real Safari photo backup restoration remains unverified','This beta is not a production release']},
   {version:'0.9.5-beta.8',date:'October 24, 2026',
     title:'Photo Backup Checks & Doctor Summary Safety',
     added:['Check whether all IndexedDB photos linked to current records are readable before export','Show the number of data sections and photos in the backup restore confirmation'],

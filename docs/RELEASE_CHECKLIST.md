@@ -106,3 +106,17 @@ NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback
 - [ ] Full doctor report/copy/share, editable imported records and all app regression
 - [ ] Comprehensive security/VoiceOver, origin migration and explicit user production approval
 **NO GO for main** until these complete. Code rollback previous Beta7 b48dca8 / production 2e02f304, which cannot restore lost browser data.
+
+
+## Beta9 GO/NO-GO (2026-10-24)
+- [x] Latest GitHub HEAD/code + governance docs refreshed; branch based on Beta8 source
+- [x] Full root index.html beta9, fictional preview, screenshots, changelog/QA/tester notes and ZIP
+- [x] Category/Form combined filtering plus reset/type/presets/option safety tested in isolated Chromium
+- [x] Cleanup preflight Cancel/Apply/session Undo, stale state/failed simulated save, read-only sample tests
+- [x] JavaScript syntax and 105/105 isolated Chromium checks PASS on six tabs/five widths/two themes
+- [ ] Cloudflare preview SHA and physical iPhone Safari Beta9 tested
+- [ ] Real clean-origin JSON/IndexedDB photo save/export/import after refresh, including quota and rollback
+- [ ] 20+ products, all Vault forms/filtered no-result/long label/VoiceOver state on iPhone
+- [ ] All CRUD, Doctor Summary, overlays, settings, privacy and security regression
+- [ ] Separate explicit approval to merge or deploy production main
+**NO GO** until release blockers pass. Source fallback Beta8 1ee253d; production main 2e02f304. Code rollback cannot restore browser records.
