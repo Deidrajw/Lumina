@@ -32,3 +32,7 @@
 - DEC-025 (2026-10-24): User-approved six-screen design implemented in two incremental batches, Beta6 and Beta7, without merging to main or altering record structures.
 - DEC-026: Surface existing Show all and Reorder protocol affordances with truthful counts, disable unsupported supplement controls.
 - DEC-027: Separate professional summaries from backups and hide destructive reset behind discoverable native disclosure. Existing functionality remains available.
+
+
+- DEC-028 (2026-10-24): Treat UX heuristic scores and release-readiness evidence as **separate** dimensions. Every significant Beta7 page/subflow gets reviewer strength, gap, severity and acceptance; no self-graded numeric score implies Verified functional testing.
+- DEC-029: Data safety and unescaped Doctor Summary output are production release gates even when visual grade is good; feature branch patches/real-origin regression precede merge.

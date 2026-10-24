@@ -66,3 +66,10 @@ NOT TESTED real Safari Beta 6, full create/read/edit/save/cancel/delete flows an
 
 ## Beta7 — 2026-10-24
 PASS automated isolated Chromium with synthetic in-memory localStorage: six sections × 320/375/390/393/430px × light/dark = 60 screen cases without page errors/overflow. PASS 20 focused cases: Body symptom/concern/skin original editor opens, filter disclosure persists on rerender, Rx/Progress More tabs; Protocols scheduled count, Show all/Reorder controls, Week/Supplements transitions, populated AM count; Settings doctor summary/import and collapsed setup/reset actions available. Embedded JS syntax Node PASS. NOT TESTED physical Safari/VoiceOver, real IndexedDB clean HTTPS-origin JSON/photo roundtrip, full linked CRUD, quota/errors, doctor report/share, comprehensive injection/write boundary/security and keyboard focus. NO GO main.
+
+
+## 2026-10-24 — Every-page grade audit (no app patch)
+**PASS automated current:** 37/37 isolated Chromium render/open smoke (22 navigation/subviews, 15 modal opens), 390px dark, fake localStorage, fictional Sample Preview; no uncaught page errors or captured Display error. **PASS prior documentation, NOT rerun here:** 80/80 Beta7 six-screen/width/theme + 20 interaction suite.
+**PASS automated gradebook preview:** 57 static cards rendered; P0 filter returned 10; text search narrowed matches; no script exceptions in set_content. file:/// navigation blocked by browser, used set_content instead.
+**NOT TESTED:** real Safari/VoiceOver full app, actual IndexedDB clean-origin photo restore and error recovery, full CRUD, doctor report unsafe HTML scenario, Vault form filter end-to-end, quota, performance and comprehensive mutators.
+**Report:** docs/AUDIT_PAGE_GRADES_2026-10-24.md. Grading numbers are heuristic opinion, not measured task completion, and must not turn into Verified bug statuses.

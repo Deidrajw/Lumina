@@ -62,3 +62,9 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Protocols: scheduled/completed routine context and visible Show all/Reorder, aria-pressed, supported-mode disabling; weekly reorder inventory reference corrected.
 - Settings: Professional Summaries separate from JSON Backup/Restore; local browser storage/replacement explanation; setup and destructive reset behind separate native disclosures, original controls retained.
 - No schema/ID/migration/IDB photo changes; Beta6 features preserved. PASS 80/80 automated isolated Chromium (five widths/two themes and 20 interactions), Node JS syntax. NOT TESTED real iPhone Safari/photo restore/complete regression/security. No main merge or deployment.
+
+
+## 2026-10-24 — documentation-only page grading audit
+- No app code, data schema, production branch or Cloudflare deployment changed.
+- Added 57-surface UI/UX grading report and separate project-management maturity assessment with P0/P1 requirements.
+- Current QA 37 isolated render/open checks PASS; actual Safari, cross-origin IndexedDB restore, full security and functional regression remain NOT TESTED.
