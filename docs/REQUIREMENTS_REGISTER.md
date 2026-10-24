@@ -86,3 +86,10 @@ Status IMPLEMENTED BETA, not real-device Verified. Priority P1. Affected: Body r
 **LUM-030 | P1 | REQUESTED FOR NEXT PATCH:** Separate Vault Form and Category filter state/behaviour. Source applyFilterSheet/applyVaultFilters currently maps both to category state. Acceptance: filter supplement/prescription by form without filtering category, combinations and reset behave as expected. No data migration.
 **LUM-031 | P1 | PROPOSED (await design preview):** Data Cleanup bulk auto-assignment/finish actions display impact preview and confirmation, provide recovery/undo where feasible. Acceptance: counts and proposed changes match actual, cancel no writes; idempotent save, good quota failure path.
 These are additive to LUM-001–027, not replacements. All production merge requires separate user approval.
+
+
+## 2026-10-24 — Beta8 progress for previously registered requirements
+**LUM-029 | P0 | IMPLEMENTED BETA / NOT VERIFIED:** Doctor Summary select/review/result/presentation HTML outputs escaped, attached checkbox listeners insensitive to hostile record IDs. Acceptance: synthetic injected text remains literal; copy/share preserves raw text; actual Safari full doctor workflow and print test pending. No data migration. Regression risk: selection state or presentation accessibility.
+**LUM-009 / LUM-005 | P0 | IN PROGRESS, NOT VERIFIED:** user-visible current-origin photo-integrity check and stricter full v2 export/import validation implemented. Check returns actual count of IDB refs, missing/invalid detection; export fails if missing image; full version2 sections validated before download/import; existing partial legacy backup still supported. Device cross-origin IndexedDB clean restore, quota and photo byte/ID count comparison remain REQUIRED and NOT TESTED. Failure rollback remains best effort.
+**LUM-032 | P1 | IMPLEMENTED BETA:** Fresh browser profile missing checks key exports valid checks:{} rather than invalid empty array. Test fresh storage export. No migration.
+User request to begin high-risk fixes authorizes feature branch/PR preview, NOT main merge or deployment.
