@@ -55,3 +55,14 @@ LUM-016 / BUG-017 Escape foremost overlay implemented candidate (isolated PASS);
 - **LUM-019 | P1 | Partially Implemented beta** — Escape user-supplied text in product detail, linked conditions/journal, CSV mapping/preview, global-search renderer, Rx custom chips; malicious synthetic event fixture did not execute; comprehensive full-app sink audit OPEN.
 - **LUM-020 | P1 | Implemented beta** — CSV import guards Sample Preview and returns failure without false success; Home Screen build info reflects version, activity seeding flag writes only after success; simulated PASS.
 **Acceptance before Verified:** actual Cloudflare preview and iPhone Safari, valid photo-backed restore across origins, navigation and import failure recovery, all display/input paths/security regression.
+
+
+### 2026-10-24 — UI/UX audit requirements
+**LUM-021 | P1 | IMPLEMENTED beta.5 (not Verified)** — Accessible visual foundation. Affected all screens CSS/nav plus switchTab: contrast >=4.5 on main text surfaces, nav label >=11px, Settings icon 44px, tab targets, 16px Safari text fields, browser zoom, focus outlines, reduced motion, aria-current. Regression: render 5 widths × both themes, keyboard/VoiceOver/large text, no clipped overlays; no data migration.
+**LUM-022 | P1 | PROPOSED** — Today focus and alerts hierarchy: primary log/true bounded progress, needs-attention summary and expanded details. Risk: hiding urgent reminders or changing ring meaning; acceptance 5-second task discovery, all alerts reachable, denominators defined; *do not implement until preview approval*.
+**LUM-023 | P1 | PROPOSED** — Vault searchable grouped inventory, summary needs review, product form disclosure; preserve existing create/edit/link IDs, filter/search return; test 20+ products. *Approval required*.
+**LUM-024 | P1 | PROPOSED** — Insights observation + timeframe/sample size/evidence, group secondary analysis; no unsupported causation or effectiveness claim. *Approval required*.
+**LUM-025 | P1 | PROPOSED** — Body/Protocols clear task-first actions, appropriate tabs and advanced filters, non-drag reorder alternative; complete CRUD and accessible states. *Approval required*.
+**LUM-026 | P1 | REQUESTED** — consistent save/error/empty/draft recovery across all forms, confirm data persistence including photos; all mobile failure scenarios.
+**LUM-027 | P2 | REQUESTED** — actual Safari VoiceOver, enlarged text, zoom, keyboard focus, LCP/INP/CLS and accessibility baseline; distinguish measured from assumed performance.
+Older LUM-008–020 beta fixes remain not verified for full cross-origin IDB/photo/whole-app QA. Full details and risks: docs/AUDIT_UIUX_FULL_2026-10-24.md.

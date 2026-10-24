@@ -51,3 +51,18 @@ NO-GO production; rollback code main 2e02f304 does not restore browser data.
 - [ ] Full app manual functional UI and accessibility regression, light/dark, empty/populated, doctor export, camera
 - [ ] Explicit production merge/deploy approval
 **NO-GO for main** until the above; code rollback does not restore browser data.
+
+
+## v0.9.5-beta.5 — Accessibility-focused update GO/NO-GO (2026-10-24)
+- [x] GitHub latest main + beta source/continuity checked
+- [x] Root index.html candidate, standalone fictional preview and deployable ZIP
+- [x] Embedded JavaScript syntax PASS
+- [x] Isolated Chromium all 6 panels × 320/375/390/393/430px × light/dark = 60/60 PASS
+- [x] Visual before/after and interactive six-screen proposed concept produced
+- [ ] Real Cloudflare beta.5 deployment SHA confirmed
+- [ ] Actual iPhone Safari/VoiceOver/keyboard/zoom/safe-area testing
+- [ ] Clean-origin photo backed JSON import/export and IDB persistence test, including errors
+- [ ] Full security/UI/UX and data isolation functional regression
+- [ ] Approved direction for substantial visual redesign and separate implementation QA
+- [ ] Explicit merge/deploy authorization
+**NO GO for main**; rollback code beta4 commit d33e0ce, production main 2e02f304; code rollback cannot recover deleted records.

@@ -1,3 +1,11 @@
+# Latest state — 2026-10-24 (UI/UX audit + v0.9.5-beta.5 candidate)
+**Production:** main 2e02f304, Lumina v0.9.4, untouched. **Work branch:** design/lumina-uiux-foundation-v0.9.5-beta.5, stacked on beta.4 d33e0ce (PR #5). **Source candidate:** root index.html v0.9.5-beta.5, status IMPLEMENTED BETA / NOT MERGED, NOT VERIFIED ON SAFARI.
+**Audit:** docs/AUDIT_UIUX_FULL_2026-10-24.md covers Today, Body, Protocols, Vault, Insights, Settings, onboarding, overlays, privacy and UX-guide principles. **Separate design concept:** docs/prototypes/UIUX_Concept_Studio.html, six-screen fictional interactive proposal, not app functionality.
+**Implemented in app:** contrast/token corrections, larger labels/tap targets, Safari form font/zoom, keyboard focus, reduced-motion, Settings/nav accessible names and current-page state. No data migration or IA restructuring.
+**QA:** 60/60 PASS automated isolated Chromium synthetic Sample Preview (6 tabs × 5 widths × 2 themes), embedded JS syntax PASS, no horizontal overflow/uncaught errors. Concept tabs/search/theme PASS isolated. **NOT TESTED:** real iPhone Safari of beta.5, IndexedDB photo portability, VoiceOver/200% zoom, full security+functional regression, production performance.
+**Next exact step:** Verify Cloudflare preview SHA, review the interactive design proposal, test Safari and real clean-origin photo restore, user approves any substantial changes before implementation. No merge to main without approval.
+
+---
 # Latest status — 2026-10-24, v0.9.5-beta.4
 Production main remains v0.9.4 at 2e02f304 (NOT MODIFIED). Branch: fix/lumina-import-display-safety-v0.9.5-beta.4, based on beta.3 a32daac. Beta.3 preview was confirmed to open in iPhone Safari by user; this does NOT verify functionality/photo restore.
 **Implemented candidate:** Vault JSON import now uses the same validated photo-aware confirmed restoration as Settings; CSV error/read-only safety; DOM-safe global-search results, product details/journal/linked records, linked concern picker, CSV preview, Rx custom check-in chip; sample developer controls and Home Screen build label corrected.

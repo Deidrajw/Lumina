@@ -50,3 +50,10 @@ PASS (automated isolated Chromium, fictional/malicious fixtures and mocked local
 NOT TESTED: live Cloudflare beta.4 preview, actual Safari photo save/cancel/refresh and complete JSON restore on clean browser origin; all product/search screens/handlers and direct-write paths; all theme/device combinations and full app regression.
 BLOCKED local origin: Chrome automation disallows localhost navigation (ERR_BLOCKED_BY_ADMINISTRATOR), so IndexedDB real-origin testing unavailable here. User independently confirmed prior beta.3 preview opens in iPhone Safari, not a full pass for this beta.
 No production validation. See docs/PHASE_D_IMPORT_DISPLAY_SAFETY_2026-10-24.md and artifacts QA_CHECKLIST.md.
+
+
+## 2026-10-24 v0.9.5-beta.5 accessibility foundation
+PASS automated isolated Chromium, fictional Sample Preview/localStorage mock: 60/60 screen checks (Today/Body/Protocols/Vault/Insights/Settings x 320/375/390/393/430px x dark/light). Current nav aria-current tracks selected primary tab, no misleading nav selection in Settings; labels 11px; Settings control 44px; no horizontal overflow or page exceptions. Embedded JavaScript Node syntax PASS.
+PASS calculated: dark tertiary on card #1c1925 ~5.37:1 versus old 2.75:1; light tertiary on white ~5.82:1 versus old 2.93:1. Flat token pairs do not prove all overlays/translucency meet WCAG AA.
+PASS automated isolated design concept: six mock tabs work, fake Vault search filters, theme switch works; zero page exceptions.
+NOT TESTED actual beta.5 Cloudflare deployment SHA, iPhone Safari/VoiceOver, CRUD/photo, cross-origin IndexedDB backup, 200% zoom, full keyboard focus, data integrity/security and LCP/INP/CLS. No production release certification. See docs/AUDIT_UIUX_FULL_2026-10-24.md.

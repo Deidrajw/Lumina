@@ -31,3 +31,7 @@ Public repo: never store actual personal wellness data, photos, backups or secre
 
 ## Latest development candidate
 [Phase D v0.9.5-beta.4](docs/PHASE_D_IMPORT_DISPLAY_SAFETY_2026-10-24.md): unified Vault/Settings backup restore, display safety, import save feedback; draft review branch only, no main deployment. Prior Beta 3 preview was confirmed to open in iPhone Safari by the user; photo backup and Safari workflow tests still required.
+
+
+## October 24 UI/UX review and beta.5
+[Complete UI/UX heuristic audit](docs/AUDIT_UIUX_FULL_2026-10-24.md) compares all app areas against the user's study guide, with measured findings, priority and acceptance criteria. [Interactive six-screen proposal](docs/prototypes/UIUX_Concept_Studio.html) uses fictional data and does not save records; proposed reorganizations need approval. The actual v0.9.5-beta.5 code contains small accessibility foundation changes only, stacked on beta.4. Production main remains v0.9.4.
