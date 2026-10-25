@@ -95,3 +95,7 @@ Release NO-GO pending user-run fictional Safari test on two different Cloudflare
 PASS automated, isolated Chromium 90/90: strict 13-section source reader on valid/absent/wrong type/JSON malformed, denied storage, export blocked while raw bytes remain untouched, photo readiness detects corrupt source, valid first-install 13-section export, destination missing/corrupt checks fails verification, mocked photo-backed exact match rejected if one record section corrupt. Plus 60 screen/width/theme navigation checks (Today/Body/Protocols/Vault/Insights/Settings x 320/375/390/393/430 x light/dark) with no uncaught page exceptions or document overflow. PASS embedded JS node --check. Only fictional fake localStorage and a mock photo Map used.
 BLOCKED Chromium HTTPS-origin navigation (ERR_BLOCKED_BY_ADMINISTRATOR), so no genuine browser IndexedDB test despite trying to intercept requests.
 NOT TESTED real iPhone Safari, cross-origin full photo JSON export/import/refresh, actual quota/perms/rollback, VoiceOver, complete linked CRUD, doctor reports and global security. Strict helper blocks bad data; it cannot repair it. Release remains NO-GO main.
+
+
+## Beta11 post-package visual check (2026-10-25)
+After detecting stale Settings version fallback label, updated footer to display LUMINA_VERSION. Re-ran full 90/90 isolated Chromium fake-store suite and Node syntax PASS against final code (Git blob 4f80428d9c989deaf7b6ded50d569b55c246f3f1). Screen capture confirms Settings now displays v0.9.5-beta.11. No real Safari or origin-specific IndexedDB checks were added.

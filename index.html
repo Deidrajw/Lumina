@@ -1170,7 +1170,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.8</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.11</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -12034,6 +12034,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initLongPress();
   checkShowWhatsNew();
   const _bd=byId('settings-build-display');if(_bd&&IS_STANDALONE)_bd.textContent='Lumina v'+LUMINA_VERSION+' · Build '+LUMINA_BUILD+' · Preview';
+  const _vlabel=byId('version-tap-label');if(_vlabel)_vlabel.textContent='Lumina v'+LUMINA_VERSION;
 
 });
 
