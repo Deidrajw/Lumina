@@ -99,3 +99,7 @@ P0 photo export/import with real IndexedDB on clean origin, all HTML injection s
 ## 2026-10-24 Beta10 verification candidate
 LUM-033 addresses inability to compare an original photo-backed JSON to browser data after import. **Implemented beta**, isolated 77/77 PASS. No claim that source/destination Safari IndexedDB round-trip has happened.
 LUM-BUG-001 / LUM-005/009 full photo restoration on clean Safari origin remains OPEN until original JSON imported on distinct hostname, reloaded and all record sections/linked photo bytes compare. Other active known issues: simulated-only quota recovery, full app injection/direct mutator review, VoiceOver, release consent. Zero-photo backup cannot prove photo portability. No existing bugs marked production Verified.
+
+
+## 2026-10-25 — LUM-BUG-035 and Beta11
+**LUM-BUG-035 P0 (CODE CONFIRMED in prior Beta10):** generic load() silently returns an empty fallback for invalid saved JSON. When reused in backup export/restore verification, it can generate incomplete/misleading export or compare empty missing destination to expected empty. Beta11 candidate adds strict read-only backup reader and blocks these cases; 90 isolated mocks PASS. Status IMPLEMENTED BETA, not Verified in Safari. No corrupt data auto-cleanup or reset. LUM-005/009 true photo portability and real-origin quota/rollback remain P0 unverified, as do broader HTML and data-mutation audits. Existing historical notes are retained.

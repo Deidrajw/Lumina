@@ -88,3 +88,11 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Compares all stored sections against the backup with stable JSON object key order; each linked photo compared on MIME type, byte length and byte-for-byte contents. Errors/missing/different records explained; zero photos and partial legacy JSON cannot earn a complete photo PASS.
 - No schema, IDs, migrations, photo processing, backend/cloud writes, or data deletions. Beta9 filters and cleanup retained.
 - PASS JS syntax and 77/77 isolated Chromium synthetic fake-storage checks, all six tabs × 320/375/390/393/430px × dark/light plus 17 functional/edge checks. NOT TESTED real physical Safari, true IDB clean-origin import/refresh, quota, VoiceOver/whole app regression. NO production merge.
+
+
+## v0.9.5-beta.11 — Strict backup reads / fail closed (2026-10-25) — UNRELEASED
+- New read-only luminaReadBackupSection returns safe first-install defaults but rejects corrupt saved JSON, inaccessible storage, null/wrong field types. Existing screen loaders unchanged.
+- JSON export refuses to silently replace unreadable stored sections with empty arrays; reports the affected section and preserves original bytes. Photo readiness check also aborts if source records unreadable.
+- Verify restored backup flags malformed or missing required destination storage sections as NOT VERIFIED, even if original backup has an empty section; byte/photo comparison unchanged.
+- No schema, ID, photo data, migrations, backend/cloud sync, import logic or production changes.
+- PASS Node JS syntax and 90/90 isolated mocked-storage Chromium tests, including six tabs × five widths × light/dark. BLOCKED real browser HTTPS-origin IndexedDB; physical iPhone Safari clean-origin restoration, full security/CRUD/regression NOT TESTED. Production main v0.9.4 unchanged.

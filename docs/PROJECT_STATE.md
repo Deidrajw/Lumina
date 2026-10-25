@@ -1,3 +1,7 @@
+# CURRENT STATE — 2026-10-25 v0.9.5-beta.11 backup integrity candidate
+**Main** SHA 2e02f304 remains v0.9.4 and unchanged. **Working branch** fix/strict-backup-section-reads-beta11, stacked on Beta10 3f568258 (PR #12). Latest app backup reader only changes LUM-034: fail closed on corrupt/inaccessible saved JSON in export/current photo readiness, fail verification on missing/corrupt destination section, preserve fresh-install defaults. No data migration and no photo writes. PASS Node syntax + **90/90 isolated Chromium** fictional/mock storage checks across 5 widths/2 themes/six tabs and negative storage tests. Actual Safari and cross-origin real IDB restore BLOCKED/NOT TESTED. Detailed scope: docs/BETA11_STRICT_BACKUP_READ_2026-10-25.md. **Next:** Cloudflare feature preview + iPhone fictional photo restore, full regression, production approval separately. No main merge.
+
+---
 # Current candidate — 2026-10-24, v0.9.5-beta.10
 **Production:** main SHA 2e02f304, v0.9.4 UNCHANGED. **Feature branch:** fix/restore-verification-beta10, parent Beta9 branch SHA 3a2c88e. Candidate code git blob adcef53a292b893ab1dc0943914e583b9ae3e3ae.
 **Implementation LUM-033:** Settings > Backup & Restore adds a read-only “Verify restored backup” file selector. It compares 13 full data sections, and MIME/size/every image byte of each linked IndexedDB photo, against the original JSON selected AFTER an import on a separate HTTPS origin. Reports discrepancies; refuses a portable-photo PASS for zero linked images or partial legacy JSON. No imports, writes, migrations or image deletion from verification. Old fixes stay.
@@ -96,3 +100,6 @@ At each session end append verified HEAD/branch, PR, outcomes, blockers and next
 
 
 **Current Beta10 exact references:** PR #12, app commit 33c8362d9458437b8342ad0aaa9625aaca756651; Cloudflare confirmed source preview https://745d86e5.lumina-9w6.pages.dev and independent test-origin alias https://fix-restore-verification-bet.lumina-9w6.pages.dev, app blob adcef53a292b893ab1dc0943914e583b9ae3e3ae. Production main 2e02f304 unchanged. P0 real iPhone Safari photo restore not tested.
+
+
+**Beta11 final GitHub status 2026-10-25:** draft PR #14, app code commit 23ca2116678c9b5721e08d17c7c5739689ee02b0; immutable Cloudflare preview https://9ef9420d.lumina-9w6.pages.dev SUCCESS, app Git blob 4f80428d9c989deaf7b6ded50d569b55c246f3f1 matches tested ZIP. Main SHA 2e02f304 unchanged. True Safari IDB/photo clean-origin restore remains NOT TESTED; production release NO-GO.

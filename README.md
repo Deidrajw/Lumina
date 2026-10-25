@@ -59,3 +59,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## Beta10 — restore verification (2026-10-24)
 [Read-only restored backup check](docs/BETA10_RESTORE_VERIFICATION_2026-10-24.md): after importing fictional JSON on a *different* Cloudflare hostname, select that original file in Settings and compare 13 data sections plus linked IDB image bytes. No app records/photos written by verification. PASS 77/77 isolated Chromium checks, real Safari/IndexedDB cross-origin test remains pending. Stacked beta feature branch, production main unchanged.
+
+
+## Lumina Beta11 data-integrity candidate (2026-10-25)
+[Strict backup section reads](docs/BETA11_STRICT_BACKUP_READ_2026-10-25.md): backed-up records no longer silently become empty when stored JSON is unreadable. Destination verify flags missing/malformed sections. 90/90 simulated Chromium checks PASS; actual Safari cross-origin IndexedDB photo restoration and complete regression still NOT TESTED. Review-branch preview only, production remains v0.9.4.
