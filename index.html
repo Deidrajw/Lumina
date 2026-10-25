@@ -8248,13 +8248,41 @@ function luminaBackupPhotoRefs(data){
   });
   return ids;
 }
+// Strict read only for backup-related workflows. General screen rendering may
+// deliberately tolerate absent records; export/verification must NOT mistake
+// corrupt JSON or a missing restored section for an empty valid dataset.
+function luminaReadBackupSection(key,requirePresent=false){
+  const storageKey=KEYS[key];
+  if(!storageKey)throw new Error('Unknown backup section');
+  let raw;
+  try{raw=localStorage.getItem(storageKey);}
+  catch(err){throw new Error('Saved '+key+' section cannot be accessed');}
+  if(raw===null){
+    if(requirePresent)throw new Error('Saved '+key+' section is missing');
+    return key==='checks'?{}:[];
+  }
+  let value;
+  try{value=JSON.parse(raw);}
+  catch(err){throw new Error('Saved '+key+' section contains invalid JSON');}
+  if(key==='checks'){
+    if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('Saved checks section is not an object');
+  }else if(!Array.isArray(value)){
+    throw new Error('Saved '+key+' section is not a list');
+  }
+  return value;
+}
 function luminaBackupStatus(message,isError=false){
   const el=byId('backup-photo-check-result');
   if(el){el.textContent=message;el.style.color=isError?'var(--r)':'var(--tx2)';}
 }
 async function luminaCheckPhotoBackup(){
   if(demoPreviewMode){luminaBackupStatus('Sample Preview contains fictional entries. Exit preview to check photos saved on this browser.');return null;}
-  const data={};Object.entries(KEYS).forEach(([key,storageKey])=>data[key]=load(storageKey));
+  const data={};
+  try{Object.keys(KEYS).forEach(key=>data[key]=luminaReadBackupSection(key));}
+  catch(err){
+    luminaBackupStatus('Photo check blocked: '+err.message+'. Saved records need attention before export.',true);
+    return {total:0,verified:0,missing:0,error:err.message};
+  }
   const ids=[...luminaBackupPhotoRefs(data)];
   if(!ids.length){
     luminaBackupStatus('No IndexedDB-linked photos found. Older inline photos will still be included in a JSON backup. This check does not test restoration on another site.');
@@ -8291,8 +8319,10 @@ async function luminaVerifyRestoredBackup(data){
   const incomplete=keys.length!==required.length;
   const recordDifferences=[];
   for(const key of keys){
-    const current=load(KEYS[key],key==='checks'?{}:[]);
-    if(luminaStableJSON(current)!==luminaStableJSON(data[key]))recordDifferences.push(key);
+    try{
+      const current=luminaReadBackupSection(key,true);
+      if(luminaStableJSON(current)!==luminaStableJSON(data[key]))recordDifferences.push(key);
+    }catch(err){recordDifferences.push(key);}
   }
   let photoMatches=0,photoMissing=0,photoDifferent=0;
   const refs=[...luminaBackupPhotoRefs(data)];
@@ -8348,7 +8378,7 @@ function luminaVerifyBackupFile(event){
 async function exportData(){
   if(demoPreviewMode){canWrite();return;}
   try{
-    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=load(storageKey,key==='checks'?{}:[]));
+    const d={};Object.keys(KEYS).forEach(key=>d[key]=luminaReadBackupSection(key));
     const blobs={};
     for(const id of luminaBackupPhotoRefs(d)){
       const blob=await luminaGetPhoto(id);
@@ -8369,7 +8399,7 @@ async function exportData(){
     luminaBackupStatus('JSON export prepared with '+Object.keys(blobs).length+' linked photos. Keep the file safely, then verify a restore on a separate test origin.');
   }catch(err){
     console.error('[Backup] export blocked',err);
-    luminaBackupStatus('Export blocked: the backup is incomplete. Existing records are unchanged.',true);
+    luminaBackupStatus('Export blocked: '+(err?.message||'stored data could not be read')+'. Existing records are unchanged.',true);
     alert('Backup was not created because a photo or data section could not be included. Your records are unchanged. Please try again before moving devices or addresses.');
   }
 }
@@ -11671,8 +11701,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.10';
-const APP_BUILD='2026.10.24.restore-verify.1';
+const APP_VERSION='0.9.5-beta.11';
+const APP_BUILD='2026.10.24.strict-backup-read.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 
@@ -11698,6 +11728,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {version:'0.9.5-beta.11',date:'October 24, 2026',title:'Strict Backup Read Integrity',
+    added:['Backup export and photo preflight now identify unreadable saved-data sections rather than treating them as empty'],
+    changed:['Post-restore comparison treats missing or corrupted data sections as mismatches','Backup checks do not modify existing data or automatically repair damaged entries'],
+    fixed:['Malformed browser records could previously be silently exported as empty sections','Missing restored sections could previously compare equal to empty backup sections'],
+    known:['Real photo-inclusive clean-origin Safari import and verification still needs a physical-device test','Entire app security and functional regression remains pending','Production main unchanged']},
   {version:'0.9.5-beta.10',date:'October 24, 2026',title:'Read-only Backup Restore Verification',
     added:['Verify an imported JSON backup against this browser’s actual saved record sections and linked image bytes','Clear results for missing, mismatched and not-yet-tested photos'],
     changed:['Backup verification compares the selected file without importing or modifying records','Photo restore is only marked matched if at least one linked image exists and all bytes agree'],
