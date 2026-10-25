@@ -93,3 +93,6 @@ Photo JSON export includes `_photoBlobs`, but current `importData()` does not re
 At each session end append verified HEAD/branch, PR, outcomes, blockers and next step.
 
 **Final Beta9 references (2026-10-24):** Code commit c7189112fe95bf92183d15c8a15c4aa11e4c559a, draft PR #11 https://github.com/Deidrajw/Lumina/pull/11, Cloudflare successful preview https://d52a504d.lumina-9w6.pages.dev. Source blob f9666c4c1af71b6b8660db0cfdbc0502cfef6711 verified. Production main remains 2e02f304. Real iPhone Safari and clean-origin IDB photo restore remain NOT TESTED.
+
+
+**Current Beta10 exact references:** PR #12, app commit 33c8362d9458437b8342ad0aaa9625aaca756651; Cloudflare confirmed source preview https://745d86e5.lumina-9w6.pages.dev and independent test-origin alias https://fix-restore-verification-bet.lumina-9w6.pages.dev, app blob adcef53a292b893ab1dc0943914e583b9ae3e3ae. Production main 2e02f304 unchanged. P0 real iPhone Safari photo restore not tested.
