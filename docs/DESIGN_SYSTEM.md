@@ -19,3 +19,7 @@ Preserve Instrument Serif/Manrope and dark/light Lumina tokens. Body primary log
 
 ## Beta9 Vault action principles (2026-10-24)
 Category and Form remain separate labeled combobox controls inside the current bottom sheet, with active filter counts, safe escaped dynamic labels and discoverable Reset. Bulk Data Cleanup actions are phrased as Preview/Review rather than premature success, display counts and a short sample of affected fictional product names before the explicit Save action, and expose reversible Undo when safe. In preview modal preserve newlines and Cancel; native confirmation uses textContent, not innerHTML for names. Existing plum/mauve, Instrument Serif and Manrope tokens preserved. iPhone Safari/VoiceOver tap/contrast still requires real-device checks.
+
+
+### Beta10 backup verification UI
+Settings Backup & Restore retains existing card, rows and Lumina typography/tokens. Additional 44px-friendly button “Verify restored backup” has explicit read-only description and local JSON file picker; results live in a role=status aria-live polite text area with PASS / NOT VERIFIED, count summaries and errors. No private record names or binary photo data displayed in results. Existing import/destructive reset and first-party styling unchanged; real VoiceOver/Safari tap/focus testing remains open.

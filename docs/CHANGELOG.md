@@ -81,3 +81,10 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Vault: Category and Form independently filter Supplements and Rx; combined selections work; reset/type/preset clears stale form; filter counts accurate and filter options safely rendered.
 - Data Cleanup: category suggestions and Mark Finished now show affected product count and names BEFORE any save, require approval; Save failures/stale records safely stop action; one in-session scoped Undo if affected fields not edited afterward; archived, Finished and Empty zero-qty products excluded. Suggestions use existing category taxonomy.
 - No schema, ID, photo, backend or migration changes; no production deployment. 105/105 isolated automated Chromium tests PASS, JS syntax PASS. Real iPhone Safari, complete IndexedDB photo restore, VoiceOver and full security/CRUD NOT TESTED. NO-GO main.
+
+
+## v0.9.5-beta.10 — Read-only Restored Backup Verification (2026-10-24) — UNRELEASED
+- Settings > Backup & Restore adds Verify restored backup: select the previously exported original JSON AFTER restoring to a different browser hostname. Reads but never rewrites JSON, app records or IndexedDB images.
+- Compares all stored sections against the backup with stable JSON object key order; each linked photo compared on MIME type, byte length and byte-for-byte contents. Errors/missing/different records explained; zero photos and partial legacy JSON cannot earn a complete photo PASS.
+- No schema, IDs, migrations, photo processing, backend/cloud writes, or data deletions. Beta9 filters and cleanup retained.
+- PASS JS syntax and 77/77 isolated Chromium synthetic fake-storage checks, all six tabs × 320/375/390/393/430px × dark/light plus 17 functional/edge checks. NOT TESTED real physical Safari, true IDB clean-origin import/refresh, quota, VoiceOver/whole app regression. NO production merge.

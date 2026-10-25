@@ -55,3 +55,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## Beta9 — Vault filter and safe Cleanup candidate
 [Beta9 audit-driven Vault implementation](docs/BETA9_VAULT_FILTERS_CLEANUP_2026-10-24.md) fixes Category/Form filter collision and adds confirmed Cleanup preflight plus in-session scoped Undo. Test artifact ZIP and standalone fictional preview were delivered in chat. This is an unmerged beta branch; main remains v0.9.4. Physical Safari photo backup and full regression still block release.
+
+
+## Beta10 — restore verification (2026-10-24)
+[Read-only restored backup check](docs/BETA10_RESTORE_VERIFICATION_2026-10-24.md): after importing fictional JSON on a *different* Cloudflare hostname, select that original file in Settings and compare 13 data sections plus linked IDB image bytes. No app records/photos written by verification. PASS 77/77 isolated Chromium checks, real Safari/IndexedDB cross-origin test remains pending. Stacked beta feature branch, production main unchanged.

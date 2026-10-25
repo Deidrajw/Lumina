@@ -1,3 +1,8 @@
+# Current candidate — 2026-10-24, v0.9.5-beta.10
+**Production:** main SHA 2e02f304, v0.9.4 UNCHANGED. **Feature branch:** fix/restore-verification-beta10, parent Beta9 branch SHA 3a2c88e. Candidate code git blob adcef53a292b893ab1dc0943914e583b9ae3e3ae.
+**Implementation LUM-033:** Settings > Backup & Restore adds a read-only “Verify restored backup” file selector. It compares 13 full data sections, and MIME/size/every image byte of each linked IndexedDB photo, against the original JSON selected AFTER an import on a separate HTTPS origin. Reports discrepancies; refuses a portable-photo PASS for zero linked images or partial legacy JSON. No imports, writes, migrations or image deletion from verification. Old fixes stay.
+**QA:** PASS 77/77 isolated Chromium synthetic/mocked-storage checks and JS syntax; source preview renders. Browser-origin navigation for localhost/HTTPS placeholder BLOCKED by admin, so genuine IndexedDB clean-origin restore and iPhone Safari remain NOT TESTED and P0 gate. Production merge not authorized. **Next exact step:** verify Cloudflare Beta10 preview SHA, run iPhone Safari fictional 4-photo source export -> distinct origin import -> refresh -> Verify with same original file; full QA before production decision. See docs/BETA10_RESTORE_VERIFICATION_2026-10-24.md.
+---
 # CURRENT — 2026-10-24 v0.9.5-beta.9 Vault safety
 Production main 2e02f304/v0.9.4 UNCHANGED. Branch fix/vault-form-filter-cleanup-beta9 from beta8 1ee253d. Implemented LUM-030 separate Vault Category and Form filters (independent combined selection, reset, presets, type switching), LUM-031 Data Cleanup preflight/confirmation, stale-preview protection, save-failure feedback and single-session scoped Undo. No schema, ID, IndexedDB photos, migration or backend changes. PASS 105/105 isolated Chromium fictional data checks and Node syntax; physical Safari, clean-origin actual IndexedDB photo restore, complete app/VoiceOver/security NOT TESTED. No main merge authorization. Next: Cloudflare preview SHA and iPhone fictional QA, then P0 cross-origin photo restore and full release regression. See docs/BETA9_VAULT_FILTERS_CLEANUP_2026-10-24.md.
 
@@ -88,3 +93,6 @@ Photo JSON export includes `_photoBlobs`, but current `importData()` does not re
 At each session end append verified HEAD/branch, PR, outcomes, blockers and next step.
 
 **Final Beta9 references (2026-10-24):** Code commit c7189112fe95bf92183d15c8a15c4aa11e4c559a, draft PR #11 https://github.com/Deidrajw/Lumina/pull/11, Cloudflare successful preview https://d52a504d.lumina-9w6.pages.dev. Source blob f9666c4c1af71b6b8660db0cfdbc0502cfef6711 verified. Production main remains 2e02f304. Real iPhone Safari and clean-origin IDB photo restore remain NOT TESTED.
+
+
+**Current Beta10 exact references:** PR #12, app commit 33c8362d9458437b8342ad0aaa9625aaca756651; Cloudflare confirmed source preview https://745d86e5.lumina-9w6.pages.dev and independent test-origin alias https://fix-restore-verification-bet.lumina-9w6.pages.dev, app blob adcef53a292b893ab1dc0943914e583b9ae3e3ae. Production main 2e02f304 unchanged. P0 real iPhone Safari photo restore not tested.

@@ -94,3 +94,8 @@ Other imported-text sinks, Vault form/category bug LUM-BUG-033, bulk cleanup LUM
 LUM-BUG-033 Category/Form filter collision: separate _vaultFilterForm from _vaultFilterCat, combined selectors, reset/type/preset and active count; isolated PASS, real iPhone Safari and large fixtures NOT VERIFIED. Status IMPLEMENTED BETA.
 LUM-BUG-034 Data Cleanup previously executed auto category assignments before asking and lacked reversal. Candidate now previews count/names and waits for confirm, checks stale fields and save() error, one-session Undo only touches selected fields and refuses to overwrite later edits. Status IMPLEMENTED BETA, actual Safari/real quota NOT TESTED. NOTE Undo lost after refresh and when a newer batch is confirmed; this is communicated.
 P0 photo export/import with real IndexedDB on clean origin, all HTML injection sinks/direct writers and full QA remain OPEN. No bugs marked production Verified.
+
+
+## 2026-10-24 Beta10 verification candidate
+LUM-033 addresses inability to compare an original photo-backed JSON to browser data after import. **Implemented beta**, isolated 77/77 PASS. No claim that source/destination Safari IndexedDB round-trip has happened.
+LUM-BUG-001 / LUM-005/009 full photo restoration on clean Safari origin remains OPEN until original JSON imported on distinct hostname, reloaded and all record sections/linked photo bytes compare. Other active known issues: simulated-only quota recovery, full app injection/direct mutator review, VoiceOver, release consent. Zero-photo backup cannot prove photo portability. No existing bugs marked production Verified.
