@@ -59,3 +59,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## Beta10 — restore verification (2026-10-24)
 [Read-only restored backup check](docs/BETA10_RESTORE_VERIFICATION_2026-10-24.md): after importing fictional JSON on a *different* Cloudflare hostname, select that original file in Settings and compare 13 data sections plus linked IDB image bytes. No app records/photos written by verification. PASS 77/77 isolated Chromium checks, real Safari/IndexedDB cross-origin test remains pending. Stacked beta feature branch, production main unchanged.
+
+
+## Beta11 — Strict Backup Integrity candidate
+[Beta11 strict backup report](docs/BETA11_STRICT_BACKUP_2026-10-24.md): backup export, photo readiness and restore verification now reject corrupted/missing saved record sections rather than treating them as empty. 16/16 isolated focused checks PASS, full source syntax PASS; full app load and actual iPhone Safari/IndexedDB clean-origin photo restore NOT TESTED. This is a separate review branch with no schema migration. Production main v0.9.4 remains unchanged.

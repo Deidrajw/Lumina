@@ -50,3 +50,7 @@
 - DEC-035 (2026-10-24): A successful photo export, or a check that this origin can read images, is NOT evidence of portable restoration. Add a read-only original-file-vs-current-origin verifier that reports full-section matches and exact photo bytes and requires >=1 linked photo for a photo-backed PASS.
 - DEC-036: Verification may read existing data and user-selected backup locally but may not store, upload, overwrite, restore or delete records. Use standard browser FileReader/Blob APIs (Safari-compatible); do not add backend, external AI, or cloud service.
 - DEC-037: Retain P0 real iPhone Safari cross-origin end-to-end QA despite passing simulated tests; do not move main production until both QA and explicit user approval.
+
+
+- DEC-038 (2026-10-24): General UI rendering may tolerate absent/damaged record sections as a fallback for usability, but **backup export and restore verification must never silently replace unreadable saved records with empty datasets**. Add a strict read-only backup section parser; leave source records untouched and fail visibly.
+- DEC-039: Destination backup verification must require all expected stored keys actually exist. An absent key cannot be considered equal to an empty array/object in an original backup. Real photo byte verification on a separate origin remains required.

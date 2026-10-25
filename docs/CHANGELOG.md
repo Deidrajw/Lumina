@@ -88,3 +88,9 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Compares all stored sections against the backup with stable JSON object key order; each linked photo compared on MIME type, byte length and byte-for-byte contents. Errors/missing/different records explained; zero photos and partial legacy JSON cannot earn a complete photo PASS.
 - No schema, IDs, migrations, photo processing, backend/cloud writes, or data deletions. Beta9 filters and cleanup retained.
 - PASS JS syntax and 77/77 isolated Chromium synthetic fake-storage checks, all six tabs × 320/375/390/393/430px × dark/light plus 17 functional/edge checks. NOT TESTED real physical Safari, true IDB clean-origin import/refresh, quota, VoiceOver/whole app regression. NO production merge.
+
+
+## v0.9.5-beta.11 — Strict Backup Read Integrity (2026-10-24), unmerged candidate
+- New backup-only strict section reader refuses malformed browser JSON, wrong saved-data section types and missing restored sections. Backup export now fails visibly instead of exporting fallback empties; linked-photo preflight refuses to claim checks if stored reference sections are unreadable; original JSON vs destination verifier marks missing/corrupt sections as differing.
+- A genuinely absent new-install key may still export an appropriate empty list / checks object; only post-import verification requires all keys actually saved.
+- No record-schema migration, ID/photo modifications, automated repair or production deploy. PASS 16/16 focused isolated Chromium tests with mock localStorage and embedded JS syntax. Full app page test timed out; actual Safari/IDB clean-origin restore and full app regression NOT TESTED.

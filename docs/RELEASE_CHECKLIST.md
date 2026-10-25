@@ -136,3 +136,16 @@ NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback
 - [ ] VoiceOver, accessibility, search/filter and HTML/data mutator safety audit
 - [ ] User explicit authorization to merge production
 **NO GO production.** Rollback source Beta9 3a2c88e / production main 2e02f304; code rollback cannot restore lost browser data.
+
+
+## Beta11 strict backup integrity GO/NO-GO (2026-10-24)
+- [x] Latest main/Beta10 GitHub SHA and core governance read
+- [x] Root index.html, fictional standalone preview, complete versioned ZIP, notes, QA and beta handoff
+- [x] 16/16 focused Chromium strict-reading regression and embedded JS syntax PASS
+- [ ] Full app Chromium screen/width/theme matrix (attempt timed out, NOT TESTED)
+- [ ] Real iPhone Safari Beta11, VoiceOver/zoom and real record CRUD
+- [ ] Genuine clean-hostname photo-backed JSON export/import/refresh and original-file 13/13 section + N/N image byte check (N>0)
+- [ ] Actual quota/corrupted storage and rollback/recovery tests
+- [ ] Entire HTML/mutator/privacy and symptom/Vault/protocol/doctor regression
+- [ ] Explicit user production merge/deploy approval
+NO-GO production. Rollback candidate Beta10 3f568258; main 2e02f304. Code rollback does not restore lost browser data.
