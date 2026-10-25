@@ -100,3 +100,6 @@ At each session end append verified HEAD/branch, PR, outcomes, blockers and next
 
 
 **Current Beta10 exact references:** PR #12, app commit 33c8362d9458437b8342ad0aaa9625aaca756651; Cloudflare confirmed source preview https://745d86e5.lumina-9w6.pages.dev and independent test-origin alias https://fix-restore-verification-bet.lumina-9w6.pages.dev, app blob adcef53a292b893ab1dc0943914e583b9ae3e3ae. Production main 2e02f304 unchanged. P0 real iPhone Safari photo restore not tested.
+
+
+**Beta11 final GitHub status 2026-10-25:** draft PR #14, app code commit 23ca2116678c9b5721e08d17c7c5739689ee02b0; immutable Cloudflare preview https://9ef9420d.lumina-9w6.pages.dev SUCCESS, app Git blob 4f80428d9c989deaf7b6ded50d569b55c246f3f1 matches tested ZIP. Main SHA 2e02f304 unchanged. True Safari IDB/photo clean-origin restore remains NOT TESTED; production release NO-GO.
