@@ -168,3 +168,13 @@ NO GO production. No migrations; rollback Beta10 3f56825 is code-only.
 - [ ] Actual iPhone Safari clean-origin JSON photo restore and byte equality after refresh.
 - [ ] Full QA M-01..M-18 and explicit production approval.
 **NO-GO production.** Parent code rollback does not recover browser records.
+
+
+## Beta11 PR #17 deployed preview follow-up — 2026-11-21
+- [x] Cloudflare Pages check and live immutable preview found; branch preview loads.
+- [x] Settings visible version, What's New and Version History Beta11 browser smoke PASS.
+- [ ] Actual served HTML source hash and JS APP_BUILD independently verified (visual browser cannot access).
+- [ ] Physical iPhone Safari photo-backed JSON export on source, clean separate-origin import, after-refresh photo inspection and 13-section/byte-for-byte verification.
+- [ ] Complete full M-01..M-18 regression, security and error scenarios.
+- [ ] Explicit user approval to merge/deploy production.
+**NO-GO production.**
