@@ -53,3 +53,6 @@
 
 
 - DEC-038 (2026-11-20): Fail closed on malformed or wrong-type localStorage during backup export and restore verification. Do not use forgiving screen load() for integrity checks; do not auto-reset/repair corrupt health records. Keep fresh missing keys as empty defaults for compatibility.
+
+
+- **DEC-2026-11-21-QA:** Treat docs/MASTER_TEST_PLAN.md as Lumina's master regression and P0 release-gate protocol; docs/QA_REGRESSION.md is append-only run evidence; docs/CHAT_HANDOFF_TEMPLATE.md is the mandatory mini note at the bottom of each development response; docs/CONTINUITY_LOG.md remains the durable detailed historical handoff. Do not mark simulated checks as device verification. Governance changes only on review branch pending approval.
