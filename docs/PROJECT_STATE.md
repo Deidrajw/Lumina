@@ -1,3 +1,8 @@
+# PR #17 deployment check — 2026-11-21
+Draft https://github.com/Deidrajw/Lumina/pull/17 head 248ad812dd4c50ef8e0cd819e2cff5286d03231e; public GitHub browser reported no Cloudflare deployment and 'This branch has not been deployed'. App source version fix implemented, source checks PASS; new candidate live browser QA BLOCKED pending preview. Physical Safari P0 photo restore NOT TESTED, production main unchanged, NO-GO.
+
+---
+
 # Current candidate — 2026-11-21 Beta11 version identity review
 Review-only branch fix/beta11-version-identity-2026-11-21 (from docs/qa-continuity-standard-2026-11-21/PR #16), source commit b92102c55eb316be4cf11fe74311680e87f78cb3, blob 19b77e4ad858eed559e178d24d4e7e8473d3639c. LUM-035 implemented candidate: Settings footer now uses APP_VERSION; changelog begins with Beta11; build 2026.11.21.version-identity.1. Export/import/photo functions and data contracts unchanged. Focused source assertions PASS, real JS browser, preview SHA, iPhone Safari clean-origin photo restore after refresh and full regression NOT TESTED. Main v0.9.4 SHA 2e02f304 unchanged. Next: Cloudflare preview plus live version checks; then actual fictional Safari origin-to-origin photo restore and byte verification. Release NO-GO.
 
