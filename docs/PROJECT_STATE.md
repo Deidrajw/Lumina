@@ -1,3 +1,8 @@
+# Current test status — 2026-11-21 Beta11 preview identity investigation
+GitHub PR #15 Beta11 candidate commit 7f3a4d88ac1997492727db80b98e4ef61b745fd1 (index.html blob 2ecf78e5); Cloudflare bot reports successful preview https://73264088.lumina-9w6.pages.dev. Public browser loaded Settings backup/verify UI, but source and live visible footer both contain stale v0.9.5-beta.8 text; actual APP_VERSION in GitHub JS is 0.9.5-beta.11. This is a P1 version-display bug, NOT conclusive proof of wrong deployment. Served HTML hash is NOT independently verified. P0 true iPhone Safari clean-origin photo-backed JSON restore after refresh remains NOT TESTED. No source, main, schema, browser records or production changes in this check; NO-GO release. Next: deployment SHA verification then iPhone fictional photo roundtrip; repair version display as separately reviewed UI bug. QA and handoff appended.
+
+---
+
 # Current governance handoff — 2026-11-21
 Documentation-only candidate: docs/qa-continuity-standard-2026-11-21 based on Beta11 branch fix/backup-corruption-guard-beta11, production main v0.9.4 SHA 2e02f304 unchanged. New docs/MASTER_TEST_PLAN.md is permanent QA authority and docs/CHAT_HANDOFF_TEMPLATE.md requires a mini continuity note at the bottom of every Lumina development response. Existing QA_REGRESSION/CONTINUITY_LOG are append-only evidence and history. No index.html changes, migrations or production deployment. P0 clean-origin iPhone Safari photo-backed JSON restoration after refresh remains NOT TESTED and release NO-GO. Next: review docs PR; on iPhone run fictional Beta11 cross-origin export/import/refresh/photo byte verification, then broader regression; explicit approval before production merge.
 
