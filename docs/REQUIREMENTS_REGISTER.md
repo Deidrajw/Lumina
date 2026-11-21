@@ -114,3 +114,6 @@ User request to begin high-risk fixes authorizes feature branch/PR preview, NOT 
 
 
 **LUM-035 | P1 | REQUESTED (2026-11-21):** Ensure Settings footer/app welcome version reflects the actual APP_VERSION and build, not hardcoded old beta.8/beta.10 copy. Affected index.html version-tap-label / release history; acceptance: beta11 shows beta11 consistently and Cloudflare served-source SHA confirmed, with no data/schema changes. QA risk: false version identification; source-confirmed LUM-BUG-036. Not implemented this session.
+
+
+**LUM-035 | 2026-11-21 update | IMPLEMENTED BETA / NOT VERIFIED:** Candidate root index.html Settings footer now references APP_VERSION and What's New starts with Beta11, build bumped; source assertions PASS. Acceptance still requires live browser footer, changelog and exact served commit SHA; physical Safari cross-origin photo regression untested. No record/photo migration. Branch fix/beta11-version-identity-2026-11-21.
