@@ -1,3 +1,8 @@
+# Current status — 2026-11-21 PR #17 browser verification
+Draft PR #17 Beta11 version-identity fix now has successful Cloudflare Pages preview https://ca4b0ada.lumina-9w6.pages.dev and independent branch alias https://fix-beta11-version-identity.lumina-9w6.pages.dev. Public browser inspection on immutable preview PASS: Settings footer beta.11, What's New beta.11, Version History Beta11 present and all backup controls visible. Exact served HTML hash/APP_BUILD not independently visible. Real iPhone Safari cross-origin photo-backed JSON restore/refresh/byte comparison remains NOT TESTED (P0); no production merge, no personal data touched. Next: physical Safari fictional photo source/export → clean different-origin import → refresh/photos → read-only verification; record exact outcome. Production NO-GO.
+
+---
+
 # PR #17 deployment check — 2026-11-21
 Draft https://github.com/Deidrajw/Lumina/pull/17 head 248ad812dd4c50ef8e0cd819e2cff5286d03231e; public GitHub browser reported no Cloudflare deployment and 'This branch has not been deployed'. App source version fix implemented, source checks PASS; new candidate live browser QA BLOCKED pending preview. Physical Safari P0 photo restore NOT TESTED, production main unchanged, NO-GO.
 
