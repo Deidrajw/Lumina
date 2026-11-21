@@ -1,3 +1,18 @@
+# Current status — 2026-11-21 PR #17 browser verification
+Draft PR #17 Beta11 version-identity fix now has successful Cloudflare Pages preview https://ca4b0ada.lumina-9w6.pages.dev and independent branch alias https://fix-beta11-version-identity.lumina-9w6.pages.dev. Public browser inspection on immutable preview PASS: Settings footer beta.11, What's New beta.11, Version History Beta11 present and all backup controls visible. Exact served HTML hash/APP_BUILD not independently visible. Real iPhone Safari cross-origin photo-backed JSON restore/refresh/byte comparison remains NOT TESTED (P0); no production merge, no personal data touched. Next: physical Safari fictional photo source/export → clean different-origin import → refresh/photos → read-only verification; record exact outcome. Production NO-GO.
+
+---
+
+# PR #17 deployment check — 2026-11-21
+Draft https://github.com/Deidrajw/Lumina/pull/17 head 248ad812dd4c50ef8e0cd819e2cff5286d03231e; public GitHub browser reported no Cloudflare deployment and 'This branch has not been deployed'. App source version fix implemented, source checks PASS; new candidate live browser QA BLOCKED pending preview. Physical Safari P0 photo restore NOT TESTED, production main unchanged, NO-GO.
+
+---
+
+# Current candidate — 2026-11-21 Beta11 version identity review
+Review-only branch fix/beta11-version-identity-2026-11-21 (from docs/qa-continuity-standard-2026-11-21/PR #16), source commit b92102c55eb316be4cf11fe74311680e87f78cb3, blob 19b77e4ad858eed559e178d24d4e7e8473d3639c. LUM-035 implemented candidate: Settings footer now uses APP_VERSION; changelog begins with Beta11; build 2026.11.21.version-identity.1. Export/import/photo functions and data contracts unchanged. Focused source assertions PASS, real JS browser, preview SHA, iPhone Safari clean-origin photo restore after refresh and full regression NOT TESTED. Main v0.9.4 SHA 2e02f304 unchanged. Next: Cloudflare preview plus live version checks; then actual fictional Safari origin-to-origin photo restore and byte verification. Release NO-GO.
+
+---
+
 # Current test status — 2026-11-21 Beta11 preview identity investigation
 GitHub PR #15 Beta11 candidate commit 7f3a4d88ac1997492727db80b98e4ef61b745fd1 (index.html blob 2ecf78e5); Cloudflare bot reports successful preview https://73264088.lumina-9w6.pages.dev. Public browser loaded Settings backup/verify UI, but source and live visible footer both contain stale v0.9.5-beta.8 text; actual APP_VERSION in GitHub JS is 0.9.5-beta.11. This is a P1 version-display bug, NOT conclusive proof of wrong deployment. Served HTML hash is NOT independently verified. P0 true iPhone Safari clean-origin photo-backed JSON restore after refresh remains NOT TESTED. No source, main, schema, browser records or production changes in this check; NO-GO release. Next: deployment SHA verification then iPhone fictional photo roundtrip; repair version display as separately reviewed UI bug. QA and handoff appended.
 

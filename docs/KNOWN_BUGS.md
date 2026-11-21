@@ -106,3 +106,9 @@ LUM-BUG-001 / LUM-005/009 full photo restoration on clean Safari origin remains 
 
 ## 2026-11-21 — LUM-BUG-036 | P1 | CODE-CONFIRMED | OPEN
 Beta11 source index.html has hardcoded Settings label `Lumina v0.9.5-beta.8` even though APP_VERSION is `0.9.5-beta.11`; browser at the Cloudflare-reported preview showed the stale label and a beta.10 onboarding changelog. Risk: QA/testers mistake the release version; visual text is not an authoritative build SHA. Correct label to derive from APP_VERSION and ensure current release note, without changing storage/data. Retest at a verified deployment SHA. Do not assert preview source mismatch based only on stale label.
+
+
+**LUM-BUG-036 follow-up 2026-11-21:** Version-label correction implemented in review-only feature branch; source assertions PASS, live preview/UI NOT TESTED. Do not close until actual Cloudflare preview shows correct Beta11 Settings footer and Welcome changelog, and matches intended build. Production still unchanged.
+
+
+**LUM-BUG-036 verification follow-up (2026-11-21):** PR #17 preview visual-browser PASS for Beta11 Settings label and What's New, plus Beta11 Version History item. Marked IMPLEMENTED / browser smoke PASS only; physical Safari and source-hash verification pending. No evidence of app code merge to main. Prior old-version-label bug appears resolved in tested preview; retain historical record. The browser also mentioned older placeholder-looking version entries; not yet independently reproduced or classified.

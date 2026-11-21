@@ -1170,7 +1170,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,te
   </div>
 
   <div style="text-align:center;padding:4px 0 8px;cursor:pointer" onclick="secretDevTap()">
-    <span class="f11 tx3" id="version-tap-label">Lumina v0.9.5-beta.8</span>
+    <span class="f11 tx3" id="version-tap-label">Lumina</span>
   </div>
   <div style="height:20px"></div>
 </div>
@@ -11685,9 +11685,11 @@ document.addEventListener('click',function(e){
 
 // ── Lumina Version History ──
 const APP_VERSION='0.9.5-beta.11';
-const APP_BUILD='2026.11.20.backup-integrity.1';
+const APP_BUILD='2026.11.21.version-identity.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
+const luminaVersionLabel=document.getElementById('version-tap-label');
+if(luminaVersionLabel)luminaVersionLabel.textContent='Lumina v'+APP_VERSION;
 
 // ── Standalone detection ──
 const IS_STANDALONE=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
@@ -11711,6 +11713,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkForLu
 const LUMINA_DB_VERSION=27;
 
 const LUMINA_CHANGELOG=[
+  {version:'0.9.5-beta.11',date:'November 21, 2026',title:'Backup Integrity & Version Identity',
+    added:['Strict backup-only checks block JSON export when a saved section contains malformed or unexpected data'],
+    changed:['The Settings version label now uses the actual app version rather than an outdated hardcoded value','What’s New accurately identifies the Beta 11 candidate'],
+    fixed:['Backup export and restore verification no longer silently treat corrupt saved JSON as an empty section','Outdated version display could confuse preview testing'],
+    known:['Actual photo-backed JSON restoration on a different iPhone Safari origin remains unverified','Production main remains unchanged; this is a review beta']},
   {version:'0.9.5-beta.10',date:'October 24, 2026',title:'Read-only Backup Restore Verification',
     added:['Verify an imported JSON backup against this browser’s actual saved record sections and linked image bytes','Clear results for missing, mismatched and not-yet-tested photos'],
     changed:['Backup verification compares the selected file without importing or modifying records','Photo restore is only marked matched if at least one linked image exists and all bytes agree'],

@@ -158,3 +158,23 @@ NO GO production. No migrations; rollback Beta10 3f56825 is code-only.
 - [ ] Physical iPhone Safari cross-origin photo-backed JSON restore with images after refresh and byte check PASS on clean destination (M-12, P0 LUM-005/009/033/034).
 - [ ] Obtain explicit user approval prior to main merge or production deploy.
 **As of 2026-11-21:** documentation candidate only; real Safari P0 remains NOT TESTED; release NO-GO.
+
+
+## 2026-11-21 Beta11 version identity follow-up (LUM-035)
+- [x] GitHub source confirmed from latest Beta11 candidate; change only version-display and first changelog entry; unique build ID.
+- [x] Focused source checks including unchanged exportData/luminaRestoreBackup spans.
+- [ ] Run true JS syntax and browser UI tests for new candidate; static inspection only so far.
+- [ ] Cloudflare preview successful and exact candidate commit/served source verified.
+- [ ] Actual iPhone Safari clean-origin JSON photo restore and byte equality after refresh.
+- [ ] Full QA M-01..M-18 and explicit production approval.
+**NO-GO production.** Parent code rollback does not recover browser records.
+
+
+## Beta11 PR #17 deployed preview follow-up — 2026-11-21
+- [x] Cloudflare Pages check and live immutable preview found; branch preview loads.
+- [x] Settings visible version, What's New and Version History Beta11 browser smoke PASS.
+- [ ] Actual served HTML source hash and JS APP_BUILD independently verified (visual browser cannot access).
+- [ ] Physical iPhone Safari photo-backed JSON export on source, clean separate-origin import, after-refresh photo inspection and 13-section/byte-for-byte verification.
+- [ ] Complete full M-01..M-18 regression, security and error scenarios.
+- [ ] Explicit user approval to merge/deploy production.
+**NO-GO production.**
