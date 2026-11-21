@@ -1,3 +1,8 @@
+# Current governance handoff — 2026-11-21
+Documentation-only candidate: docs/qa-continuity-standard-2026-11-21 based on Beta11 branch fix/backup-corruption-guard-beta11, production main v0.9.4 SHA 2e02f304 unchanged. New docs/MASTER_TEST_PLAN.md is permanent QA authority and docs/CHAT_HANDOFF_TEMPLATE.md requires a mini continuity note at the bottom of every Lumina development response. Existing QA_REGRESSION/CONTINUITY_LOG are append-only evidence and history. No index.html changes, migrations or production deployment. P0 clean-origin iPhone Safari photo-backed JSON restoration after refresh remains NOT TESTED and release NO-GO. Next: review docs PR; on iPhone run fictional Beta11 cross-origin export/import/refresh/photo byte verification, then broader regression; explicit approval before production merge.
+
+---
+
 # Current candidate — 2026-10-24, v0.9.5-beta.10
 **Production:** main SHA 2e02f304, v0.9.4 UNCHANGED. **Feature branch:** fix/restore-verification-beta10, parent Beta9 branch SHA 3a2c88e. Candidate code git blob adcef53a292b893ab1dc0943914e583b9ae3e3ae.
 **Implementation LUM-033:** Settings > Backup & Restore adds a read-only “Verify restored backup” file selector. It compares 13 full data sections, and MIME/size/every image byte of each linked IndexedDB photo, against the original JSON selected AFTER an import on a separate HTTPS origin. Reports discrepancies; refuses a portable-photo PASS for zero linked images or partial legacy JSON. No imports, writes, migrations or image deletion from verification. Old fixes stay.
