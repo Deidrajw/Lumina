@@ -50,3 +50,6 @@
 - DEC-035 (2026-10-24): A successful photo export, or a check that this origin can read images, is NOT evidence of portable restoration. Add a read-only original-file-vs-current-origin verifier that reports full-section matches and exact photo bytes and requires >=1 linked photo for a photo-backed PASS.
 - DEC-036: Verification may read existing data and user-selected backup locally but may not store, upload, overwrite, restore or delete records. Use standard browser FileReader/Blob APIs (Safari-compatible); do not add backend, external AI, or cloud service.
 - DEC-037: Retain P0 real iPhone Safari cross-origin end-to-end QA despite passing simulated tests; do not move main production until both QA and explicit user approval.
+
+
+- DEC-038 (2026-11-20): Fail closed on malformed or wrong-type localStorage during backup export and restore verification. Do not use forgiving screen load() for integrity checks; do not auto-reset/repair corrupt health records. Keep fresh missing keys as empty defaults for compatibility.

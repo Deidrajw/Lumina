@@ -59,3 +59,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ## Beta10 — restore verification (2026-10-24)
 [Read-only restored backup check](docs/BETA10_RESTORE_VERIFICATION_2026-10-24.md): after importing fictional JSON on a *different* Cloudflare hostname, select that original file in Settings and compare 13 data sections plus linked IDB image bytes. No app records/photos written by verification. PASS 77/77 isolated Chromium checks, real Safari/IndexedDB cross-origin test remains pending. Stacked beta feature branch, production main unchanged.
+
+
+### Beta11 backup integrity candidate (2026-11-20)
+See docs/BETA11_BACKUP_CORRUPTION_GUARD_2026-11-20.md. Strict backup-only JSON reads prevent silent empty sections on malformed saved records. No migration or production change. 15 Node tests PASS; Safari/IndexedDB clean-origin restore remains a release blocker.

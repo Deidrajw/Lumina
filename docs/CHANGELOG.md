@@ -88,3 +88,9 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Compares all stored sections against the backup with stable JSON object key order; each linked photo compared on MIME type, byte length and byte-for-byte contents. Errors/missing/different records explained; zero photos and partial legacy JSON cannot earn a complete photo PASS.
 - No schema, IDs, migrations, photo processing, backend/cloud writes, or data deletions. Beta9 filters and cleanup retained.
 - PASS JS syntax and 77/77 isolated Chromium synthetic fake-storage checks, all six tabs × 320/375/390/393/430px × dark/light plus 17 functional/edge checks. NOT TESTED real physical Safari, true IDB clean-origin import/refresh, quota, VoiceOver/whole app regression. NO production merge.
+
+
+## v0.9.5-beta.11 — 2026-11-20 (candidate, NOT production)
+- Strict backup-only read of localStorage sections; reject malformed JSON and wrong types before JSON export or restored-backup comparison, rather than silently substituting empty data. Valid fresh installations with absent sections remain supported.
+- Preserve forgiving ordinary app load() and all storage schema, IDs, photos and UI. No migration or automatic mutation.
+- PASS 15/15 synthetic Node tests, embedded JavaScript syntax; actual Safari, IndexedDB clean-origin restoration, full regression and accessibility NOT TESTED. Main v0.9.4 unchanged.

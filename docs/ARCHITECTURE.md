@@ -28,3 +28,7 @@ _Cleanup transactions_ build snapshot of only affected id + field before confirm
 
 ### Beta10 verification algorithm, review only
 Read-only function luminaVerifyRestoredBackup(data) uses existing luminaValidateBackup and luminaBackupPhotoRefs, enumerates known KEYS sections only. Each current localStorage value is parsed via load with {} fallback for checks, compared structurally with key-order-independent JSON reserialize, and each *referenced* IDB photo compared to its decoded data:image Blob for exact MIME, size, and bytes. Photo comparison sequential, uses only local browser FileReader, fetch(data:), Blob arrayBuffer, localStorage gets and IDB reads; no remote API, migrations, new storage, or mutations. Absence of linked photos / partial legacy snapshots never yields overall pass even if present sections match. This verifies a chosen backup *on this origin*; independent evidence requires actual Safari restore on a different HTTPS origin after refresh. Existing restore process remains unchanged.
+
+
+### Beta11 fail-closed backup reader
+luminaReadBackupSection is used only for exportData and luminaVerifyRestoredBackup, not shared UI load(). It distinguishes absent keys (fresh-install defaults) from corrupt/invalid JSON (throw). checks requires object, other KEYS require array. It never writes or repairs records. Backup export's existing catch blocks file creation; verifier's existing catch blocks PASS. Existing restore format unchanged. Browser/IDB QA remains pending.
