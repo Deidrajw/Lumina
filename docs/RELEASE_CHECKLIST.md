@@ -148,3 +148,13 @@ NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback
 - [ ] Cloudflare PR preview SHA confirmation
 - [ ] Explicit approval before main merge/deploy
 NO GO production. No migrations; rollback Beta10 3f56825 is code-only.
+
+
+## Mandatory documentation + handoff gate — 2026-11-21
+- [ ] Read docs/MASTER_TEST_PLAN.md and docs/CHAT_HANDOFF_TEMPLATE.md at task start; identify test IDs and requirement IDs before changing app.
+- [ ] Append this version's evidence-labelled run to docs/QA_REGRESSION.md, including actual device/OS/browser, SHA, preview URL, tester, results and non-sensitive evidence. Report explicitly NOT TESTED/BLOCKED cases.
+- [ ] Append dated detailed GitHub handoff to docs/CONTINUITY_LOG.md and update PROJECT_STATE and related docs in same feature PR.
+- [ ] End response with mini Continuity Note covering changed/not changed/tested/data/known bugs/user action/next step.
+- [ ] Physical iPhone Safari cross-origin photo-backed JSON restore with images after refresh and byte check PASS on clean destination (M-12, P0 LUM-005/009/033/034).
+- [ ] Obtain explicit user approval prior to main merge or production deploy.
+**As of 2026-11-21:** documentation candidate only; real Safari P0 remains NOT TESTED; release NO-GO.

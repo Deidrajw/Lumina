@@ -94,3 +94,7 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 - Strict backup-only read of localStorage sections; reject malformed JSON and wrong types before JSON export or restored-backup comparison, rather than silently substituting empty data. Valid fresh installations with absent sections remain supported.
 - Preserve forgiving ordinary app load() and all storage schema, IDs, photos and UI. No migration or automatic mutation.
 - PASS 15/15 synthetic Node tests, embedded JavaScript syntax; actual Safari, IndexedDB clean-origin restoration, full regression and accessibility NOT TESTED. Main v0.9.4 unchanged.
+
+
+## 2026-11-21 — QA/continuity governance standard (documentation only, unreleased)
+- Introduced reusable docs/MASTER_TEST_PLAN.md and docs/CHAT_HANDOFF_TEMPLATE.md, compulsory per-update evidence log and response-bottom mini handoff. Linked into instructions, state, README, QA, register and release checklist. Does not modify app index.html, version, stored records, image database, migration or production. Real Safari clean-origin backup/photo restore remains NOT TESTED; NO GO for production.

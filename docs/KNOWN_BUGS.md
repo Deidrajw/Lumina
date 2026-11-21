@@ -102,3 +102,7 @@ LUM-BUG-001 / LUM-005/009 full photo restoration on clean Safari origin remains 
 
 
 **LUM-BUG-035 | P0 | 2026-11-20 | IMPLEMENTED BETA:** Forgiving load() previously mapped malformed stored JSON to []/{} during export and restored-backup verification, risking silent omission and false positive. Beta11 strict backup-only reader fails with visible error; fresh missing keys still default. 15 synthetic Node PASS, not real Safari verified. Full cross-origin photo portability remains OPEN; data recovery from already-corrupt JSON is not implemented.
+
+
+## 2026-11-21 — LUM-BUG-036 | P1 | CODE-CONFIRMED | OPEN
+Beta11 source index.html has hardcoded Settings label `Lumina v0.9.5-beta.8` even though APP_VERSION is `0.9.5-beta.11`; browser at the Cloudflare-reported preview showed the stale label and a beta.10 onboarding changelog. Risk: QA/testers mistake the release version; visual text is not an authoritative build SHA. Correct label to derive from APP_VERSION and ensure current release note, without changing storage/data. Retest at a verified deployment SHA. Do not assert preview source mismatch based only on stale label.

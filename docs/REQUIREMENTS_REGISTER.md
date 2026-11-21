@@ -107,3 +107,10 @@ User request to begin high-risk fixes authorizes feature branch/PR preview, NOT 
 
 
 **LUM-034 | P0 | IMPLEMENTED BETA / NOT SAFARI VERIFIED | 2026-11-20:** Backup/verification must fail closed when any present saved JSON section is malformed, null, or has the wrong expected shape (checks object; all other KEYS arrays). Missing keys on fresh install default to [] or {}. Affected functions luminaReadBackupSection (new), exportData, luminaVerifyRestoredBackup. Acceptance: invalid stored section blocks download and verification PASS; valid/missing data remains compatible; ordinary app rendering unchanged; errors do not reveal private record contents. Regression risk: legacy corrupted records now correctly cannot export without repair, no auto-fix/migration. PASS 15 Node synthetic; real Safari and photo roundtrip NOT TESTED.
+
+
+## 2026-11-21 — LUM-001 QA + continuity extension
+**LUM-001 (P0, IMPLEMENTED ON DOCS REVIEW BRANCH; not merged):** Every change must include a durable, appended QA run with device/commit/evidence and a concise chat-bottom continuity handoff, plus detailed GitHub append-only continuity. Affected: PROJECT_INSTRUCTIONS, README, docs/MASTER_TEST_PLAN.md, CHAT_HANDOFF_TEMPLATE.md, QA_REGRESSION, CONTINUITY_LOG, PROJECT_STATE and RELEASE_CHECKLIST. Acceptance: future app update PR references master M-01..M-18 tests, records results truthfully (PASS automated/manual, FAIL, BLOCKED, NOT TESTED, N/A), includes handoff changed/not changed/user action/next step, and leaves older history intact. Dependencies: connected GitHub read/write. Regression risk: governance drift, not app runtime. Data/migration impact: none. P0 photo portability release gate remains open.
+
+
+**LUM-035 | P1 | REQUESTED (2026-11-21):** Ensure Settings footer/app welcome version reflects the actual APP_VERSION and build, not hardcoded old beta.8/beta.10 copy. Affected index.html version-tap-label / release history; acceptance: beta11 shows beta11 consistently and Cloudflare served-source SHA confirmed, with no data/schema changes. QA risk: false version identification; source-confirmed LUM-BUG-036. Not implemented this session.

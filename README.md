@@ -63,3 +63,7 @@ The user-approved six-screen UI concept is implemented incrementally. [Phase 1](
 
 ### Beta11 backup integrity candidate (2026-11-20)
 See docs/BETA11_BACKUP_CORRUPTION_GUARD_2026-11-20.md. Strict backup-only JSON reads prevent silent empty sections on malformed saved records. No migration or production change. 15 Node tests PASS; Safari/IndexedDB clean-origin restore remains a release blocker.
+
+
+## Mandatory QA and chat handoff standard (2026-11-21)
+**Start here for every task:** [Master Test Plan](docs/MASTER_TEST_PLAN.md) and [Chat Handoff Template](docs/CHAT_HANDOFF_TEMPLATE.md). Each update appends measured results to [QA Regression](docs/QA_REGRESSION.md), a dated handoff to [Continuity Log](docs/CONTINUITY_LOG.md), and updates [Project State](docs/PROJECT_STATE.md). Distinguish actual iPhone Safari PASS from simulated testing. Real cross-origin, photo-backed JSON restore remains P0 NO-GO for production until physically verified. This documentation addition is on a review branch; it is not a production release.
