@@ -117,3 +117,6 @@ User request to begin high-risk fixes authorizes feature branch/PR preview, NOT 
 
 
 **LUM-035 | 2026-11-21 update | IMPLEMENTED BETA / NOT VERIFIED:** Candidate root index.html Settings footer now references APP_VERSION and What's New starts with Beta11, build bumped; source assertions PASS. Acceptance still requires live browser footer, changelog and exact served commit SHA; physical Safari cross-origin photo regression untested. No record/photo migration. Branch fix/beta11-version-identity-2026-11-21.
+
+
+**LUM-035 | browser-smoke PASS / not fully Verified (2026-11-21):** PR #17 immutable Cloudflare preview loaded; version footer, What's New and Version History showed Beta11, backup controls still present. Actual served HTML hash not retrieved and physical Safari full regression NOT TESTED. No data changes or production merge.
