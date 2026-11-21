@@ -98,3 +98,7 @@ Escape closes uppermost modal/confirmation before underlying product page, follo
 
 ## 2026-11-21 — QA/continuity governance standard (documentation only, unreleased)
 - Introduced reusable docs/MASTER_TEST_PLAN.md and docs/CHAT_HANDOFF_TEMPLATE.md, compulsory per-update evidence log and response-bottom mini handoff. Linked into instructions, state, README, QA, register and release checklist. Does not modify app index.html, version, stored records, image database, migration or production. Real Safari clean-origin backup/photo restore remains NOT TESTED; NO GO for production.
+
+
+## v0.9.5-beta.11 — version identity follow-up (2026-11-21; review only)
+- Settings footer now derives visible version from APP_VERSION instead of obsolete Beta8 literal; Beta11 release-notes entry is first so What's New matches code. Bumped candidate APP_BUILD to 2026.11.21.version-identity.1. No export/import/restore function, schemas, IDs, IndexedDB photos, user data or production changes. Source-focused assertions passed; live browser and physical iPhone Safari cross-origin photo restore NOT TESTED. Release NO-GO.
