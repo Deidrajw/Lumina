@@ -106,3 +106,12 @@ PASS Node synthetic 15/15: missing symptom/checks defaults, valid sections, trun
 **Steps / expected:** __
 **Result:** PASS (automated) / PASS (manual) / FAIL / BLOCKED / NOT TESTED / N/A (select exactly one for each case) | **Evidence (non-sensitive):** __ | **Bug ID/retest:** __ | **Limitations:** __
 **Data impact and safety:** __ | **Release decision:** GO / NO-GO with justification __
+
+
+## 2026-11-21 — Beta11 Cloudflare preview identity check (read-only)
+**Source candidate:** PR #15 commit 7f3a4d88ac1997492727db80b98e4ef61b745fd1; GitHub index.html blob 2ecf78e50695147e6dc4f8826178c04c2bb1e0df, JS APP_VERSION 0.9.5-beta.11 / APP_BUILD 2026.11.20.backup-integrity.1. **Preview reported by GitHub Cloudflare check:** https://73264088.lumina-9w6.pages.dev. **Tester:** assistant using public browser via TinyFish; separate GitHub source inspection. **Evidence:** GitHub PR #15, Cloudflare bot deployment SUCCESS; browser navigation/onboarding/Settings inspection.
+- PASS (manual browser inspection, NOT iPhone): Preview page loaded and Settings > Backup & Restore offered Export JSON, Check saved photos, Verify restored backup and Import JSON. No backup imported or personal data inspected.
+- PASS (source inspection only): GitHub candidate commit contains strict reader and Beta11 APP_VERSION/APP_BUILD.
+- FAIL (display consistency): Static Settings version label says v0.9.5-beta.8 although candidate JS declares beta.11; source confirms stale hardcoded label. Onboarding changelog displayed beta.10. This is a source-confirmed misleading version UI; create/follow LUM-035 for correction in future candidate, without modifying current code.
+- BLOCKED (deployed-source equivalence): Browser inspection could not inspect full served JS or hash and basic fetch was inaccessible; Cloudflare successful check does not independently prove exact live HTML matches GitHub source. The version text alone does not prove wrong deployed code because stale beta.8 label is also in Beta11 source.
+- NOT TESTED: physical iPhone Safari, IndexedDB real-origin image saves/exports/imports, second-origin refresh persistence, byte verification, quota, full regression. **Release NO-GO.**
