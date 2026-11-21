@@ -93,3 +93,16 @@ Release NO-GO pending user-run fictional Safari test on two different Cloudflare
 
 ## 2026-11-20 — Beta11 focused QA
 PASS Node synthetic 15/15: missing symptom/checks defaults, valid sections, truncated JSON, invalid checks JSON, null, object instead of array, array instead of checks object, strings/scalars rejected, both export and verifier call strict reader, ordinary load unchanged. PASS embedded JS compilation. Chromium headless executable unavailable (BrowserType.launch failed); browser/UI/iPhone Safari NOT TESTED. Actual cross-origin IndexedDB photo export/import/refresh, quota/rollback, full CRUD, VoiceOver/security NOT TESTED. No real records touched. Release NO GO.
+
+
+## 2026-11-21 — QA governance documentation-only run
+**Branch:** docs/qa-continuity-standard-2026-11-21 | **App source:** unchanged from Beta11 parent fix/backup-corruption-guard-beta11 | **Tester:** assistant, GitHub document inspection.
+- PASS (manual documentation inspection): confirmed existing QA_REGRESSION.md, instructions, continuity, requirements and release checklist; created docs/MASTER_TEST_PLAN.md with IDs M-01..M-18 and strict photo-portability P0 gate, and docs/CHAT_HANDOFF_TEMPLATE.md with standard response fields. Existing historical test runs retained.
+- NOT TESTED: app runtime, iPhone Safari, cross-origin IndexedDB restore after refresh, deployment, UI/UX full regression, quotas, VoiceOver. Documentation creation is not an app test.
+- Release: NO-GO for production. Exact documentation branch commit and PR to be recorded in closing handoff. No personal data used.
+
+### Required blank run template (append one per future update)
+**Date/timezone:** __ | **App version + exact SHA:** __ | **Branch/PR/preview URL:** __ | **LUM requirement(s):** __ | **Test IDs:** __ | **Tester:** __ | **Device/OS/browser/viewport/theme:** __ | **Fixture:** fictional/empty/demo/personal-safe __
+**Steps / expected:** __
+**Result:** PASS (automated) / PASS (manual) / FAIL / BLOCKED / NOT TESTED / N/A (select exactly one for each case) | **Evidence (non-sensitive):** __ | **Bug ID/retest:** __ | **Limitations:** __
+**Data impact and safety:** __ | **Release decision:** GO / NO-GO with justification __
