@@ -136,3 +136,15 @@ NO-GO production. Rollback candidate Beta6 32e66d5; main 2e02f304; code rollback
 - [ ] VoiceOver, accessibility, search/filter and HTML/data mutator safety audit
 - [ ] User explicit authorization to merge production
 **NO GO production.** Rollback source Beta9 3a2c88e / production main 2e02f304; code rollback cannot restore lost browser data.
+
+
+## Beta11 (2026-11-20)
+- [x] Current GitHub HEAD and governance reviewed; Beta10 ZIP source git blob matched
+- [x] Fail-closed strict backup-only JSON section reader and versioned app source
+- [x] 15/15 Node synthetic tests + embedded JS syntax PASS
+- [ ] Actual browser/physical iPhone Safari end-to-end (Chromium binary unavailable)
+- [ ] Real photo backup/restore to different HTTPS origin with image bytes after refresh
+- [ ] Real quota/rollback and full app/security/accessibility regression
+- [ ] Cloudflare PR preview SHA confirmation
+- [ ] Explicit approval before main merge/deploy
+NO GO production. No migrations; rollback Beta10 3f56825 is code-only.

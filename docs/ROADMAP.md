@@ -54,3 +54,7 @@ LUM-030 filter collision and LUM-031 Data Cleanup bulk safety are IMPLEMENTED Be
 
 ## 2026-10-24 Beta10 P0 test assistance
 Implemented candidate LUM-033 read-only current-origin match of original backup records and photo bytes; this resolves lack of a post-restore comparison UI, but does NOT verify actual Safari portability. Highest next priority remains actual on-device photo-backed clean HTTPS-origin export/import/refresh and match with this tool, followed by real quota/rollback/CRUD and privacy/security audit. Maintain production main v0.9.4 until full regression and explicit release consent.
+
+
+### 2026-11-20 Beta11 next
+LUM-034 strict corrupted-section detection candidate implemented, synthetic QA PASS. Highest P0 remains genuine iPhone Safari photo-backed backup export/import/refresh across distinct HTTPS origins with byte verification, plus real quota and restore rollback. Next audit all import/backup writers, complete full regression and accessibility before main merge approval.

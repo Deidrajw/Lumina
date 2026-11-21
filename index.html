@@ -8284,6 +8284,19 @@ function luminaVerifyStatus(message,isError=false){
   const el=byId('backup-verify-result');
   if(el){el.textContent=message;el.style.color=isError?'var(--r)':'var(--tx2)';}
 }
+// Backup-only strict reader: do not treat corrupted browser JSON as an empty section.
+// Ordinary screen rendering retains the existing forgiving load() behaviour.
+function luminaReadBackupSection(key, fallback){
+  const raw=localStorage.getItem(key);
+  if(raw===null)return fallback; // Fresh installs legitimately have absent sections.
+  let value;
+  try{value=JSON.parse(raw);}catch(err){throw new Error('Saved data section '+key+' is unreadable; backup/verification stopped');}
+  const expectsObject=key===KEYS.checks;
+  if(expectsObject?(!value||typeof value!=='object'||Array.isArray(value)):!Array.isArray(value)){
+    throw new Error('Saved data section '+key+' has an unexpected format; backup/verification stopped');
+  }
+  return value;
+}
 async function luminaVerifyRestoredBackup(data){
   if(demoPreviewMode)throw new Error('Exit Sample Preview before comparing saved browser records');
   const keys=luminaValidateBackup(data);
@@ -8291,7 +8304,7 @@ async function luminaVerifyRestoredBackup(data){
   const incomplete=keys.length!==required.length;
   const recordDifferences=[];
   for(const key of keys){
-    const current=load(KEYS[key],key==='checks'?{}:[]);
+    const current=luminaReadBackupSection(KEYS[key],key==='checks'?{}:[]);
     if(luminaStableJSON(current)!==luminaStableJSON(data[key]))recordDifferences.push(key);
   }
   let photoMatches=0,photoMissing=0,photoDifferent=0;
@@ -8348,7 +8361,7 @@ function luminaVerifyBackupFile(event){
 async function exportData(){
   if(demoPreviewMode){canWrite();return;}
   try{
-    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=load(storageKey,key==='checks'?{}:[]));
+    const d={};Object.entries(KEYS).forEach(([key,storageKey])=>d[key]=luminaReadBackupSection(storageKey,key==='checks'?{}:[]));
     const blobs={};
     for(const id of luminaBackupPhotoRefs(d)){
       const blob=await luminaGetPhoto(id);
@@ -11671,8 +11684,8 @@ document.addEventListener('click',function(e){
 
 
 // ── Lumina Version History ──
-const APP_VERSION='0.9.5-beta.10';
-const APP_BUILD='2026.10.24.restore-verify.1';
+const APP_VERSION='0.9.5-beta.11';
+const APP_BUILD='2026.11.20.backup-integrity.1';
 const LUMINA_VERSION=APP_VERSION;
 const LUMINA_BUILD=APP_BUILD;
 

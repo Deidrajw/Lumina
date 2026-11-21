@@ -96,3 +96,7 @@ At each session end append verified HEAD/branch, PR, outcomes, blockers and next
 
 
 **Current Beta10 exact references:** PR #12, app commit 33c8362d9458437b8342ad0aaa9625aaca756651; Cloudflare confirmed source preview https://745d86e5.lumina-9w6.pages.dev and independent test-origin alias https://fix-restore-verification-bet.lumina-9w6.pages.dev, app blob adcef53a292b893ab1dc0943914e583b9ae3e3ae. Production main 2e02f304 unchanged. P0 real iPhone Safari photo restore not tested.
+
+
+## 2026-11-20 — Beta11 backup corruption guard
+Production main v0.9.4 SHA 2e02f304 remains unchanged. Candidate branch fix/backup-corruption-guard-beta11, parent Beta10 3f56825; root index.html blob 2ecf78e50695147e6dc4f8826178c04c2bb1e0df. LUM-034 implemented beta: strict backup-only localStorage reader rejects malformed JSON and incorrect section types during export and restored-backup verification; fresh missing keys remain valid defaults; ordinary UI load() unchanged. 15/15 Node synthetic tests PASS and embedded JS syntax PASS; real iPhone Safari, IndexedDB clean-origin restore, full app and accessibility NOT TESTED. No schema changes/migrations/record writes. No main merge approval. Next: Cloudflare preview, real Safari corrupt JSON test using disposable origin, then photo restore across HTTPS origins and comprehensive regression.
